@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Admin Dashboard | NITRIXA TECHNOLOGIES</title>
+
+    <meta
+        name="robots"
+        content="noindex, nofollow"
+    >
+
+    <link
+        rel="stylesheet"
+        href="../css/global.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="../css/components.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="../css/animations.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="../css/responsive.css"
+    >
+
+    <link
+        rel="icon"
+        type="image/png"
+        href="../assets/images/nitrixa-logo.png"
+    >
+
+</head>
+
+
+<body class="admin-dashboard-page">
+
+
+<!-- ================= ADMIN HEADER ================= -->
+
+<header class="admin-header">
+
+    <div class="admin-header-inner">
+
+        <a
+            href="../index.html"
+            class="admin-brand"
+        >
+
+            <img
+                src="../assets/images/nitrixa-name-logo.png"
+                alt="NITRIXA TECHNOLOGIES"
+            >
+
+        </a>
+
+
+        <div class="admin-header-right">
+
+            <span class="admin-user-label">
+                Administrator
+            </span>
+
+            <button
+                type="button"
+                id="logoutButton"
+                class="admin-logout"
+            >
+                Logout
+            </button>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+<!-- ================= DASHBOARD ================= -->
+
+<main class="admin-dashboard">
+
+    <div class="admin-container">
+
+
+        <!-- ================= PAGE HEADER ================= -->
+
+        <div class="admin-page-header">
+
+            <div>
+
+                <span class="section-kicker">
+                    ADMIN PORTAL
+                </span>
+
+                <h1>
+                    Application
+                    <span class="text-gradient">
+                        Dashboard
+                    </span>
+                </h1>
+
+                <p>
+                    Review and manage internship and training
+                    applications.
+                </p>
+
+            </div>
+
+
+            <div class="admin-header-action">
+
+                <button
+                    type="button"
+                    id="refreshApplications"
+                    class="btn btn-secondary"
+                >
+                    ↻ Refresh
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================= STATS ================= -->
+
+        <section class="admin-stats">
+
+            <article class="admin-stat-card">
+
+                <span>
+                    TOTAL APPLICATIONS
+                </span>
+
+                <strong id="totalApplications">
+                    0
+                </strong>
+
+            </article>
+
+
+            <article class="admin-stat-card">
+
+                <span>
+                    NEW
+                </span>
+
+                <strong id="newApplications">
+                    0
+                </strong>
+
+            </article>
+
+
+            <article class="admin-stat-card">
+
+                <span>
+                    CONTACTED
+                </span>
+
+                <strong id="contactedApplications">
+                    0
+                </strong>
+
+            </article>
+
+
+            <article class="admin-stat-card">
+
+                <span>
+                    APPROVED
+                </span>
+
+                <strong id="approvedApplications">
+                    0
+                </strong>
+
+            </article>
+
+
+            <article class="admin-stat-card">
+
+                <span>
+                    REJECTED
+                </span>
+
+                <strong id="rejectedApplications">
+                    0
+                </strong>
+
+            </article>
+
+        </section>
+
+
+        <!-- ================= APPLICATIONS ================= -->
+
+        <section class="admin-applications-section">
+
+
+            <div class="admin-section-header">
+
+                <div>
+
+                    <span class="section-kicker">
+                        APPLICATIONS
+                    </span>
+
+                    <h2>
+                        Recent Applications
+                    </h2>
+
+                </div>
+
+
+                <div class="admin-data-status">
+
+                    <span
+                        id="dataStatusDot"
+                        class="status-dot"
+                    ></span>
+
+                    <span id="dataStatusText">
+                        Live data
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- ================= FILTERS ================= -->
+
+            <div class="admin-filters">
+
+                <div class="admin-search">
+
+                    <label
+                        for="applicationSearch"
+                        class="sr-only"
+                    >
+                        Search applications
+                    </label>
+
+                    <input
+                        type="search"
+                        id="applicationSearch"
+                        placeholder="Search by name or email..."
+                    >
+
+                </div>
+
+
+                <div class="admin-filter">
+
+                    <label
+                        for="statusFilter"
+                        class="sr-only"
+                    >
+                        Filter by status
+                    </label>
+
+                    <select id="statusFilter">
+
+                        <option value="ALL">
+                            All Status
+                        </option>
+
+                        <option value="NEW">
+                            New
+                        </option>
+
+                        <option value="CONTACTED">
+                            Contacted
+                        </option>
+
+                        <option value="APPROVED">
+                            Approved
+                        </option>
+
+                        <option value="REJECTED">
+                            Rejected
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="admin-filter">
+
+                    <label
+                        for="typeFilter"
+                        class="sr-only"
+                    >
+                        Filter by application type
+                    </label>
+
+                    <select id="typeFilter">
+
+                        <option value="ALL">
+                            All Types
+                        </option>
+
+                        <option value="INTERNSHIP">
+                            Internship
+                        </option>
+
+                        <option value="TRAINING">
+                            Training
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <!-- ================= TABLE ================= -->
+
+            <div class="admin-table-wrapper">
+
+                <table class="admin-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Applicant
+                            </th>
+
+                            <th>
+                                Type
+                            </th>
+
+                            <th>
+                                Program
+                            </th>
+
+                            <th>
+                                Qualification
+                            </th>
+
+                            <th>
+                                City
+                            </th>
+
+                            <th>
+                                Status
+                            </th>
+
+                            <th>
+                                Date
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="applicationsTableBody">
+
+                        <!-- JavaScript inserts live Supabase data -->
+
+                    </tbody>
+
+                </table>
+
+
+                <div
+                    id="emptyApplications"
+                    class="admin-empty-state"
+                    hidden
+                >
+
+                    <div class="admin-empty-icon">
+                        —
+                    </div>
+
+                    <h3>
+                        No applications found
+                    </h3>
+
+                    <p>
+                        Applications matching your filters
+                        will appear here.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- ================= PAGINATION ================= -->
+
+            <div class="admin-pagination">
+
+                <span id="applicationCount">
+                    Showing 0 applications
+                </span>
+
+                <div class="pagination-controls">
+
+                    <button
+                        type="button"
+                        id="previousPage"
+                        disabled
+                    >
+                        Previous
+                    </button>
+
+                    <span id="currentPage">
+                        1
+                    </span>
+
+                    <button
+                        type="button"
+                        id="nextPage"
+                        disabled
+                    >
+                        Next
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= SECURITY NOTE ================= -->
+
+        <section class="admin-dashboard-note">
+
+            <div>
+
+                <strong>
+                    Admin data protection
+                </strong>
+
+                <p>
+                    Application data is loaded only after
+                    authenticated administrator access. Supabase
+                    Row Level Security controls administrator
+                    access to application records.
+                </p>
+
+            </div>
+
+        </section>
+
+
+    </div>
+
+</main>
+
+
+<!-- ================= SUPABASE ================= -->
+
+<script
+    src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+></script>
+
+<script src="../js/supabase.js"></script>
+
+<script src="../js/main.js"></script>
+
+<script src="../js/admin.js"></script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Admin Login | NITRIXA TECHNOLOGIES</title>
+
+    <meta
+        name="description"
+        content="NITRIXA TECHNOLOGIES administration portal."
+    >
+
+    <!-- Global Styles -->
+    <link
+        rel="stylesheet"
+        href="../css/global.css"
+    >
+
+    <!-- Component Styles -->
+    <link
+        rel="stylesheet"
+        href="../css/components.css"
+    >
+
+    <!-- Animation Styles -->
+    <link
+        rel="stylesheet"
+        href="../css/animations.css"
+    >
+
+    <!-- Responsive Styles -->
+    <link
+        rel="stylesheet"
+        href="../css/responsive.css"
+    >
+
+    <!-- Favicon -->
+    <link
+        rel="icon"
+        type="image/png"
+        href="../assets/images/nitrixa-logo.png"
+    >
+
+</head>
+
+
+<body class="admin-page">
+
+
+<main class="admin-login-page">
+
+
+    <!-- =====================================================
+         LEFT SIDE
+         ===================================================== -->
+
+    <section class="admin-login-visual">
+
+        <div class="admin-visual-content">
+
+
+            <!-- Logo -->
+
+            <a
+                href="../index.html"
+                class="admin-logo"
+                aria-label="NITRIXA TECHNOLOGIES Home"
+            >
+
+                <img
+                    src="../assets/images/nitrixa-name-logo.png"
+                    alt="NITRIXA TECHNOLOGIES"
+                >
+
+            </a>
+
+
+            <!-- Section Kicker -->
+
+            <span class="section-kicker">
+
+                ADMINISTRATION
+
+            </span>
+
+
+            <!-- Main Heading -->
+
+            <h1>
+
+                Manage your
+
+                <span class="text-gradient">
+
+                    platform.
+
+                </span>
+
+            </h1>
+
+
+            <!-- Description -->
+
+            <p>
+
+                Secure administration access for managing
+                applications and operational information.
+
+            </p>
+
+
+            <!-- Admin Features -->
+
+            <div class="admin-visual-grid">
+
+
+                <!-- Applications -->
+
+                <div class="admin-visual-card">
+
+                    <strong>
+
+                        APPLICATIONS
+
+                    </strong>
+
+                    <span>
+
+                        Review submissions
+
+                    </span>
+
+                </div>
+
+
+                <!-- Status -->
+
+                <div class="admin-visual-card">
+
+                    <strong>
+
+                        STATUS
+
+                    </strong>
+
+                    <span>
+
+                        Manage application status
+
+                    </span>
+
+                </div>
+
+
+                <!-- Access -->
+
+                <div class="admin-visual-card">
+
+                    <strong>
+
+                        ACCESS
+
+                    </strong>
+
+                    <span>
+
+                        Protected admin area
+
+                    </span>
+
+                </div>
+
+
+                <!-- Data -->
+
+                <div class="admin-visual-card">
+
+                    <strong>
+
+                        DATA
+
+                    </strong>
+
+                    <span>
+
+                        Supabase-powered
+
+                    </span>
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         LOGIN SIDE
+         ===================================================== -->
+
+    <section class="admin-login-panel">
+
+        <div class="admin-login-card">
+
+
+            <!-- Login Header -->
+
+            <div class="admin-login-header">
+
+
+                <!-- Mobile Logo -->
+
+                <div class="admin-mobile-logo">
+
+                    <img
+                        src="../assets/images/nitrixa-logo.png"
+                        alt="NITRIXA"
+                    >
+
+                </div>
+
+
+                <!-- Kicker -->
+
+                <span class="section-kicker">
+
+                    ADMIN PORTAL
+
+                </span>
+
+
+                <!-- Heading -->
+
+                <h2>
+
+                    Welcome back.
+
+                </h2>
+
+
+                <!-- Description -->
+
+                <p>
+
+                    Sign in to access the NITRIXA administration area.
+
+                </p>
+
+
+            </div>
+
+
+
+            <!-- =================================================
+                 LOGIN FORM
+                 ================================================= -->
+
+            <form
+                id="adminLoginForm"
+                class="admin-login-form"
+                novalidate
+            >
+
+
+                <!-- EMAIL -->
+
+                <div class="form-group">
+
+
+                    <label for="adminEmail">
+
+                        Email Address
+
+                        <span>*</span>
+
+                    </label>
+
+
+                    <input
+                        type="email"
+                        id="adminEmail"
+                        name="email"
+                        placeholder="admin@example.com"
+                        autocomplete="username"
+                        required
+                    >
+
+
+                    <small
+                        class="form-error"
+                        data-error-for="adminEmail"
+                    ></small>
+
+
+                </div>
+
+
+
+                <!-- PASSWORD -->
+
+                <div class="form-group">
+
+
+                    <label for="adminPassword">
+
+                        Password
+
+                        <span>*</span>
+
+                    </label>
+
+
+                    <div class="password-field">
+
+
+                        <input
+                            type="password"
+                            id="adminPassword"
+                            name="password"
+                            placeholder="Enter your password"
+                            autocomplete="current-password"
+                            minlength="6"
+                            required
+                        >
+
+
+                        <button
+                            type="button"
+                            id="togglePassword"
+                            class="password-toggle"
+                            aria-label="Show password"
+                        >
+
+                            Show
+
+                        </button>
+
+
+                    </div>
+
+
+                    <small
+                        class="form-error"
+                        data-error-for="adminPassword"
+                    ></small>
+
+
+                </div>
+
+
+
+                <!-- SIGN IN BUTTON -->
+
+                <button
+                    type="submit"
+                    class="btn btn-primary admin-login-button"
+                >
+
+                    Sign In
+
+                </button>
+
+
+
+                <!-- LOGIN STATUS -->
+
+                <div
+                    id="adminLoginStatus"
+                    class="form-status"
+                    role="status"
+                    aria-live="polite"
+                ></div>
+
+
+            </form>
+
+
+
+            <!-- LOGIN FOOTER -->
+
+            <div class="admin-login-footer">
+
+                <a href="../index.html">
+
+                    ← Back to NITRIXA Website
+
+                </a>
+
+            </div>
+
+
+
+            <!-- SECURITY NOTE -->
+
+            <div class="admin-security-note">
+
+                <span>
+
+                    🔒
+
+                </span>
+
+                <p>
+
+                    Administrative access is intended only for
+                    authorized NITRIXA personnel.
+
+                </p>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+</main>
+
+
+
+<!-- =========================================================
+     JAVASCRIPT LOAD ORDER
+     ========================================================= -->
+
+<!-- 1. Supabase Library -->
+<script
+    src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+></script>
+
+
+<!-- 2. NITRIXA Supabase Configuration -->
+<script
+    src="../js/supabase.js"
+></script>
+
+
+<!-- 3. Main Website JavaScript -->
+<script
+    src="../js/main.js"
+></script>
+
+
+<!-- 4. Admin JavaScript -->
+<script
+    src="../js/admin.js"
+></script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,685 @@
+/* =========================================================
+   NITRIXA TECHNOLOGIES
+   ANIMATIONS
+   ========================================================= */
+
+
+/* =========================================================
+   FADE UP
+   ========================================================= */
+
+@keyframes fadeUp {
+
+    from {
+        opacity: 0;
+        transform: translateY(24px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+.fade-up {
+    animation:
+        fadeUp .8s ease both;
+}
+
+
+/* =========================================================
+   FADE DOWN
+   ========================================================= */
+
+@keyframes fadeDown {
+
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+.fade-down {
+    animation:
+        fadeDown .8s ease both;
+}
+
+
+/* =========================================================
+   FADE LEFT
+   ========================================================= */
+
+@keyframes fadeLeft {
+
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+
+.fade-left {
+    animation:
+        fadeLeft .8s ease both;
+}
+
+
+/* =========================================================
+   FADE RIGHT
+   ========================================================= */
+
+@keyframes fadeRight {
+
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+
+.fade-right {
+    animation:
+        fadeRight .8s ease both;
+}
+
+
+/* =========================================================
+   SCALE IN
+   ========================================================= */
+
+@keyframes scaleIn {
+
+    from {
+        opacity: 0;
+        transform: scale(.94);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+
+.scale-in {
+    animation:
+        scaleIn .7s ease both;
+}
+
+
+/* =========================================================
+   FLOAT
+   ========================================================= */
+
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-8px);
+    }
+}
+
+
+.float {
+    animation:
+        float 5s ease-in-out infinite;
+}
+
+
+/* =========================================================
+   SOFT FLOAT
+   ========================================================= */
+
+@keyframes softFloat {
+
+    0%,
+    100% {
+        transform:
+            translate3d(0, 0, 0);
+    }
+
+    50% {
+        transform:
+            translate3d(0, -5px, 0);
+    }
+}
+
+
+.soft-float {
+    animation:
+        softFloat 4s ease-in-out infinite;
+}
+
+
+/* =========================================================
+   GLOW PULSE
+   ========================================================= */
+
+@keyframes glowPulse {
+
+    0%,
+    100% {
+        opacity: .55;
+    }
+
+    50% {
+        opacity: .9;
+    }
+}
+
+
+.glow-pulse {
+    animation:
+        glowPulse 4s ease-in-out infinite;
+}
+
+
+/* =========================================================
+   SHIMMER
+   ========================================================= */
+
+@keyframes shimmer {
+
+    from {
+        background-position:
+            200% center;
+    }
+
+    to {
+        background-position:
+            -200% center;
+    }
+}
+
+
+.shimmer {
+
+    background:
+        linear-gradient(
+            100deg,
+            var(--blue),
+            var(--violet),
+            var(--cyan),
+            var(--blue)
+        );
+
+    background-size:
+        300% auto;
+
+    -webkit-background-clip:
+        text;
+
+    background-clip:
+        text;
+
+    color:
+        transparent;
+
+    animation:
+        shimmer 6s linear infinite;
+}
+
+
+/* =========================================================
+   GRADIENT SHIFT
+   ========================================================= */
+
+@keyframes gradientShift {
+
+    0% {
+        background-position:
+            0% 50%;
+    }
+
+    50% {
+        background-position:
+            100% 50%;
+    }
+
+    100% {
+        background-position:
+            0% 50%;
+    }
+}
+
+
+.gradient-shift {
+
+    background-size:
+        200% 200%;
+
+    animation:
+        gradientShift 8s ease infinite;
+}
+
+
+/* =========================================================
+   BORDER GLOW
+   ========================================================= */
+
+@keyframes borderGlow {
+
+    0%,
+    100% {
+        box-shadow:
+            0 0 0
+            rgba(37, 99, 235, 0);
+    }
+
+    50% {
+        box-shadow:
+            0 0 28px
+            rgba(37, 99, 235, .12);
+    }
+}
+
+
+.border-glow {
+    animation:
+        borderGlow 4s ease-in-out infinite;
+}
+
+
+/* =========================================================
+   HERO ORB
+   ========================================================= */
+
+@keyframes heroOrb {
+
+    0%,
+    100% {
+        transform:
+            translate3d(0, 0, 0)
+            scale(1);
+    }
+
+    33% {
+        transform:
+            translate3d(18px, -14px, 0)
+            scale(1.04);
+    }
+
+    66% {
+        transform:
+            translate3d(-12px, 12px, 0)
+            scale(.98);
+    }
+}
+
+
+.hero-orb {
+    animation:
+        heroOrb 12s ease-in-out infinite;
+}
+
+
+/* =========================================================
+   REVEAL
+   ========================================================= */
+
+.reveal {
+
+    opacity: 0;
+
+    transform:
+        translateY(20px);
+
+    transition:
+        opacity .7s ease,
+        transform .7s ease;
+}
+
+
+.reveal.visible {
+
+    opacity: 1;
+
+    transform:
+        translateY(0);
+}
+
+
+/* =========================================================
+   STAGGER DELAYS
+   ========================================================= */
+
+.delay-1 {
+    animation-delay: .1s;
+}
+
+
+.delay-2 {
+    animation-delay: .2s;
+}
+
+
+.delay-3 {
+    animation-delay: .3s;
+}
+
+
+.delay-4 {
+    animation-delay: .4s;
+}
+
+
+.delay-5 {
+    animation-delay: .5s;
+}
+
+
+.delay-6 {
+    animation-delay: .6s;
+}
+
+
+/* =========================================================
+   CARD HOVER
+   ========================================================= */
+
+.card-hover {
+
+    transition:
+        transform .35s ease,
+        box-shadow .35s ease,
+        border-color .35s ease;
+}
+
+
+.card-hover:hover {
+
+    transform:
+        translateY(-7px);
+
+    box-shadow:
+        var(--shadow-lg);
+}
+
+
+/* =========================================================
+   BUTTON HOVER
+   ========================================================= */
+
+.button-hover {
+
+    transition:
+        transform .25s ease,
+        box-shadow .25s ease;
+}
+
+
+.button-hover:hover {
+
+    transform:
+        translateY(-2px);
+}
+
+
+/* =========================================================
+   IMAGE ZOOM
+   ========================================================= */
+
+.image-zoom {
+    overflow: hidden;
+}
+
+
+.image-zoom img {
+
+    transition:
+        transform .6s ease;
+}
+
+
+.image-zoom:hover img {
+
+    transform:
+        scale(1.04);
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+
+        animation-duration:
+            .01ms !important;
+
+        animation-iteration-count:
+            1 !important;
+
+        scroll-behavior:
+            auto !important;
+
+        transition-duration:
+            .01ms !important;
+    }
+
+}
+
+/* =========================================================
+   NITRIXA 2030 MOTION SYSTEM
+   CONSOLIDATED
+   ========================================================= */
+
+/* ---------------------------------------------------------
+   SCROLL REVEAL
+   --------------------------------------------------------- */
+
+.nx-reveal {
+    opacity: 0;
+    transform: translateY(35px);
+    transition:
+        opacity 0.85s cubic-bezier(.16, 1, .3, 1),
+        transform 0.85s cubic-bezier(.16, 1, .3, 1);
+}
+
+.nx-reveal[data-reveal="left"] {
+    transform: translateX(-45px);
+}
+
+.nx-reveal[data-reveal="right"] {
+    transform: translateX(45px);
+}
+
+.nx-reveal.is-visible {
+    opacity: 1;
+    transform: translate(0, 0);
+}
+
+
+/* ---------------------------------------------------------
+   HERO
+   --------------------------------------------------------- */
+
+@keyframes nx-grid-drift {
+    from {
+        background-position: 0 0;
+    }
+
+    to {
+        background-position: 48px 48px;
+    }
+}
+
+@keyframes nx-gradient-shift {
+    0%,
+    100% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+}
+
+@keyframes nx-glow-float {
+    0%,
+    100% {
+        transform: translate3d(0, 0, 0) scale(1);
+    }
+
+    50% {
+        transform: translate3d(20px, -18px, 0) scale(1.08);
+    }
+}
+
+@keyframes nx-orbit-spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes nx-platform-float {
+    0%,
+    100% {
+        transform:
+            perspective(1300px)
+            rotateY(-4deg)
+            rotateX(2deg)
+            translateY(0);
+    }
+
+    50% {
+        transform:
+            perspective(1300px)
+            rotateY(-2deg)
+            rotateX(1deg)
+            translateY(-10px);
+    }
+}
+
+@keyframes nx-float-one {
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-12px);
+    }
+}
+
+@keyframes nx-float-two {
+    0%,
+    100% {
+        transform: translateY(0) rotate(0deg);
+    }
+
+    50% {
+        transform: translateY(-10px) rotate(1deg);
+    }
+}
+
+@keyframes nx-pulse-dot {
+    0%,
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 0.55;
+        transform: scale(0.72);
+    }
+}
+
+
+/* ---------------------------------------------------------
+   TECHNOLOGY MARQUEE
+   --------------------------------------------------------- */
+
+@keyframes nx-tech-scroll {
+    from {
+        transform: translateX(0);
+    }
+
+    to {
+        transform: translateX(-50%);
+    }
+}
+
+
+/* ---------------------------------------------------------
+   PROFILE
+   --------------------------------------------------------- */
+
+@keyframes nx-profile-load {
+    from {
+        transform: scaleX(0);
+        transform-origin: left;
+    }
+
+    to {
+        transform: scaleX(1);
+        transform-origin: left;
+    }
+}
+
+
+/* ---------------------------------------------------------
+   SHIMMER
+   --------------------------------------------------------- */
+
+@keyframes nx-shimmer {
+    0% {
+        background-position: -200% center;
+    }
+
+    100% {
+        background-position: 200% center;
+    }
+}
+
+
+/* ---------------------------------------------------------
+   NITRIXA MOTION ACCESSIBILITY
+   --------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .nx-reveal,
+    .nx-platform-card,
+    .nx-floating-chip,
+    .nx-mini-floating-card,
+    .nx-gradient-text,
+    .nx-tech-track,
+    .nx-hero-grid,
+    .nx-hero-orbit,
+    .nx-hero-glow,
+    .nx-profile-line i {
+        animation: none !important;
+        transition: none !important;
+    }
+}

@@ -1,0 +1,431 @@
+/* =========================================================
+   NITRIXA TECHNOLOGIES
+   GLOBAL DESIGN SYSTEM
+   ========================================================= */
+
+:root {
+
+    /* ---------------------------------------------------------
+       BRAND COLORS
+       --------------------------------------------------------- */
+
+    --navy: #06142f;
+    --navy-2: #0a1d42;
+
+    --blue: #175cff;
+    --electric: #2563ff;
+    --cyan: #00d9ff;
+    --violet: #6847ff;
+
+    /* ---------------------------------------------------------
+       SURFACES
+       --------------------------------------------------------- */
+
+    --bg: #f7faff;
+    --white: #ffffff;
+
+    --surface: #ffffff;
+    --surface-soft: #f3f7fd;
+    --surface-blue: #eef4ff;
+
+    /* ---------------------------------------------------------
+       TEXT
+       --------------------------------------------------------- */
+
+    --text: #0b1733;
+    --text-soft: #52627a;
+    --muted: #718096;
+
+    /* ---------------------------------------------------------
+       BORDERS
+       --------------------------------------------------------- */
+
+    --border: #e4eaf3;
+    --border-strong: #d5deec;
+
+    /* ---------------------------------------------------------
+       SHADOWS
+       --------------------------------------------------------- */
+
+    --shadow-sm:
+        0 8px 25px rgba(15, 35, 75, .06);
+
+    --shadow-md:
+        0 18px 50px rgba(15, 35, 75, .09);
+
+    --shadow-lg:
+        0 30px 80px rgba(15, 35, 75, .13);
+
+    /* ---------------------------------------------------------
+       RADII
+       --------------------------------------------------------- */
+
+    --radius-sm: 10px;
+    --radius-md: 16px;
+    --radius-lg: 24px;
+    --radius-xl: 32px;
+
+    /* ---------------------------------------------------------
+       LAYOUT
+       --------------------------------------------------------- */
+
+    --container: 1240px;
+
+    /* ---------------------------------------------------------
+       SPACING
+       --------------------------------------------------------- */
+
+    --space-1: 4px;
+    --space-2: 8px;
+    --space-3: 12px;
+    --space-4: 16px;
+    --space-5: 20px;
+    --space-6: 24px;
+    --space-7: 32px;
+    --space-8: 40px;
+    --space-9: 48px;
+    --space-10: 64px;
+    --space-11: 80px;
+    --space-12: 110px;
+
+    /* ---------------------------------------------------------
+       MOTION
+       --------------------------------------------------------- */
+
+    --ease-standard: cubic-bezier(.2, .8, .2, 1);
+    --ease-emphasized: cubic-bezier(.16, 1, .3, 1);
+
+    --transition-fast:
+        180ms var(--ease-standard);
+
+    --transition-base:
+        240ms var(--ease-standard);
+
+    --transition-slow:
+        400ms var(--ease-emphasized);
+
+    /* ---------------------------------------------------------
+       TYPOGRAPHY
+       --------------------------------------------------------- */
+
+    --font:
+        Inter,
+        "Segoe UI",
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        sans-serif;
+}
+
+
+/* =========================================================
+   RESET
+   ========================================================= */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+
+html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+}
+
+
+body {
+    margin: 0;
+
+    font-family: var(--font);
+
+    background: var(--bg);
+
+    color: var(--text);
+
+    line-height: 1.6;
+
+    -webkit-font-smoothing: antialiased;
+
+    text-rendering: optimizeLegibility;
+}
+
+
+body.no-scroll {
+    overflow: hidden;
+}
+
+
+img {
+    display: block;
+
+    max-width: 100%;
+
+    height: auto;
+}
+
+
+a {
+    color: inherit;
+
+    text-decoration: none;
+}
+
+
+button,
+input,
+textarea,
+select {
+    font: inherit;
+}
+
+
+button {
+    cursor: pointer;
+}
+
+
+button:disabled {
+    cursor: not-allowed;
+}
+
+
+h1,
+h2,
+h3,
+h4,
+p {
+    margin-top: 0;
+}
+
+
+h1,
+h2,
+h3,
+h4 {
+    line-height: 1.15;
+}
+
+
+h1,
+h2,
+h3,
+h4,
+p {
+    overflow-wrap: break-word;
+}
+
+
+/* =========================================================
+   GLOBAL LAYOUT
+   ========================================================= */
+
+.container {
+    width: min(
+        calc(100% - 40px),
+        var(--container)
+    );
+
+    margin-inline: auto;
+}
+
+
+.section {
+    padding: var(--space-12) 0;
+}
+
+
+/* =========================================================
+   GLOBAL TEXT UTILITIES
+   ========================================================= */
+
+.text-gradient {
+    background:
+        linear-gradient(
+            100deg,
+            var(--blue),
+            var(--violet),
+            var(--cyan)
+        );
+
+    -webkit-background-clip: text;
+    background-clip: text;
+
+    color: transparent;
+}
+
+
+.section-kicker {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    margin-bottom: 17px;
+
+    color: var(--blue);
+
+    font-size: .75rem;
+
+    font-weight: 850;
+
+    letter-spacing: .16em;
+
+    text-transform: uppercase;
+}
+
+
+.section-kicker::before {
+    content: "";
+
+    width: 25px;
+
+    height: 2px;
+
+    border-radius: 100px;
+
+    background:
+        linear-gradient(
+            90deg,
+            var(--blue),
+            var(--cyan)
+        );
+}
+
+
+.section-kicker.light {
+    color: #8eeaff;
+}
+
+
+.section-kicker.light::before {
+    background: #8eeaff;
+}
+
+
+.section-heading {
+    max-width: 760px;
+
+    margin-bottom: 55px;
+}
+
+
+.section-heading.centered {
+    margin-inline: auto;
+
+    text-align: center;
+}
+
+
+.section-heading h2,
+.experience-content h2 {
+    margin-bottom: 20px;
+
+    font-size:
+        clamp(
+            2.2rem,
+            4.5vw,
+            3.8rem
+        );
+
+    line-height: 1.04;
+
+    letter-spacing: -.045em;
+}
+
+
+.section-heading p,
+.experience-content > p {
+    max-width: 680px;
+
+    color: var(--text-soft);
+
+    font-size: 1.05rem;
+}
+
+
+.section-heading.centered p {
+    margin-inline: auto;
+}
+
+
+/* =========================================================
+   ACCESSIBILITY
+   ========================================================= */
+
+:focus-visible {
+    outline:
+        3px solid
+        rgba(37, 99, 235, .28);
+
+    outline-offset: 4px;
+}
+
+
+::selection {
+    background:
+        rgba(37, 99, 235, .16);
+
+    color: var(--navy);
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    html {
+        scroll-behavior: auto;
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+    .container {
+        width:
+            calc(100% - 30px);
+    }
+
+
+    .section {
+        padding:
+            75px 0;
+    }
+
+
+    .section-heading {
+        margin-bottom:
+            40px;
+    }
+
+
+    .section-heading h2,
+    .experience-content h2 {
+        font-size: 2.35rem;
+    }
+
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 420px) {
+
+    .container {
+        width:
+            calc(100% - 24px);
+    }
+
+}

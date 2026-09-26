@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<urlset
+    xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+>
+
+    <!-- Home -->
+    <url>
+        <loc>https://nitrixatechnologies.in/</loc>
+        <changefreq>weekly</changefreq>
+        <priority>1.0</priority>
+    </url>
+
+    <!-- About -->
+    <url>
+        <loc>https://nitrixatechnologies.in/about.html</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+    <!-- Internship -->
+    <url>
+        <loc>https://nitrixatechnologies.in/internship.html</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.9</priority>
+    </url>
+
+    <!-- Training -->
+    <url>
+        <loc>https://nitrixatechnologies.in/training.html</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.9</priority>
+    </url>
+
+    <!-- Programs -->
+    <url>
+        <loc>https://nitrixatechnologies.in/programs.html</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.9</priority>
+    </url>
+
+    <!-- Projects -->
+    <url>
+        <loc>https://nitrixatechnologies.in/projects.html</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+    <!-- Career -->
+    <url>
+        <loc>https://nitrixatechnologies.in/career.html</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+
+    <!-- How It Works -->
+    <url>
+        <loc>https://nitrixatechnologies.in/how-it-works.html</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+    <!-- Contact -->
+    <url>
+        <loc>https://nitrixatechnologies.in/contact.html</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+
+    <!-- Apply -->
+    <url>
+        <loc>https://nitrixatechnologies.in/apply.html</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.9</priority>
+    </url>
+
+    <!-- Privacy -->
+    <url>
+        <loc>https://nitrixatechnologies.in/privacy.html</loc>
+        <changefreq>yearly</changefreq>
+        <priority>0.3</priority>
+    </url>
+
+    <!-- Terms -->
+    <url>
+        <loc>https://nitrixatechnologies.in/terms.html</loc>
+        <changefreq>yearly</changefreq>
+        <priority>0.3</priority>
+    </url>
+
+</urlset>

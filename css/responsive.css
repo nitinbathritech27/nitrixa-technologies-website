@@ -1,0 +1,1981 @@
+/* =========================================================
+   NITRIXA TECHNOLOGIES
+   RESPONSIVE FOUNDATION
+   ========================================================= */
+
+
+/* =========================================================
+   LARGE DESKTOP
+   ========================================================= */
+
+@media (min-width: 1500px) {
+
+    .container {
+
+        width:
+            min(
+                calc(100% - 80px),
+                1320px
+            );
+    }
+
+}
+
+
+/* =========================================================
+   MEDIUM DESKTOP
+   ========================================================= */
+
+@media (max-width: 1100px) {
+
+    .hero-container {
+
+        grid-template-columns:
+            minmax(0, 1fr)
+            minmax(380px, .8fr);
+
+        gap:
+            25px;
+    }
+
+
+    .hero-title {
+
+        font-size:
+            clamp(
+                3.2rem,
+                6vw,
+                5rem
+            );
+    }
+
+
+    .career-panel {
+
+        padding-inline:
+            55px;
+    }
+
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+    .container {
+
+        width:
+            min(
+                calc(100% - 36px),
+                var(--container)
+            );
+    }
+
+
+    .technology-flow {
+
+        justify-content:
+            flex-start;
+
+        overflow:
+            hidden;
+
+        white-space:
+            nowrap;
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+    .section {
+
+        padding:
+            75px 0;
+    }
+
+
+    .technology-flow {
+
+        min-height:
+            52px;
+
+        gap:
+            12px;
+
+        font-size:
+            .58rem;
+    }
+
+
+    .technology-flow span:nth-of-type(n + 3),
+    .technology-flow i:nth-of-type(n + 3) {
+
+        display:
+            none;
+    }
+
+
+    .section-heading h2,
+    .experience-content h2 {
+
+        font-size:
+            2.35rem;
+    }
+
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 420px) {
+
+    .container {
+
+        width:
+            calc(100% - 24px);
+    }
+
+
+    .brand-logo {
+
+        width:
+            140px;
+    }
+
+
+    .hero-title {
+
+        font-size:
+            2.65rem;
+    }
+
+}
+
+/* =========================================================
+   ABOUT PAGE RESPONSIVE OVERRIDES
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+    .about-hero-title {
+
+        font-size:
+            2.9rem;
+    }
+
+
+    .about-intro-heading h2 {
+
+        font-size:
+            2.35rem;
+    }
+
+
+    .philosophy-content h2 {
+
+        font-size:
+            2.35rem;
+    }
+
+
+    .technology-panel-content h2 {
+
+        font-size:
+            2.35rem;
+    }
+
+}
+
+
+@media (max-width: 420px) {
+
+    .about-hero-title {
+
+        font-size:
+            2.6rem;
+    }
+
+
+    .about-logo-orbit {
+
+        width:
+            300px;
+    }
+
+
+    .about-logo-core {
+
+        width:
+            145px;
+
+        height:
+            145px;
+    }
+
+
+    .about-logo-core img {
+
+        width:
+            100px;
+    }
+
+
+    .about-floating-tag {
+
+        transform:
+            scale(.9);
+    }
+
+}
+
+/* =========================================================
+   INTERNSHIP RESPONSIVE
+========================================================= */
+
+@media (max-width: 1100px) {
+
+    .internship-hero-grid {
+        grid-template-columns: 1fr;
+        gap: 50px;
+    }
+
+    .internship-hero-content {
+        text-align: center;
+    }
+
+    .internship-hero-content .hero-description {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .internship-hero-content .hero-actions {
+        justify-content: center;
+    }
+
+    .internship-hero-points {
+        justify-content: center;
+    }
+
+    .internship-hero-visual {
+        min-height: 430px;
+    }
+
+    .internship-project-grid {
+        grid-template-columns: 1fr;
+        gap: 45px;
+    }
+
+    .skill-development-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .eligibility-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .internship-cta-box {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+}
+
+
+@media (max-width: 768px) {
+
+    .internship-hero {
+        padding: 75px 0 65px;
+    }
+
+    .internship-hero-content h1 {
+        font-size: clamp(2.8rem, 12vw, 4.3rem);
+    }
+
+    .internship-hero-visual {
+        min-height: 380px;
+    }
+
+    .internship-visual-card {
+        padding: 22px;
+        border-radius: 22px;
+    }
+
+    .code-line {
+        grid-template-columns: 25px 75px auto;
+        font-size: 0.75rem;
+    }
+
+    .floating-tech-one {
+        top: 20px;
+        right: 0;
+    }
+
+    .floating-tech-two {
+        bottom: 20px;
+        left: 0;
+    }
+
+    .internship-intro-grid,
+    .internship-development-grid,
+    .eligibility-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .skill-development-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .development-feature {
+        padding: 24px;
+    }
+
+    .internship-cta-box {
+        padding: 35px 25px;
+        border-radius: 24px;
+    }
+
+}
+
+
+@media (max-width: 520px) {
+
+    .internship-hero-points {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .hero-point {
+        justify-content: center;
+    }
+
+    .internship-hero-visual {
+        min-height: 340px;
+    }
+
+    .internship-visual-card {
+        width: 100%;
+    }
+
+    .floating-tech-card {
+        display: none;
+    }
+
+    .progress-label {
+        font-size: 0.68rem;
+    }
+
+    .project-list-item {
+        grid-template-columns: 32px 1fr;
+        gap: 12px;
+        padding: 18px;
+    }
+
+    .journey-track {
+        justify-content: flex-start;
+    }
+
+    .internship-cta-box .hero-actions {
+        width: 100%;
+        flex-direction: column;
+    }
+
+    .internship-cta-box .btn {
+        width: 100%;
+        text-align: center;
+    }
+
+}
+
+/* =========================================================
+   TRAINING RESPONSIVE
+========================================================= */
+
+@media (max-width: 1100px) {
+
+    .training-hero-grid {
+        grid-template-columns: 1fr;
+        gap: 45px;
+    }
+
+    .training-hero-content {
+        text-align: center;
+    }
+
+    .training-hero-content .hero-description {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .training-hero-content .hero-actions {
+        justify-content: center;
+    }
+
+    .training-value-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .training-area-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .training-approach-grid {
+        grid-template-columns: 1fr;
+        gap: 45px;
+    }
+
+    .training-practical-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .training-audience-box {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+
+    .training-final-cta {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+}
+
+
+@media (max-width: 768px) {
+
+    .training-hero {
+        padding: 75px 0 60px;
+    }
+
+    .training-hero-content h1 {
+        font-size: clamp(2.7rem, 11vw, 4.2rem);
+    }
+
+    .training-hero-visual {
+        min-height: 390px;
+    }
+
+    .training-orbit {
+        width: 330px;
+        height: 330px;
+    }
+
+    .ring-one {
+        width: 330px;
+        height: 330px;
+    }
+
+    .ring-two {
+        width: 250px;
+        height: 250px;
+    }
+
+    .ring-three {
+        width: 170px;
+        height: 170px;
+    }
+
+    .node-two {
+        right: -10px;
+    }
+
+    .node-four {
+        left: -10px;
+    }
+
+    .training-area-grid,
+    .training-practical-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .training-value-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .training-audience-box {
+        padding: 35px 25px;
+    }
+
+    .training-audience-list {
+        grid-template-columns: 1fr;
+    }
+
+    .training-final-cta {
+        padding: 35px 25px;
+    }
+
+}
+
+
+@media (max-width: 520px) {
+
+    .training-hero-visual {
+        min-height: 330px;
+    }
+
+    .training-orbit {
+        width: 270px;
+        height: 270px;
+    }
+
+    .ring-one {
+        width: 270px;
+        height: 270px;
+    }
+
+    .ring-two {
+        width: 205px;
+        height: 205px;
+    }
+
+    .ring-three {
+        width: 140px;
+        height: 140px;
+    }
+
+    .training-center {
+        width: 115px;
+        height: 115px;
+    }
+
+    .training-center img {
+        width: 38px;
+        height: 38px;
+    }
+
+    .training-center span {
+        font-size: 0.45rem;
+    }
+
+    .training-node {
+        padding: 7px 10px;
+        font-size: 0.52rem;
+    }
+
+    .node-two {
+        right: -18px;
+    }
+
+    .node-four {
+        left: -18px;
+    }
+
+    .training-timeline-item {
+        grid-template-columns: 45px 1fr;
+        gap: 15px;
+        padding: 18px;
+    }
+
+}
+
+/* =========================================================
+   PROGRAMS RESPONSIVE
+========================================================= */
+
+@media (max-width: 1100px) {
+
+    .program-category-strip {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .program-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .program-approach-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .program-choice-box {
+        grid-template-columns: 1fr;
+        gap: 35px;
+    }
+
+    .programs-cta-box {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+}
+
+
+@media (max-width: 768px) {
+
+    .programs-hero {
+        padding: 75px 0 60px;
+    }
+
+    .programs-hero-content h1 {
+        font-size: clamp(2.7rem, 11vw, 4.2rem);
+    }
+
+    .program-category-strip {
+        grid-template-columns: 1fr;
+    }
+
+    .program-card {
+        padding: 25px;
+    }
+
+    .program-meta {
+        grid-template-columns: 1fr;
+    }
+
+    .program-meta > div {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+    }
+
+    .program-meta span {
+        margin: 0;
+    }
+
+    .program-approach-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .program-choice-box {
+        padding: 35px 25px;
+    }
+
+    .programs-cta-box {
+        padding: 35px 25px;
+    }
+
+}
+
+
+@media (max-width: 520px) {
+
+    .program-card-top {
+        align-items: flex-start;
+    }
+
+    .program-badge {
+        max-width: 75%;
+        line-height: 1.4;
+    }
+
+    .program-summary {
+        min-height: auto;
+    }
+
+    .program-section {
+        margin-top: 16px;
+        padding-top: 16px;
+    }
+
+}
+
+/* =========================================================
+   PROJECTS RESPONSIVE
+========================================================= */
+
+@media (max-width: 1100px) {
+
+    .projects-hero-grid {
+        grid-template-columns: 1fr;
+        gap: 45px;
+    }
+
+    .projects-hero-content {
+        text-align: center;
+    }
+
+    .projects-hero-content .hero-description {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .projects-hero-content .hero-actions {
+        justify-content: center;
+    }
+
+    .project-value-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .project-building-grid {
+        grid-template-columns: 1fr;
+        gap: 45px;
+    }
+
+    .project-career-box {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+
+    .projects-cta-box {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+}
+
+
+@media (max-width: 850px) {
+
+    .practice-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .project-workflow {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .workflow-connector {
+        display: none;
+    }
+
+    .project-example-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .task-project-flow {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .task-flow-arrow {
+        display: none;
+    }
+
+}
+
+
+@media (max-width: 768px) {
+
+    .projects-hero {
+        padding: 75px 0 60px;
+    }
+
+    .projects-hero-content h1 {
+        font-size: clamp(2.8rem, 11vw, 4.2rem);
+    }
+
+    .project-window-body {
+        grid-template-columns: 85px 1fr;
+    }
+
+    .project-sidebar {
+        padding: 20px 10px;
+        font-size: 0.6rem;
+    }
+
+    .project-code {
+        padding: 25px 15px;
+        font-size: 0.62rem;
+        overflow-x: auto;
+    }
+
+    .project-value-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .practice-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .project-career-box {
+        padding: 35px 25px;
+    }
+
+    .project-career-points {
+        grid-template-columns: 1fr;
+    }
+
+    .projects-cta-box {
+        padding: 35px 25px;
+    }
+
+}
+
+
+@media (max-width: 560px) {
+
+    .project-window {
+        border-radius: 18px;
+    }
+
+    .project-window-body {
+        min-height: 270px;
+        grid-template-columns: 1fr;
+    }
+
+    .project-sidebar {
+        display: none;
+    }
+
+    .project-code {
+        padding: 22px 14px;
+        font-size: 0.58rem;
+    }
+
+    .project-window-footer {
+        font-size: 0.5rem;
+    }
+
+    .project-workflow {
+        grid-template-columns: 1fr;
+    }
+
+    .task-project-flow {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+/* =========================================================
+   CAREER RESPONSIVE
+========================================================= */
+
+@media (max-width: 1100px) {
+
+    .career-hero-grid {
+        grid-template-columns: 1fr;
+        gap: 50px;
+    }
+
+    .career-hero-content {
+        text-align: center;
+    }
+
+    .career-hero-content .hero-description {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .career-hero-content .hero-actions {
+        justify-content: center;
+    }
+
+    .career-foundation-grid,
+    .career-skills-grid,
+    .interview-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .career-portfolio-grid,
+    .career-resume-grid {
+        grid-template-columns: 1fr;
+        gap: 45px;
+    }
+
+    .career-cta-box {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+}
+
+
+@media (max-width: 850px) {
+
+    .career-journey-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .career-journey-card {
+        width: auto;
+    }
+
+    .career-journey-arrow {
+        display: none;
+    }
+
+}
+
+
+@media (max-width: 768px) {
+
+    .career-hero {
+        padding: 75px 0 60px;
+    }
+
+    .career-hero-content h1 {
+        font-size: clamp(2.8rem, 11vw, 4.2rem);
+    }
+
+    .career-foundation-grid,
+    .career-skills-grid,
+    .interview-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .career-profile-card {
+        padding: 24px;
+    }
+
+    .career-resume-grid {
+        gap: 35px;
+    }
+
+    .career-note {
+        padding: 30px 22px;
+    }
+
+    .career-cta-box {
+        padding: 35px 25px;
+    }
+
+}
+
+
+@media (max-width: 520px) {
+
+    .career-profile-footer {
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        gap: 12px 22px;
+    }
+
+    .career-journey-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .resume-sheet {
+        min-height: 420px;
+        padding: 24px;
+    }
+
+}
+
+/* =========================================================
+   HOW IT WORKS RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1100px) {
+
+    .process-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .feature-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .journey-highlight {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .journey-arrow {
+        display: none;
+    }
+
+}
+
+
+@media (max-width: 900px) {
+
+    .comparison-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .split-section {
+        grid-template-columns: 1fr;
+        gap: 45px;
+    }
+
+    .cta-box {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+}
+
+
+@media (max-width: 700px) {
+
+    .process-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .feature-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .info-card {
+        padding: 28px;
+    }
+
+    .learning-flow {
+        margin-top: 40px;
+    }
+
+    .learning-step {
+        gap: 17px;
+    }
+
+    .learning-step > span {
+        flex-basis: 44px;
+        width: 44px;
+        height: 44px;
+    }
+
+    .learning-line {
+        margin-left: 22px;
+    }
+
+    .journey-highlight {
+        grid-template-columns: 1fr;
+        gap: 22px;
+        padding: 25px;
+    }
+
+    .cta-box {
+        padding: 32px 25px;
+    }
+
+}
+
+
+@media (max-width: 480px) {
+
+    .process-card,
+    .feature-card {
+        padding: 25px;
+    }
+
+    .terminal-content {
+        padding: 23px;
+    }
+
+    .terminal-line {
+        font-size: 0.78rem;
+    }
+
+}
+
+
+/* =========================================================
+   CONTACT PAGE RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1050px) {
+
+    .contact-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .contact-path-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+}
+
+
+@media (max-width: 900px) {
+
+    .contact-information {
+        margin-top: 10px;
+    }
+
+}
+
+
+@media (max-width: 650px) {
+
+    .contact-path-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .contact-card {
+        padding: 27px;
+    }
+
+    .contact-info-item {
+        padding: 22px 24px;
+    }
+
+}
+
+
+/* =========================================================
+   APPLICATION PAGE RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1000px) {
+
+    .application-layout {
+        grid-template-columns: 1fr;
+        gap: 45px;
+    }
+
+    .application-info {
+        position: static;
+    }
+
+    .application-reminders {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+
+@media (max-width: 700px) {
+
+    .application-form-wrapper {
+        padding: 28px 22px;
+        border-radius: 22px;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+
+}
+
+
+@media (max-width: 480px) {
+
+    .application-form-wrapper {
+        padding: 23px 17px;
+    }
+
+    .application-point {
+        gap: 13px;
+    }
+
+    .application-point > span {
+        flex-basis: 38px;
+        width: 38px;
+        height: 38px;
+    }
+
+}
+
+
+/* =========================================================
+   ADMIN LOGIN RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 950px) {
+
+    .admin-login-page {
+        grid-template-columns: 1fr;
+    }
+
+
+    .admin-login-visual {
+        display: none;
+    }
+
+
+    .admin-login-panel {
+        min-height: 100vh;
+
+        padding: 35px 24px;
+    }
+
+
+    .admin-mobile-logo {
+        display: block;
+    }
+
+}
+
+
+@media (max-width: 500px) {
+
+    .admin-login-panel {
+        padding: 25px 17px;
+    }
+
+
+    .admin-login-card {
+        max-width: 100%;
+    }
+
+
+    .admin-login-header h2 {
+        font-size: 1.7rem;
+    }
+
+}
+
+/* =========================================================
+   ADMIN DASHBOARD RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1100px) {
+
+    .admin-stats {
+        grid-template-columns:
+            repeat(3, 1fr);
+    }
+
+}
+
+
+@media (max-width: 800px) {
+
+    .admin-header-inner {
+        padding: 0 20px;
+    }
+
+
+    .admin-brand img {
+        width: 150px;
+    }
+
+
+    .admin-user-label {
+        display: none;
+    }
+
+
+    .admin-container {
+        width: min(
+            100% - 30px,
+            1440px
+        );
+    }
+
+
+    .admin-page-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+
+    .admin-filters {
+        grid-template-columns: 1fr;
+    }
+
+
+    .admin-section-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+}
+
+
+@media (max-width: 600px) {
+
+    .admin-dashboard {
+        padding: 30px 0 50px;
+    }
+
+
+    .admin-stats {
+        grid-template-columns:
+            repeat(2, 1fr);
+
+        gap: 10px;
+    }
+
+
+    .admin-stat-card {
+        padding: 18px;
+    }
+
+
+    .admin-stat-card strong {
+        font-size: 1.6rem;
+    }
+
+
+    .admin-section-header {
+        padding: 24px 20px 20px;
+    }
+
+
+    .admin-filters {
+        padding: 0 20px 20px;
+    }
+
+
+    .admin-pagination {
+        align-items: flex-start;
+        flex-direction: column;
+
+        padding: 18px 20px;
+    }
+
+
+    .admin-dashboard-note {
+        padding: 18px;
+    }
+
+}
+
+/* =========================================================
+   NITRIXA 2030 HOME RESPONSIVE SYSTEM
+   CLEAN RESPONSIVE LAYER
+   ========================================================= */
+
+/* ---------------------------------------------------------
+   LARGE TABLET / SMALL DESKTOP
+   --------------------------------------------------------- */
+
+@media (max-width: 1200px) {
+
+    .nx-hero-container {
+        grid-template-columns:
+            minmax(0, 0.9fr)
+            minmax(500px, 1fr);
+
+        gap: 35px;
+    }
+
+    .nx-platform-card {
+        transform:
+            perspective(1200px)
+            rotateY(-2deg)
+            rotateX(1deg);
+    }
+
+    .nx-career-card {
+        padding: 55px;
+    }
+}
+
+
+/* ---------------------------------------------------------
+   TABLET / COMPACT DESKTOP
+   --------------------------------------------------------- */
+
+@media (max-width: 1100px) {
+
+    .nx-header-action {
+        display: none;
+    }
+
+    .nx-header .nav-menu {
+        gap: 14px;
+    }
+
+    .nx-header .nav-link {
+        font-size: 12px;
+    }
+
+    .nx-hero-container {
+        grid-template-columns: 1fr;
+        padding-top: 65px;
+    }
+
+    .nx-hero-content {
+        max-width: 800px;
+    }
+
+    .nx-hero-title {
+        max-width: 850px;
+    }
+
+    .nx-hero-visual {
+        min-height: 590px;
+        max-width: 760px;
+        width: 100%;
+        margin: 0 auto;
+    }
+
+    .nx-bento-card {
+        min-height: 280px;
+    }
+
+    .nx-program-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .nx-process-track {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+
+    .nx-process-connector {
+        display: none;
+    }
+
+    .nx-career-card {
+        grid-template-columns: 1fr;
+        gap: 45px;
+    }
+
+    .nx-career-visual {
+        max-width: 620px;
+    }
+}
+
+
+/* ---------------------------------------------------------
+   MOBILE NAVIGATION / TABLET
+   --------------------------------------------------------- */
+
+@media (max-width: 900px) {
+
+    .nx-header .nav-menu {
+        position: fixed;
+        top: 78px;
+        left: 15px;
+        right: 15px;
+
+        display: none;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 4px;
+
+        width: auto;
+        padding: 12px;
+
+        border: 1px solid var(--border);
+        border-radius: 18px;
+
+        background: rgba(255, 255, 255, 0.98);
+        box-shadow: 0 25px 70px rgba(11, 23, 51, 0.12);
+
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+    }
+
+    .nx-header .nav-menu.open {
+        display: flex;
+    }
+
+    .nx-header .nav-link {
+        padding: 12px 14px;
+        border-radius: 10px;
+    }
+
+    .nx-header .nav-link:hover {
+        background: rgba(37, 99, 255, 0.06);
+    }
+
+    .nx-header .menu-toggle {
+        display: flex;
+    }
+
+    .nx-statement-card {
+        grid-template-columns: 58px 1fr;
+    }
+
+    .nx-statement-card p {
+        grid-column: span 2;
+    }
+
+    .nx-career-card {
+        padding: 50px 40px;
+    }
+
+    .nx-footer-main {
+        grid-template-columns: 1.5fr 1fr 1fr;
+    }
+
+    .nx-footer-brand {
+        grid-column: span 3;
+    }
+}
+
+
+/* ---------------------------------------------------------
+   MOBILE
+   --------------------------------------------------------- */
+
+@media (max-width: 700px) {
+
+    .nx-header .brand-logo {
+        width: 155px;
+    }
+
+    .nx-hero {
+        min-height: auto;
+    }
+
+    .nx-hero-container {
+        padding-top: 55px;
+        padding-bottom: 60px;
+    }
+
+    .nx-eyebrow {
+        font-size: 8px;
+        letter-spacing: 0.08em;
+    }
+
+    .nx-hero-title {
+        font-size: clamp(2.8rem, 12vw, 4.1rem);
+        line-height: 1;
+    }
+
+    .nx-hero-description {
+        font-size: 15px;
+    }
+
+    .nx-hero-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .nx-btn {
+        width: 100%;
+    }
+
+    .nx-hero-meta {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 13px;
+    }
+
+    .nx-hero-visual {
+        min-height: 500px;
+    }
+
+    .nx-platform-card {
+        width: 100%;
+        transform: none;
+    }
+
+    .nx-platform-sidebar {
+        display: none;
+    }
+
+    .nx-platform-body {
+        grid-template-columns: 1fr;
+    }
+
+    .nx-platform-main {
+        padding: 16px;
+    }
+
+    .nx-learning-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .nx-learning-card {
+        min-height: 105px;
+    }
+
+    .nx-learning-card .nx-card-icon {
+        margin-bottom: 10px;
+    }
+
+    .nx-chip-java {
+        right: 0;
+        top: 10px;
+    }
+
+    .nx-chip-js {
+        left: 0;
+        bottom: 100px;
+    }
+
+    .nx-chip-db {
+        right: 0;
+        bottom: 20px;
+    }
+
+    .nx-mini-floating-card {
+        left: 5px;
+        bottom: 15px;
+    }
+
+    .nx-statement-card {
+        padding: 22px;
+        grid-template-columns: 50px 1fr;
+    }
+
+    .nx-statement-mark {
+        width: 48px;
+        height: 48px;
+    }
+
+    .nx-section {
+        padding: 80px 0;
+    }
+
+    .nx-section-heading {
+        margin-bottom: 38px;
+    }
+
+    .nx-heading-row {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .nx-section-heading h2 {
+        font-size: 2.45rem;
+    }
+
+    .nx-bento-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .nx-bento-card {
+        min-height: 290px;
+    }
+
+    .nx-program-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .nx-program-card {
+        min-height: 310px;
+    }
+
+    .nx-process-track {
+        grid-template-columns: 1fr;
+    }
+
+    .nx-tech-header {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .nx-career-card {
+        padding: 40px 25px;
+        border-radius: 24px;
+    }
+
+    .nx-career-content h2 {
+        font-size: 2.55rem;
+    }
+
+    .nx-career-points {
+        grid-template-columns: 1fr;
+    }
+
+    .nx-final-cta {
+        padding: 90px 0;
+    }
+
+    .nx-cta-inner h2 {
+        font-size: 2.8rem;
+    }
+
+    .nx-cta-actions {
+        flex-direction: column;
+    }
+
+    .nx-footer-main {
+        grid-template-columns: 1fr 1fr;
+        gap: 35px;
+    }
+
+    .nx-footer-brand {
+        grid-column: span 2;
+    }
+
+    .nx-footer-bottom {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+
+/* ---------------------------------------------------------
+   SMALL MOBILE
+   --------------------------------------------------------- */
+
+@media (max-width: 480px) {
+
+    .nx-header .brand-logo {
+        width: 140px;
+    }
+
+    .nx-header .navbar {
+        min-height: 70px;
+    }
+
+    .nx-header .nav-menu {
+        top: 70px;
+    }
+
+    .nx-hero-container {
+        padding-top: 42px;
+    }
+
+    .nx-eyebrow {
+        max-width: 100%;
+        flex-wrap: wrap;
+    }
+
+    .nx-hero-title {
+        font-size: 2.9rem;
+    }
+
+    .nx-hero-visual {
+        min-height: 450px;
+    }
+
+    .nx-platform-top {
+        padding: 14px;
+    }
+
+    .nx-platform-main {
+        padding: 12px;
+    }
+
+    .nx-dashboard-heading {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .nx-learning-card {
+        min-height: 96px;
+    }
+
+    .nx-development-flow {
+        padding: 11px;
+    }
+
+    .nx-code-body {
+        font-size: 8px;
+    }
+
+    .nx-floating-chip {
+        transform: scale(0.88);
+    }
+
+    .nx-mini-floating-card {
+        transform: scale(0.88);
+        transform-origin: left bottom;
+    }
+
+    .nx-statement-card {
+        grid-template-columns: 1fr;
+    }
+
+    .nx-statement-card p {
+        grid-column: auto;
+    }
+
+    .nx-bento-card {
+        padding: 24px;
+    }
+
+    .nx-career-card {
+        padding: 35px 20px;
+    }
+
+    .nx-career-content h2 {
+        font-size: 2.35rem;
+    }
+
+    .nx-profile-window {
+        padding: 18px;
+    }
+
+    .nx-footer-main {
+        grid-template-columns: 1fr;
+    }
+
+    .nx-footer-brand {
+        grid-column: auto;
+    }
+}
+
+
+/* ---------------------------------------------------------
+   REDUCED MOTION
+   --------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .nx-platform-card,
+    .nx-floating-chip,
+    .nx-mini-floating-card {
+        transform: none;
+    }
+}
+/* =========================================================
+   NITRIXA HEADER — TABLET / 960px FIX
+   Keep header horizontal until 900px
+   ========================================================= */
+
+@media (min-width: 901px) and (max-width: 1020px) {
+
+    .nx-header .navbar {
+        width: min(calc(100% - 32px), 1100px);
+
+        min-height: 78px;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: space-between;
+
+        gap: 20px;
+    }
+
+
+    /* Logo */
+
+    .nx-header .brand {
+        flex: 0 0 auto;
+    }
+
+
+    .nx-header .brand-logo {
+        max-width: 150px;
+
+        height: auto;
+
+        display: block;
+    }
+
+
+    /* Navigation */
+
+    .nx-header .nav-menu {
+        position: static;
+
+        display: flex;
+
+        flex-direction: row;
+
+        align-items: center;
+
+        justify-content: center;
+
+        flex: 1;
+
+        width: auto;
+
+        gap: 12px;
+
+        padding: 0;
+
+        margin: 0;
+
+        border: 0;
+
+        border-radius: 0;
+
+        background: transparent;
+
+        box-shadow: none;
+
+        backdrop-filter: none;
+
+        -webkit-backdrop-filter: none;
+    }
+
+
+    .nx-header .nav-link {
+        display: inline-flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        padding: 8px 4px;
+
+        font-size: 11px;
+
+        white-space: nowrap;
+    }
+
+
+    /* Contact + Apply */
+
+    .nx-header-action {
+        display: flex;
+
+        align-items: center;
+
+        justify-content: flex-end;
+
+        gap: 8px;
+
+        flex: 0 0 auto;
+    }
+
+
+    .nx-nav-contact {
+        white-space: nowrap;
+
+        font-size: 11px;
+    }
+
+
+    .nx-nav-apply {
+        white-space: nowrap;
+
+        padding: 10px 14px;
+
+        font-size: 11px;
+    }
+
+
+    /* Mobile button stays hidden */
+
+    .nx-header .menu-toggle {
+        display: none;
+    }
+}
+
+
+/* =========================================================
+   MOBILE NAVIGATION
+   Only activate below 900px
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+    .nx-header .nav-menu {
+        position: fixed;
+
+        top: 78px;
+
+        left: 15px;
+
+        right: 15px;
+
+        display: none;
+
+        flex-direction: column;
+
+        align-items: stretch;
+
+        gap: 4px;
+
+        padding: 12px;
+
+        border: 1px solid var(--border);
+
+        border-radius: 18px;
+
+        background: rgba(255, 255, 255, 0.97);
+
+        box-shadow: 0 25px 70px rgba(11, 23, 51, 0.12);
+
+        backdrop-filter: blur(20px);
+
+        -webkit-backdrop-filter: blur(20px);
+    }
+
+
+    .nx-header .nav-menu.open {
+        display: flex;
+    }
+
+
+    .nx-header .menu-toggle {
+        display: flex;
+
+        margin-left: auto;
+    }
+
+
+    .nx-header-action {
+        display: none;
+    }
+}
