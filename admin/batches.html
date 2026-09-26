@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="NITRIXA Technologies Admin Batches Management"
+    >
+
+    <title>Batches Management | NITRIXA Technologies</title>
+
+    <link
+        rel="icon"
+        type="image/png"
+        href="../assets/images/nitrixa-logo.png"
+    >
+
+    <link rel="stylesheet" href="../css/admin.css">
+    <link rel="stylesheet" href="../css/admin-responsive.css">
+
+    <style>
+        .batch-code {
+            display: inline-flex;
+            margin-top: 6px;
+            padding: 4px 7px;
+            border-radius: 6px;
+            background: #f1f4ff;
+            color: #3f55a5;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 0.04em;
+        }
+
+        .batch-date {
+            color: var(--admin-text);
+            font-size: 12px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .batch-date-end {
+            display: block;
+            margin-top: 4px;
+            color: var(--admin-text-muted);
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .capacity-value {
+            font-weight: 800;
+        }
+
+        .capacity-label {
+            margin-left: 3px;
+            color: var(--admin-text-muted);
+            font-size: 11px;
+        }
+
+        .program-filter {
+            min-width: 190px;
+        }
+    </style>
+</head>
+
+<body class="admin-page">
+
+<header class="admin-header">
+
+    <div class="admin-container admin-header-inner">
+
+        <a
+            href="dashboard.html"
+            class="admin-brand"
+            aria-label="NITRIXA Technologies Admin Dashboard"
+        >
+
+            <img
+                src="../assets/images/nitrixa-logo.png"
+                alt="NITRIXA Technologies"
+                class="admin-brand-logo"
+            >
+
+            <div class="admin-brand-content">
+
+                <p class="admin-brand-name">
+                    NITRIXA TECHNOLOGIES
+                </p>
+
+                <p class="admin-brand-label">
+                    Admin Panel
+                </p>
+
+            </div>
+
+        </a>
+
+        <div class="admin-header-actions">
+
+            <a
+                href="dashboard.html"
+                class="admin-btn admin-btn-secondary"
+            >
+                Dashboard
+            </a>
+
+            <a
+                href="programs.html"
+                class="admin-btn admin-btn-secondary"
+            >
+                Programs
+            </a>
+
+            <button
+                type="button"
+                class="admin-btn admin-btn-danger"
+                id="logoutButton"
+            >
+                Logout
+            </button>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+<main class="admin-main">
+
+    <div class="admin-container">
+
+        <!-- PAGE HEADING -->
+
+        <section class="admin-page-heading">
+
+            <div class="admin-page-heading-content">
+
+                <p class="admin-eyebrow">
+                    Administration
+                </p>
+
+                <h1 class="admin-page-title">
+                    Batches
+                </h1>
+
+                <p class="admin-page-description">
+                    Create and manage program batches, schedules,
+                    capacity and batch availability.
+                </p>
+
+            </div>
+
+            <button
+                type="button"
+                class="admin-btn admin-btn-primary"
+                id="addBatchButton"
+            >
+                + Add Batch
+            </button>
+
+        </section>
+
+
+        <!-- STATS -->
+
+        <section
+            class="admin-stats-grid"
+            aria-label="Batch statistics"
+        >
+
+            <article class="admin-stat-card">
+
+                <p class="admin-stat-label">
+                    Total Batches
+                </p>
+
+                <p
+                    class="admin-stat-value"
+                    id="totalBatches"
+                >
+                    0
+                </p>
+
+            </article>
+
+
+            <article class="admin-stat-card">
+
+                <p class="admin-stat-label">
+                    Active Batches
+                </p>
+
+                <p
+                    class="admin-stat-value"
+                    id="activeBatches"
+                >
+                    0
+                </p>
+
+            </article>
+
+
+            <article class="admin-stat-card">
+
+                <p class="admin-stat-label">
+                    Completed Batches
+                </p>
+
+                <p
+                    class="admin-stat-value"
+                    id="completedBatches"
+                >
+                    0
+                </p>
+
+            </article>
+
+        </section>
+
+
+        <!-- TOOLBAR -->
+
+        <section class="admin-toolbar">
+
+            <div class="admin-toolbar-left">
+
+                <div class="admin-search">
+
+                    <label
+                        for="batchSearch"
+                        class="admin-form-label"
+                        style="display:none;"
+                    >
+                        Search batches
+                    </label>
+
+                    <input
+                        type="search"
+                        id="batchSearch"
+                        class="admin-input"
+                        placeholder="Search batches..."
+                        autocomplete="off"
+                    >
+
+                </div>
+
+
+                <select
+                    id="programFilter"
+                    class="admin-select program-filter"
+                    aria-label="Filter batches by program"
+                >
+
+                    <option value="ALL">
+                        All Programs
+                    </option>
+
+                </select>
+
+
+                <select
+                    id="statusFilter"
+                    class="admin-select"
+                    aria-label="Filter batches by status"
+                >
+
+                    <option value="ALL">
+                        All Status
+                    </option>
+
+                    <option value="ACTIVE">
+                        Active
+                    </option>
+
+                    <option value="INACTIVE">
+                        Inactive
+                    </option>
+
+                    <option value="COMPLETED">
+                        Completed
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="admin-toolbar-right">
+
+                <button
+                    type="button"
+                    class="admin-btn admin-btn-secondary"
+                    id="refreshBatchesButton"
+                >
+                    Refresh
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- MESSAGE -->
+
+        <div
+            id="formMessage"
+            class="admin-form-message"
+            role="status"
+            aria-live="polite"
+        ></div>
+
+
+        <!-- TABLE -->
+
+        <section class="admin-table-card">
+
+            <div class="admin-table-scroll">
+
+                <table class="admin-table">
+
+                    <thead>
+
+                    <tr>
+                        <th>Batch</th>
+                        <th>Program</th>
+                        <th>Schedule</th>
+                        <th>Capacity</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+
+                    </thead>
+
+                    <tbody id="batchesTableBody">
+
+                    <tr>
+
+                        <td colspan="6">
+
+                            <div class="admin-state">
+
+                                <div class="admin-spinner"></div>
+
+                                <p class="admin-state-title">
+                                    Loading batches...
+                                </p>
+
+                                <p class="admin-state-text">
+                                    Please wait while batch data is loaded.
+                                </p>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+    </div>
+
+</main>
+
+
+<!-- =======================================================
+     BATCH MODAL
+     ======================================================= -->
+
+<div
+    class="admin-modal"
+    id="batchModal"
+    aria-hidden="true"
+>
+
+    <div
+        class="admin-modal-card"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="batchModalTitle"
+    >
+
+        <div class="admin-modal-header">
+
+            <div>
+
+                <h2
+                    class="admin-modal-title"
+                    id="batchModalTitle"
+                >
+                    Add Batch
+                </h2>
+
+                <p class="admin-modal-description">
+                    Create a new batch for an active program.
+                </p>
+
+            </div>
+
+
+            <button
+                type="button"
+                class="admin-modal-close"
+                id="closeBatchModal"
+                aria-label="Close batch form"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <form id="batchForm">
+
+            <div class="admin-modal-body">
+
+                <div
+                    id="modalFormMessage"
+                    class="admin-form-message"
+                    role="alert"
+                    aria-live="polite"
+                ></div>
+
+
+                <div class="admin-form-grid">
+
+                    <!-- PROGRAM -->
+
+                    <div class="admin-form-group full">
+
+                        <label
+                            for="batchProgram"
+                            class="admin-form-label"
+                        >
+                            Program *
+                        </label>
+
+                        <select
+                            id="batchProgram"
+                            class="admin-select"
+                            required
+                        >
+
+                            <option value="">
+                                Select Program
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- NAME -->
+
+                    <div class="admin-form-group">
+
+                        <label
+                            for="batchName"
+                            class="admin-form-label"
+                        >
+                            Batch Name *
+                        </label>
+
+                        <input
+                            type="text"
+                            id="batchName"
+                            class="admin-input"
+                            maxlength="120"
+                            placeholder="Java Development - October 2026"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- CODE -->
+
+                    <div class="admin-form-group">
+
+                        <label
+                            for="batchCode"
+                            class="admin-form-label"
+                        >
+                            Batch Code *
+                        </label>
+
+                        <input
+                            type="text"
+                            id="batchCode"
+                            class="admin-input"
+                            maxlength="50"
+                            placeholder="JAVA-OCT-26"
+                            required
+                        >
+
+                        <p class="admin-form-help">
+                            Must be unique.
+                        </p>
+
+                    </div>
+
+
+                    <!-- START -->
+
+                    <div class="admin-form-group">
+
+                        <label
+                            for="batchStartDate"
+                            class="admin-form-label"
+                        >
+                            Start Date *
+                        </label>
+
+                        <input
+                            type="date"
+                            id="batchStartDate"
+                            class="admin-input"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- END -->
+
+                    <div class="admin-form-group">
+
+                        <label
+                            for="batchEndDate"
+                            class="admin-form-label"
+                        >
+                            End Date *
+                        </label>
+
+                        <input
+                            type="date"
+                            id="batchEndDate"
+                            class="admin-input"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- CAPACITY -->
+
+                    <div class="admin-form-group">
+
+                        <label
+                            for="batchCapacity"
+                            class="admin-form-label"
+                        >
+                            Capacity *
+                        </label>
+
+                        <input
+                            type="number"
+                            id="batchCapacity"
+                            class="admin-input"
+                            min="1"
+                            max="10000"
+                            step="1"
+                            value="30"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- STATUS -->
+
+                    <div class="admin-form-group">
+
+                        <label
+                            for="batchStatus"
+                            class="admin-form-label"
+                        >
+                            Status *
+                        </label>
+
+                        <select
+                            id="batchStatus"
+                            class="admin-select"
+                            required
+                        >
+
+                            <option value="ACTIVE">
+                                Active
+                            </option>
+
+                            <option value="INACTIVE">
+                                Inactive
+                            </option>
+
+                            <option value="COMPLETED">
+                                Completed
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- DESCRIPTION -->
+
+                    <div class="admin-form-group full">
+
+                        <label
+                            for="batchDescription"
+                            class="admin-form-label"
+                        >
+                            Description
+                        </label>
+
+                        <textarea
+                            id="batchDescription"
+                            class="admin-input admin-textarea"
+                            maxlength="500"
+                            placeholder="Optional batch information"
+                        ></textarea>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="admin-modal-footer">
+
+                <button
+                    type="button"
+                    class="admin-btn admin-btn-secondary"
+                    id="cancelBatchButton"
+                >
+                    Cancel
+                </button>
+
+                <button
+                    type="submit"
+                    class="admin-btn admin-btn-primary"
+                    id="saveBatchButton"
+                >
+                    Save Batch
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<div
+    id="adminToast"
+    class="admin-toast"
+    role="status"
+    aria-live="polite"
+></div>
+
+
+<script
+    src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+></script>
+
+<script src="../js/supabase.js"></script>
+
+<script
+    src="../js/admin-batches.js"
+    defer
+></script>
+
+</body>
+</html>
