@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="NITRIXA Technologies Admin Programs Management"
+    >
+
+    <title>Programs Management | NITRIXA Technologies</title>
+
+    <link
+        rel="icon"
+        type="image/png"
+        href="../assets/images/nitrixa-logo.png"
+    >
+
+    <link rel="stylesheet" href="../css/admin.css">
+    <link rel="stylesheet" href="../css/admin-responsive.css">
+</head>
+
+<body class="admin-page">
+
+<header class="admin-header">
+    <div class="admin-container admin-header-inner">
+
+        <a
+            href="dashboard.html"
+            class="admin-brand"
+            aria-label="NITRIXA Technologies Admin Dashboard"
+        >
+            <img
+                src="../assets/images/nitrixa-logo.png"
+                alt="NITRIXA Technologies"
+                class="admin-brand-logo"
+            >
+
+            <div class="admin-brand-content">
+                <p class="admin-brand-name">
+                    NITRIXA TECHNOLOGIES
+                </p>
+
+                <p class="admin-brand-label">
+                    Admin Panel
+                </p>
+            </div>
+        </a>
+
+        <div class="admin-header-actions">
+
+            <a
+                href="dashboard.html"
+                class="admin-btn admin-btn-secondary"
+            >
+                Dashboard
+            </a>
+
+            <button
+                type="button"
+                class="admin-btn admin-btn-danger"
+                id="logoutButton"
+            >
+                Logout
+            </button>
+
+        </div>
+
+    </div>
+</header>
+
+
+<main class="admin-main">
+
+    <div class="admin-container">
+
+        <!-- PAGE HEADING -->
+        <section class="admin-page-heading">
+
+            <div class="admin-page-heading-content">
+
+                <p class="admin-eyebrow">
+                    Administration
+                </p>
+
+                <h1 class="admin-page-title">
+                    Programs
+                </h1>
+
+                <p class="admin-page-description">
+                    Manage NITRIXA Technologies training and internship
+                    programs, including program details, fees and availability.
+                </p>
+
+            </div>
+
+            <button
+                type="button"
+                class="admin-btn admin-btn-primary"
+                id="addProgramButton"
+            >
+                + Add Program
+            </button>
+
+        </section>
+
+
+        <!-- STATS -->
+        <section
+            class="admin-stats-grid"
+            aria-label="Program statistics"
+        >
+
+            <article class="admin-stat-card">
+
+                <p class="admin-stat-label">
+                    Total Programs
+                </p>
+
+                <p
+                    class="admin-stat-value"
+                    id="totalPrograms"
+                >
+                    0
+                </p>
+
+            </article>
+
+
+            <article class="admin-stat-card">
+
+                <p class="admin-stat-label">
+                    Active Programs
+                </p>
+
+                <p
+                    class="admin-stat-value"
+                    id="activePrograms"
+                >
+                    0
+                </p>
+
+            </article>
+
+
+            <article class="admin-stat-card">
+
+                <p class="admin-stat-label">
+                    Inactive Programs
+                </p>
+
+                <p
+                    class="admin-stat-value"
+                    id="inactivePrograms"
+                >
+                    0
+                </p>
+
+            </article>
+
+        </section>
+
+
+        <!-- TOOLBAR -->
+        <section class="admin-toolbar">
+
+            <div class="admin-toolbar-left">
+
+                <div class="admin-search">
+
+                    <label
+                        for="programSearch"
+                        class="admin-form-label"
+                        style="display:none;"
+                    >
+                        Search programs
+                    </label>
+
+                    <input
+                        type="search"
+                        id="programSearch"
+                        class="admin-input"
+                        placeholder="Search programs..."
+                        autocomplete="off"
+                    >
+
+                </div>
+
+                <select
+                    id="statusFilter"
+                    class="admin-select"
+                    aria-label="Filter programs by status"
+                >
+                    <option value="ALL">
+                        All Status
+                    </option>
+
+                    <option value="ACTIVE">
+                        Active
+                    </option>
+
+                    <option value="INACTIVE">
+                        Inactive
+                    </option>
+                </select>
+
+            </div>
+
+
+            <div class="admin-toolbar-right">
+
+                <button
+                    type="button"
+                    class="admin-btn admin-btn-secondary"
+                    id="refreshProgramsButton"
+                >
+                    Refresh
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- FORM MESSAGE -->
+        <div
+            id="formMessage"
+            class="admin-form-message"
+            role="status"
+            aria-live="polite"
+        ></div>
+
+
+        <!-- TABLE -->
+        <section class="admin-table-card">
+
+            <div class="admin-table-scroll">
+
+                <table class="admin-table">
+
+                    <thead>
+
+                    <tr>
+                        <th>Program</th>
+                        <th>Category</th>
+                        <th>Level</th>
+                        <th>Type</th>
+                        <th>Duration</th>
+                        <th>Fee</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+
+                    </thead>
+
+                    <tbody id="programsTableBody">
+
+                    <tr>
+                        <td colspan="8">
+
+                            <div class="admin-state">
+
+                                <div class="admin-spinner"></div>
+
+                                <p class="admin-state-title">
+                                    Loading programs...
+                                </p>
+
+                                <p class="admin-state-text">
+                                    Please wait while the program data is loaded.
+                                </p>
+
+                            </div>
+
+                        </td>
+                    </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+    </div>
+
+</main>
+
+
+<!-- =======================================================
+     PROGRAM MODAL
+     ======================================================= -->
+
+<div
+    class="admin-modal"
+    id="programModal"
+    aria-hidden="true"
+>
+
+    <div
+        class="admin-modal-card"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="programModalTitle"
+    >
+
+        <div class="admin-modal-header">
+
+            <div>
+
+                <h2
+                    class="admin-modal-title"
+                    id="programModalTitle"
+                >
+                    Add Program
+                </h2>
+
+                <p class="admin-modal-description">
+                    Enter the program information below.
+                </p>
+
+            </div>
+
+            <button
+                type="button"
+                class="admin-modal-close"
+                id="closeProgramModal"
+                aria-label="Close program form"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <form id="programForm">
+
+            <div class="admin-modal-body">
+
+                <div
+                    id="modalFormMessage"
+                    class="admin-form-message"
+                    role="alert"
+                    aria-live="polite"
+                ></div>
+
+
+                <div class="admin-form-grid">
+
+                    <!-- NAME -->
+                    <div class="admin-form-group full">
+
+                        <label
+                            for="programName"
+                            class="admin-form-label"
+                        >
+                            Program Name *
+                        </label>
+
+                        <input
+                            type="text"
+                            id="programName"
+                            class="admin-input"
+                            maxlength="120"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- CATEGORY -->
+                    <div class="admin-form-group">
+
+                        <label
+                            for="programCategory"
+                            class="admin-form-label"
+                        >
+                            Category *
+                        </label>
+
+                        <input
+                            type="text"
+                            id="programCategory"
+                            class="admin-input"
+                            maxlength="80"
+                            placeholder="e.g. Development"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- LEVEL -->
+                    <div class="admin-form-group">
+
+                        <label
+                            for="programLevel"
+                            class="admin-form-label"
+                        >
+                            Level *
+                        </label>
+
+                        <select
+                            id="programLevel"
+                            class="admin-select"
+                            required
+                        >
+
+                            <option value="BEGINNER">
+                                Beginner
+                            </option>
+
+                            <option value="BEGINNER_TO_INTERMEDIATE">
+                                Beginner → Intermediate
+                            </option>
+
+                            <option value="INTERMEDIATE">
+                                Intermediate
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- TYPE -->
+                    <div class="admin-form-group">
+
+                        <label
+                            for="programType"
+                            class="admin-form-label"
+                        >
+                            Program Type *
+                        </label>
+
+                        <select
+                            id="programType"
+                            class="admin-select"
+                            required
+                        >
+
+                            <option value="TRAINING">
+                                Training
+                            </option>
+
+                            <option value="INTERNSHIP">
+                                Internship
+                            </option>
+
+                            <option value="TRAINING_AND_INTERNSHIP">
+                                Training + Internship
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- DURATION -->
+                    <div class="admin-form-group">
+
+                        <label
+                            for="programDuration"
+                            class="admin-form-label"
+                        >
+                            Duration
+                        </label>
+
+                        <input
+                            type="text"
+                            id="programDuration"
+                            class="admin-input"
+                            maxlength="50"
+                            placeholder="e.g. 8 Weeks"
+                        >
+
+                    </div>
+
+
+                    <!-- FEE -->
+                    <div class="admin-form-group">
+
+                        <label
+                            for="programFee"
+                            class="admin-form-label"
+                        >
+                            Fee (INR)
+                        </label>
+
+                        <input
+                            type="number"
+                            id="programFee"
+                            class="admin-input"
+                            min="0"
+                            step="1"
+                            value="0"
+                        >
+
+                    </div>
+
+
+                    <!-- TECHNOLOGIES -->
+                    <div class="admin-form-group full">
+
+                        <label
+                            for="programTechnologies"
+                            class="admin-form-label"
+                        >
+                            Technologies
+                        </label>
+
+                        <input
+                            type="text"
+                            id="programTechnologies"
+                            class="admin-input"
+                            placeholder="Java, OOP, Programming, Git"
+                        >
+
+                        <p class="admin-form-help">
+                            Separate technologies with commas.
+                        </p>
+
+                    </div>
+
+
+                    <!-- DESCRIPTION -->
+                    <div class="admin-form-group full">
+
+                        <label
+                            for="programDescription"
+                            class="admin-form-label"
+                        >
+                            Description
+                        </label>
+
+                        <textarea
+                            id="programDescription"
+                            class="admin-input admin-textarea"
+                            maxlength="500"
+                            placeholder="Short description of the program"
+                        ></textarea>
+
+                    </div>
+
+
+                    <!-- STATUS -->
+                    <div class="admin-form-group full">
+
+                        <label class="admin-checkbox">
+
+                            <input
+                                type="checkbox"
+                                id="programActive"
+                                checked
+                            >
+
+                            Program is active
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="admin-modal-footer">
+
+                <button
+                    type="button"
+                    class="admin-btn admin-btn-secondary"
+                    id="cancelProgramButton"
+                >
+                    Cancel
+                </button>
+
+                <button
+                    type="submit"
+                    class="admin-btn admin-btn-primary"
+                    id="saveProgramButton"
+                >
+                    Save Program
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<div
+    id="adminToast"
+    class="admin-toast"
+    role="status"
+    aria-live="polite"
+></div>
+
+
+<!-- =======================================================
+     SCRIPTS
+     ======================================================= -->
+
+<script
+    src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+></script>
+
+<script src="../js/supabase.js"></script>
+
+<script
+    src="../js/admin-programs.js"
+    defer
+></script>
+
+</body>
+</html>

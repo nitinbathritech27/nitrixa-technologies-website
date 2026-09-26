@@ -1,0 +1,129 @@
+/* =========================================================
+   NITRIXA TECHNOLOGIES
+   ADMIN PANEL — RESPONSIVE STYLES
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+    .admin-container {
+        width: min(100% - 30px, 1400px);
+    }
+
+    .admin-page-heading {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .admin-page-heading .admin-btn {
+        width: 100%;
+    }
+
+    .admin-stats-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .admin-toolbar {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .admin-toolbar-left,
+    .admin-toolbar-right {
+        width: 100%;
+    }
+
+    .admin-search {
+        width: 100%;
+    }
+
+    .admin-toolbar-right .admin-btn {
+        flex: 1;
+    }
+}
+
+@media (max-width: 640px) {
+
+    .admin-container {
+        width: min(100% - 24px, 1400px);
+    }
+
+    .admin-header-inner {
+        min-height: 68px;
+    }
+
+    .admin-brand-logo {
+        width: 36px;
+        height: 36px;
+    }
+
+    .admin-brand-name {
+        font-size: 13px;
+    }
+
+    .admin-brand-label {
+        font-size: 9px;
+    }
+
+    .admin-header-actions {
+        gap: 6px;
+    }
+
+    .admin-header-actions .admin-btn {
+        min-height: 36px;
+        padding: 7px 10px;
+        font-size: 11px;
+    }
+
+    .admin-main {
+        padding: 25px 0 45px;
+    }
+
+    .admin-stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-stat-card {
+        padding: 17px;
+    }
+
+    .admin-stat-value {
+        font-size: 24px;
+    }
+
+    .admin-form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-form-group.full {
+        grid-column: auto;
+    }
+
+    .admin-modal {
+        padding: 12px;
+    }
+
+    .admin-modal-card {
+        max-height: calc(100vh - 24px);
+    }
+
+    .admin-modal-header,
+    .admin-modal-body,
+    .admin-modal-footer {
+        padding: 18px;
+    }
+
+    .admin-modal-footer {
+        flex-direction: column-reverse;
+    }
+
+    .admin-modal-footer .admin-btn {
+        width: 100%;
+    }
+
+    .admin-toast {
+        left: 12px;
+        right: 12px;
+        bottom: 12px;
+        max-width: none;
+    }
+}
