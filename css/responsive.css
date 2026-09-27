@@ -1979,3 +1979,1046 @@
         display: none;
     }
 }
+
+/* =========================================================
+   NITRIXA TECHNOLOGIES
+   UNIVERSAL RESPONSIVE HEADER SYSTEM
+   0px → LARGE DESKTOP
+   ========================================================= */
+
+
+/* =========================================================
+   GLOBAL RESPONSIVE SAFETY
+   ========================================================= */
+
+html,
+body {
+
+    width:
+        100%;
+
+    max-width:
+        100%;
+
+    overflow-x:
+        hidden;
+}
+
+
+*,
+*::before,
+*::after {
+
+    box-sizing:
+        border-box;
+}
+
+
+/* =========================================================
+   LARGE DESKTOP
+   1201px+
+   ========================================================= */
+
+@media (min-width: 1201px) {
+
+    .site-header .navbar {
+
+        min-height:
+            82px;
+
+        display:
+            flex;
+
+        align-items:
+            center;
+
+        justify-content:
+            space-between;
+    }
+
+
+    .site-header .nav-menu {
+
+        position:
+            static;
+
+        display:
+            flex;
+
+        flex-direction:
+            row;
+
+        align-items:
+            center;
+
+        justify-content:
+            flex-end;
+
+        gap:
+            clamp(
+                18px,
+                1.8vw,
+                30px
+            );
+
+        width:
+            auto;
+
+        max-width:
+            none;
+
+        max-height:
+            none;
+
+        overflow:
+            visible;
+
+        padding:
+            0;
+
+        border:
+            0;
+
+        border-radius:
+            0;
+
+        background:
+            transparent;
+
+        box-shadow:
+            none;
+
+        backdrop-filter:
+            none;
+
+        -webkit-backdrop-filter:
+            none;
+    }
+
+
+    .site-header .nav-link {
+
+        display:
+            inline-flex;
+
+        align-items:
+            center;
+
+        justify-content:
+            center;
+
+        white-space:
+            nowrap;
+
+        flex:
+            0 0 auto;
+    }
+
+
+    .site-header .nav-cta {
+
+        flex:
+            0 0 auto;
+
+        white-space:
+            nowrap;
+    }
+
+
+    .site-header .menu-toggle {
+
+        display:
+            none;
+    }
+
+}
+
+
+/* =========================================================
+   DESKTOP / SMALL DESKTOP
+   901px → 1200px
+   ========================================================= */
+
+@media (min-width: 901px) and (max-width: 1200px) {
+
+    .site-header .navbar {
+
+        min-height:
+            76px;
+
+        gap:
+            18px;
+    }
+
+
+    .site-header .nav-menu {
+
+        position:
+            static;
+
+        display:
+            flex;
+
+        flex-direction:
+            row;
+
+        align-items:
+            center;
+
+        justify-content:
+            flex-end;
+
+        gap:
+            clamp(
+                12px,
+                1.5vw,
+                22px
+            );
+
+        width:
+            auto;
+
+        max-width:
+            none;
+
+        max-height:
+            none;
+
+        overflow:
+            visible;
+
+        padding:
+            0;
+
+        border:
+            0;
+
+        border-radius:
+            0;
+
+        background:
+            transparent;
+
+        box-shadow:
+            none;
+
+        backdrop-filter:
+            none;
+
+        -webkit-backdrop-filter:
+            none;
+    }
+
+
+    .site-header .nav-link {
+
+        font-size:
+            clamp(
+                .78rem,
+                1vw,
+                .9rem
+            );
+
+        white-space:
+            nowrap;
+    }
+
+
+    .site-header .nav-cta {
+
+        min-height:
+            42px;
+
+        padding-inline:
+            16px;
+
+        font-size:
+            .8rem;
+
+        white-space:
+            nowrap;
+    }
+
+
+    .site-header .menu-toggle {
+
+        display:
+            none;
+    }
+
+}
+
+
+/* =========================================================
+   TABLET + MOBILE
+   0px → 900px
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+    .site-header {
+
+        width:
+            100%;
+
+        max-width:
+            100%;
+    }
+
+
+    .site-header .navbar {
+
+        position:
+            relative;
+
+        min-height:
+            clamp(
+                64px,
+                10vw,
+                78px
+            );
+
+        width:
+            100%;
+
+        max-width:
+            100%;
+
+        display:
+            flex;
+
+        align-items:
+            center;
+
+        justify-content:
+            space-between;
+
+        gap:
+            12px;
+    }
+
+
+    /* -----------------------------------------------------
+       LOGO
+       ----------------------------------------------------- */
+
+    .site-header .brand {
+
+        min-width:
+            0;
+
+        max-width:
+            calc(
+                100% - 64px
+            );
+
+        flex:
+            1 1 auto;
+
+        overflow:
+            hidden;
+    }
+
+
+    .site-header .brand img {
+
+        display:
+            block;
+
+        width:
+            auto;
+
+        height:
+            auto;
+
+        max-width:
+            100%;
+
+        max-height:
+            52px;
+
+        object-fit:
+            contain;
+    }
+
+
+    /* -----------------------------------------------------
+       HAMBURGER
+       ----------------------------------------------------- */
+
+    .site-header .menu-toggle {
+
+        position:
+            relative;
+
+        z-index:
+            1101;
+
+        display:
+            grid;
+
+        place-items:
+            center;
+
+        flex:
+            0 0 auto;
+
+        width:
+            clamp(
+                44px,
+                11vw,
+                52px
+            );
+
+        height:
+            clamp(
+                44px,
+                11vw,
+                52px
+            );
+
+        margin:
+            0;
+
+        padding:
+            0;
+
+        border:
+            1px solid
+            var(--border);
+
+        border-radius:
+            clamp(
+                10px,
+                2vw,
+                14px
+            );
+
+        background:
+            rgba(
+                255,
+                255,
+                255,
+                .96
+            );
+
+        box-shadow:
+            0 8px 24px
+            rgba(
+                15,
+                23,
+                42,
+                .06
+            );
+
+        cursor:
+            pointer;
+    }
+
+
+    .site-header .menu-toggle span {
+
+        position:
+            absolute;
+
+        left:
+            50%;
+
+        width:
+            clamp(
+                19px,
+                5vw,
+                23px
+            );
+
+        height:
+            2px;
+
+        margin:
+            0;
+
+        border-radius:
+            999px;
+
+        background:
+            var(--navy);
+
+        transform:
+            translateX(-50%);
+    }
+
+
+    .site-header .menu-toggle span:nth-child(1) {
+
+        transform:
+            translate(
+                -50%,
+                -7px
+            );
+    }
+
+
+    .site-header .menu-toggle span:nth-child(2) {
+
+        transform:
+            translate(
+                -50%,
+                0
+            );
+    }
+
+
+    .site-header .menu-toggle span:nth-child(3) {
+
+        transform:
+            translate(
+                -50%,
+                7px
+            );
+    }
+
+
+    /* -----------------------------------------------------
+       MOBILE NAVIGATION
+       ----------------------------------------------------- */
+
+    .site-header .nav-menu {
+
+        position:
+            fixed;
+
+        top:
+            var(
+                --mobile-header-height,
+                78px
+            );
+
+        left:
+            clamp(
+                8px,
+                3vw,
+                20px
+            );
+
+        right:
+            clamp(
+                8px,
+                3vw,
+                20px
+            );
+
+        z-index:
+            1100;
+
+        display:
+            none;
+
+        flex-direction:
+            column;
+
+        align-items:
+            stretch;
+
+        justify-content:
+            flex-start;
+
+        gap:
+            4px;
+
+        width:
+            auto;
+
+        max-width:
+            none;
+
+        max-height:
+            calc(
+                100dvh -
+                var(
+                    --mobile-header-height,
+                    78px
+                ) -
+                16px
+            );
+
+        padding:
+            clamp(
+                8px,
+                2.5vw,
+                14px
+            );
+
+        overflow-x:
+            hidden;
+
+        overflow-y:
+            auto;
+
+        overscroll-behavior:
+            contain;
+
+        -webkit-overflow-scrolling:
+            touch;
+
+        border:
+            1px solid
+            rgba(
+                226,
+                232,
+                240,
+                .95
+            );
+
+        border-radius:
+            clamp(
+                14px,
+                3vw,
+                20px
+            );
+
+        background:
+            rgba(
+                255,
+                255,
+                255,
+                .98
+            );
+
+        box-shadow:
+            0 20px 60px
+            rgba(
+                15,
+                23,
+                42,
+                .14
+            );
+
+        backdrop-filter:
+            blur(18px);
+
+        -webkit-backdrop-filter:
+            blur(18px);
+
+        visibility:
+            hidden;
+
+        opacity:
+            0;
+
+        pointer-events:
+            none;
+
+        transform:
+            translateY(
+                -8px
+            );
+
+        transition:
+            opacity .2s ease,
+            transform .2s ease,
+            visibility .2s ease;
+    }
+
+
+    /* -----------------------------------------------------
+       OPEN STATE
+       ----------------------------------------------------- */
+
+    .site-header .nav-menu.open {
+
+        display:
+            flex;
+
+        visibility:
+            visible;
+
+        opacity:
+            1;
+
+        pointer-events:
+            auto;
+
+        transform:
+            translateY(0);
+    }
+
+
+    /* -----------------------------------------------------
+       MOBILE NAV LINKS
+       ----------------------------------------------------- */
+
+    .site-header .nav-menu .nav-link {
+
+        display:
+            flex;
+
+        align-items:
+            center;
+
+        justify-content:
+            flex-start;
+
+        width:
+            100%;
+
+        min-height:
+            44px;
+
+        padding:
+            11px 14px;
+
+        border-radius:
+            10px;
+
+        font-size:
+            clamp(
+                .88rem,
+                3.5vw,
+                .98rem
+            );
+
+        line-height:
+            1.3;
+
+        white-space:
+            normal;
+    }
+
+
+    .site-header .nav-menu .nav-link::after {
+
+        display:
+            none;
+    }
+
+
+    .site-header .nav-menu .nav-link:hover,
+    .site-header .nav-menu .nav-link.active {
+
+        background:
+            rgba(
+                37,
+                99,
+                235,
+                .06
+            );
+    }
+
+
+    /* -----------------------------------------------------
+       APPLY BUTTON
+       ----------------------------------------------------- */
+
+    .site-header .nav-menu .nav-cta {
+
+        display:
+            flex;
+
+        align-items:
+            center;
+
+        justify-content:
+            center;
+
+        width:
+            100%;
+
+        min-height:
+            46px;
+
+        margin-top:
+            4px;
+
+        padding:
+            11px 16px;
+
+        border-radius:
+            12px;
+
+        font-size:
+            .9rem;
+
+        white-space:
+            nowrap;
+    }
+
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+   0px → 480px
+   ========================================================= */
+
+@media (max-width: 480px) {
+
+    .site-header {
+
+        --mobile-header-height:
+            68px;
+    }
+
+
+    .site-header .navbar {
+
+        min-height:
+            68px;
+
+        gap:
+            8px;
+    }
+
+
+    .site-header .brand {
+
+        max-width:
+            calc(
+                100% - 56px
+            );
+    }
+
+
+    .site-header .brand img {
+
+        max-height:
+            44px;
+    }
+
+
+    .site-header .menu-toggle {
+
+        width:
+            44px;
+
+        height:
+            44px;
+    }
+
+
+    .site-header .nav-menu {
+
+        top:
+            var(
+                --mobile-header-height
+            );
+
+        left:
+            8px;
+
+        right:
+            8px;
+
+        max-height:
+            calc(
+                100dvh -
+                var(
+                    --mobile-header-height
+                ) -
+                12px
+            );
+    }
+
+}
+
+
+/* =========================================================
+   VERY SMALL SCREENS
+   0px → 360px
+   ========================================================= */
+
+@media (max-width: 360px) {
+
+    .site-header {
+
+        --mobile-header-height:
+            62px;
+    }
+
+
+    .site-header .navbar {
+
+        min-height:
+            62px;
+    }
+
+
+    .site-header .brand img {
+
+        max-height:
+            38px;
+    }
+
+
+    .site-header .menu-toggle {
+
+        width:
+            42px;
+
+        height:
+            42px;
+    }
+
+
+    .site-header .nav-menu {
+
+        top:
+            var(
+                --mobile-header-height
+            );
+
+        left:
+            6px;
+
+        right:
+            6px;
+
+        padding:
+            8px;
+
+        gap:
+            2px;
+
+        border-radius:
+            12px;
+
+        max-height:
+            calc(
+                100dvh -
+                var(
+                    --mobile-header-height
+                ) -
+                10px
+            );
+    }
+
+
+    .site-header .nav-menu .nav-link {
+
+        min-height:
+            40px;
+
+        padding:
+            9px 11px;
+
+        font-size:
+            .84rem;
+    }
+
+
+    .site-header .nav-menu .nav-cta {
+
+        min-height:
+            42px;
+
+        font-size:
+            .84rem;
+    }
+
+}
+
+
+/* =========================================================
+   VERY SHORT VIEWPORT / LANDSCAPE MOBILE
+   ========================================================= */
+
+@media (max-width: 900px) and (max-height: 520px) {
+
+    .site-header .nav-menu {
+
+        max-height:
+            calc(
+                100dvh -
+                var(
+                    --mobile-header-height,
+                    68px
+                ) -
+                8px
+            );
+
+        padding:
+            7px;
+
+        gap:
+            2px;
+    }
+
+
+    .site-header .nav-menu .nav-link {
+
+        min-height:
+            36px;
+
+        padding:
+            7px 10px;
+    }
+
+
+    .site-header .nav-menu .nav-cta {
+
+        min-height:
+            38px;
+
+        padding:
+            8px 12px;
+    }
+
+}
+
+
+/* =========================================================
+   ULTRA NARROW VIEWPORT SAFETY
+   ========================================================= */
+
+@media (max-width: 220px) {
+
+    .site-header .navbar {
+
+        gap:
+            4px;
+    }
+
+
+    .site-header .brand img {
+
+        max-width:
+            calc(
+                100vw - 52px
+            );
+    }
+
+
+    .site-header .menu-toggle {
+
+        width:
+            40px;
+
+        height:
+            40px;
+    }
+
+
+    .site-header .nav-menu {
+
+        left:
+            4px;
+
+        right:
+            4px;
+    }
+
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .site-header .nav-menu {
+
+        transition:
+            none;
+    }
+
+}
