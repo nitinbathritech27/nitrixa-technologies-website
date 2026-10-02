@@ -1,256 +1,343 @@
 /* =========================================================
    NITRIXA TECHNOLOGIES
-   ADMIN PROGRAMS MANAGEMENT
+   ADMIN PROGRAM MANAGEMENT
+   VERSION 3
    ========================================================= */
 
-document.addEventListener("DOMContentLoaded", async () => {
+(function () {
 
     "use strict";
 
-    /* =====================================================
-       ELEMENTS
-       ===================================================== */
+    console.log(
+        "NITRIXA ADMIN PROGRAMS: JavaScript loaded."
+    );
 
-    const programsTableBody =
-        document.getElementById("programsTableBody");
-
-    const totalPrograms =
-        document.getElementById("totalPrograms");
-
-    const activePrograms =
-        document.getElementById("activePrograms");
-
-    const inactivePrograms =
-        document.getElementById("inactivePrograms");
-
-    const programSearch =
-        document.getElementById("programSearch");
-
-    const statusFilter =
-        document.getElementById("statusFilter");
-
-    const refreshProgramsButton =
-        document.getElementById("refreshProgramsButton");
-
-    const addProgramButton =
-        document.getElementById("addProgramButton");
-
-    const logoutButton =
-        document.getElementById("logoutButton");
-
-    const programModal =
-        document.getElementById("programModal");
-
-    const closeProgramModal =
-        document.getElementById("closeProgramModal");
-
-    const cancelProgramButton =
-        document.getElementById("cancelProgramButton");
-
-    const programForm =
-        document.getElementById("programForm");
-
-    const programModalTitle =
-        document.getElementById("programModalTitle");
-
-    const saveProgramButton =
-        document.getElementById("saveProgramButton");
-
-    const formMessage =
-        document.getElementById("formMessage");
-
-    const modalFormMessage =
-        document.getElementById("modalFormMessage");
-
-    const adminToast =
-        document.getElementById("adminToast");
-
-
-    /* =====================================================
-       FORM ELEMENTS
-       ===================================================== */
-
-    const programName =
-        document.getElementById("programName");
-
-    const programCategory =
-        document.getElementById("programCategory");
-
-    const programLevel =
-        document.getElementById("programLevel");
-
-    const programType =
-        document.getElementById("programType");
-
-    const programDuration =
-        document.getElementById("programDuration");
-
-    const programFee =
-        document.getElementById("programFee");
-
-    const programTechnologies =
-        document.getElementById("programTechnologies");
-
-    const programDescription =
-        document.getElementById("programDescription");
-
-    const programActive =
-        document.getElementById("programActive");
-
-
-    /* =====================================================
-       STATE
-       ===================================================== */
 
     let programs = [];
-
     let editingProgramId = null;
 
 
     /* =====================================================
-       SUPABASE CHECK
-       ===================================================== */
-
-    if (!window.supabase || !supabaseClient) {
-
-        showPageMessage(
-            "Supabase could not be initialized. Please check the Supabase configuration.",
-            "error"
-        );
-
-        return;
-    }
-
-
-    /* =====================================================
-       INITIAL AUTHORIZATION
-       ===================================================== */
-
-    const authorized =
-        await checkAdminAccess();
-
-    if (!authorized) {
-        return;
-    }
-
-
-    /* =====================================================
-       INITIAL LOAD
-       ===================================================== */
-
-    await loadPrograms();
-
-
-    /* =====================================================
-       EVENT LISTENERS
-       ===================================================== */
-
-    addProgramButton.addEventListener(
-        "click",
-        () => openProgramModal()
-    );
-
-
-    closeProgramModal.addEventListener(
-        "click",
-        closeProgramModalHandler
-    );
-
-
-    cancelProgramButton.addEventListener(
-        "click",
-        closeProgramModalHandler
-    );
-
-
-    programModal.addEventListener(
-        "click",
-        (event) => {
-
-            if (event.target === programModal) {
-                closeProgramModalHandler();
-            }
-
-        }
-    );
-
-
-    programForm.addEventListener(
-        "submit",
-        saveProgram
-    );
-
-
-    programSearch.addEventListener(
-        "input",
-        renderPrograms
-    );
-
-
-    statusFilter.addEventListener(
-        "change",
-        renderPrograms
-    );
-
-
-    refreshProgramsButton.addEventListener(
-        "click",
-        async () => {
-
-            refreshProgramsButton.disabled = true;
-
-            await loadPrograms();
-
-            refreshProgramsButton.disabled = false;
-        }
-    );
-
-
-    logoutButton.addEventListener(
-        "click",
-        logoutAdmin
-    );
-
+       DOM READY
+    ===================================================== */
 
     document.addEventListener(
-        "keydown",
-        (event) => {
+        "DOMContentLoaded",
+        function () {
 
-            if (
-                event.key === "Escape" &&
-                programModal.classList.contains("open")
-            ) {
-                closeProgramModalHandler();
-            }
+            console.log(
+                "NITRIXA ADMIN PROGRAMS: DOM ready."
+            );
+
+            setupEvents();
+
+            initializePage();
 
         }
     );
 
 
     /* =====================================================
-       CHECK ADMIN ACCESS
-       ===================================================== */
+       INITIALIZE
+    ===================================================== */
+
+    async function initializePage() {
+
+        if (
+            typeof window.supabaseClient ===
+            "undefined" ||
+            !window.supabaseClient
+        ) {
+
+            console.error(
+                "NITRIXA ADMIN PROGRAMS: Supabase client missing."
+            );
+
+            hideLoading();
+
+            showStatus(
+                "Supabase client is not available. Check supabase.js.",
+                "error"
+            );
+
+            return;
+        }
+
+
+        console.log(
+            "NITRIXA ADMIN PROGRAMS: Supabase client found."
+        );
+
+
+        const isAdmin =
+            await checkAdminAccess();
+
+
+        if (!isAdmin) {
+
+            hideLoading();
+
+            return;
+        }
+
+
+        await loadPrograms();
+
+    }
+
+
+
+    /* =====================================================
+       EVENTS
+    ===================================================== */
+
+    function setupEvents() {
+
+        console.log(
+            "NITRIXA ADMIN PROGRAMS: Setting up events."
+        );
+
+
+        const addButton =
+            document.getElementById(
+                "openProgramModalButton"
+            );
+
+
+        if (addButton) {
+
+            addButton.addEventListener(
+                "click",
+                function () {
+
+                    console.log(
+                        "NITRIXA: Add Program clicked."
+                    );
+
+                    openAddModal();
+
+                }
+            );
+
+        } else {
+
+            console.error(
+                "NITRIXA: Add Program button not found."
+            );
+        }
+
+
+
+        const closeButton =
+            document.getElementById(
+                "closeProgramModalButton"
+            );
+
+
+        if (closeButton) {
+
+            closeButton.addEventListener(
+                "click",
+                closeModal
+            );
+
+        }
+
+
+
+        const cancelButton =
+            document.getElementById(
+                "cancelProgramButton"
+            );
+
+
+        if (cancelButton) {
+
+            cancelButton.addEventListener(
+                "click",
+                closeModal
+            );
+
+        }
+
+
+
+        const refreshButton =
+            document.getElementById(
+                "refreshProgramsButton"
+            );
+
+
+        if (refreshButton) {
+
+            refreshButton.addEventListener(
+                "click",
+                function () {
+
+                    console.log(
+                        "NITRIXA: Refresh clicked."
+                    );
+
+                    loadPrograms();
+
+                }
+            );
+
+        }
+
+
+
+        const form =
+            document.getElementById(
+                "programForm"
+            );
+
+
+        if (form) {
+
+            form.addEventListener(
+                "submit",
+                saveProgram
+            );
+
+        }
+
+
+
+        const type =
+            document.getElementById(
+                "programType"
+            );
+
+
+        if (type) {
+
+            type.addEventListener(
+                "change",
+                updateTypeFields
+            );
+
+        }
+
+
+
+        const logout =
+            document.getElementById(
+                "adminLogoutButton"
+            );
+
+
+        if (logout) {
+
+            logout.addEventListener(
+                "click",
+                logoutAdmin
+            );
+
+        }
+
+
+
+        document.addEventListener(
+            "click",
+            function (event) {
+
+                const actionButton =
+                    event.target.closest(
+                        "[data-action]"
+                    );
+
+
+                if (!actionButton) {
+                    return;
+                }
+
+
+                const action =
+                    actionButton.dataset.action;
+
+
+                const id =
+                    actionButton.dataset.id;
+
+
+                if (
+                    action ===
+                    "edit"
+                ) {
+
+                    editProgram(id);
+
+                }
+
+
+                if (
+                    action ===
+                    "toggle"
+                ) {
+
+                    toggleProgram(id);
+
+                }
+
+            }
+        );
+
+
+        console.log(
+            "NITRIXA ADMIN PROGRAMS: Events ready."
+        );
+
+    }
+
+
+
+    /* =====================================================
+       ADMIN ACCESS
+    ===================================================== */
 
     async function checkAdminAccess() {
 
         try {
 
-            const {
-                data: sessionData,
-                error: sessionError
-            } = await supabaseClient.auth.getSession();
+            console.log(
+                "NITRIXA: Checking admin session..."
+            );
 
 
-            if (sessionError) {
-                throw sessionError;
+            const sessionResponse =
+                await window.supabaseClient
+                    .auth
+                    .getSession();
+
+
+            if (
+                sessionResponse.error
+            ) {
+
+                console.error(
+                    sessionResponse.error
+                );
+
+                showStatus(
+                    "Unable to verify login session.",
+                    "error"
+                );
+
+                return false;
             }
 
 
             const session =
-                sessionData?.session;
+                sessionResponse.data &&
+                sessionResponse.data.session;
 
 
             if (!session) {
+
+                console.warn(
+                    "NITRIXA: No active session."
+                );
 
                 window.location.href =
                     "login.html";
@@ -259,25 +346,62 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
 
 
-            const {
-                data: isAdmin,
-                error: adminError
-            } = await supabaseClient.rpc(
-                "is_admin"
+            console.log(
+                "NITRIXA: Session found."
             );
 
 
-            if (adminError) {
-                throw adminError;
+            const adminResponse =
+                await window.supabaseClient
+                    .rpc(
+                        "is_admin"
+                    );
+
+
+            if (
+                adminResponse.error
+            ) {
+
+                console.error(
+                    "NITRIXA: is_admin error:",
+                    adminResponse.error
+                );
+
+                showStatus(
+                    "Admin permission check failed: " +
+                    adminResponse.error.message,
+                    "error"
+                );
+
+                return false;
             }
 
 
-            if (!isAdmin) {
+            console.log(
+                "NITRIXA: is_admin result:",
+                adminResponse.data
+            );
 
-                await supabaseClient.auth.signOut();
 
-                window.location.href =
-                    "login.html";
+            if (
+                adminResponse.data !==
+                true
+            ) {
+
+                showStatus(
+                    "You do not have admin permission.",
+                    "error"
+                );
+
+                setTimeout(
+                    function () {
+
+                        window.location.href =
+                            "login.html";
+
+                    },
+                    1500
+                );
 
                 return false;
             }
@@ -285,260 +409,334 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             return true;
 
+
         } catch (error) {
 
             console.error(
-                "NITRIXA Admin Authorization Error:",
+                "NITRIXA: Admin access error:",
                 error
             );
 
-            window.location.href =
-                "login.html";
+
+            showStatus(
+                error.message ||
+                "Admin access verification failed.",
+                "error"
+            );
+
 
             return false;
         }
+
     }
+
 
 
     /* =====================================================
        LOAD PROGRAMS
-       ===================================================== */
+    ===================================================== */
 
     async function loadPrograms() {
 
-        showLoadingState();
+        console.log(
+            "NITRIXA ADMIN PROGRAMS: Loading programs..."
+        );
+
+
+        showLoading();
+
 
         try {
 
-            const {
-                data,
-                error
-            } = await supabaseClient
-                .from("programs")
-                .select(
-                    "id,name,slug,category,description,level,program_type,duration,fee,technologies,status,created_at,updated_at"
-                )
-                .order(
-                    "created_at",
-                    {
-                        ascending: true
-                    }
-                );
+            const response =
+                await window.supabaseClient
+                    .from("programs")
+                    .select(
+                        [
+                            "id",
+                            "name",
+                            "slug",
+                            "category",
+                            "description",
+                            "level",
+                            "program_type",
+                            "duration",
+                            "fee",
+                            "technologies",
+                            "status",
+                            "training_duration",
+                            "internship_duration",
+                            "payment_model",
+                            "created_at",
+                            "updated_at"
+                        ].join(",")
+                    )
+                    .order(
+                        "created_at",
+                        {
+                            ascending: false
+                        }
+                    );
 
 
-            if (error) {
-                throw error;
+            if (
+                response.error
+            ) {
+
+                throw response.error;
             }
 
 
             programs =
-                Array.isArray(data)
-                    ? data
+                Array.isArray(
+                    response.data
+                )
+                    ? response.data
                     : [];
 
 
-            updateStats();
+            console.log(
+                "NITRIXA ADMIN PROGRAMS: Loaded:",
+                programs
+            );
+
 
             renderPrograms();
+
 
         } catch (error) {
 
             console.error(
-                "NITRIXA Programs Load Error:",
+                "NITRIXA ADMIN PROGRAMS: Load error:",
                 error
             );
 
-            showPageMessage(
-                "Programs could not be loaded. Please refresh and try again.",
+
+            hideLoading();
+
+
+            showStatus(
+                "Programs could not be loaded: " +
+                (
+                    error.message ||
+                    "Unknown error"
+                ),
                 "error"
             );
 
         }
+
     }
 
 
+
     /* =====================================================
-       RENDER PROGRAMS
-       ===================================================== */
+       RENDER
+    ===================================================== */
 
     function renderPrograms() {
 
-        const search =
-            programSearch.value
-                .trim()
-                .toLowerCase();
+        hideLoading();
 
 
-        const selectedStatus =
-            statusFilter.value;
+        updateSummary();
 
 
-        const filteredPrograms =
-            programs.filter((program) => {
-
-                const matchesSearch =
-                    !search ||
-                    program.name
-                        ?.toLowerCase()
-                        .includes(search) ||
-                    program.category
-                        ?.toLowerCase()
-                        .includes(search) ||
-                    program.program_type
-                        ?.toLowerCase()
-                        .includes(search);
+        const tbody =
+            document.getElementById(
+                "programsTableBody"
+            );
 
 
-                const matchesStatus =
-                    selectedStatus === "ALL" ||
-                    program.status === selectedStatus;
+        const table =
+            document.getElementById(
+                "programsTableWrapper"
+            );
 
 
-                return (
-                    matchesSearch &&
-                    matchesStatus
-                );
-            });
+        const empty =
+            document.getElementById(
+                "programsEmptyState"
+            );
 
 
-        if (filteredPrograms.length === 0) {
+        if (!tbody) {
 
-            programsTableBody.innerHTML = `
-                <tr>
-                    <td colspan="8">
-
-                        <div class="admin-state">
-
-                            <p class="admin-state-title">
-                                No programs found
-                            </p>
-
-                            <p class="admin-state-text">
-                                Try changing the search or status filter,
-                                or add a new program.
-                            </p>
-
-                        </div>
-
-                    </td>
-                </tr>
-            `;
+            console.error(
+                "NITRIXA: programsTableBody not found."
+            );
 
             return;
         }
 
 
-        programsTableBody.innerHTML =
-            filteredPrograms
-                .map(
-                    (program) =>
-                        createProgramRow(program)
-                )
-                .join("");
+        tbody.innerHTML =
+            "";
 
 
-        attachProgramRowEvents();
+        if (
+            programs.length ===
+            0
+        ) {
+
+            if (table) {
+                table.hidden = true;
+            }
+
+
+            if (empty) {
+                empty.hidden = false;
+            }
+
+
+            return;
+        }
+
+
+        if (empty) {
+            empty.hidden = true;
+        }
+
+
+        if (table) {
+            table.hidden = false;
+        }
+
+
+        programs.forEach(
+            function (program) {
+
+                tbody.insertAdjacentHTML(
+                    "beforeend",
+                    createProgramRow(
+                        program
+                    )
+                );
+
+            }
+        );
+
+
+        console.log(
+            "NITRIXA: Program table rendered."
+        );
+
     }
 
 
+
     /* =====================================================
-       CREATE PROGRAM ROW
-       ===================================================== */
+       PROGRAM ROW
+    ===================================================== */
 
-    function createProgramRow(program) {
+    function createProgramRow(
+        program
+    ) {
 
-        const technologies =
-            Array.isArray(program.technologies)
-                ? program.technologies
-                : [];
-
-
-        const technologyHtml =
-            technologies.length
-                ? technologies
-                    .map(
-                        (technology) =>
-                            `<span class="program-tech">${escapeHtml(technology)}</span>`
-                    )
-                    .join("")
-                : `<span class="program-meta">—</span>`;
+        const type =
+            formatProgramType(
+                program.program_type
+            );
 
 
-        const statusClass =
-            program.status === "ACTIVE"
-                ? "admin-status-active"
-                : "admin-status-inactive";
+        const duration =
+            getProgramDuration(
+                program
+            );
 
 
-        const statusLabel =
-            program.status === "ACTIVE"
-                ? "Active"
-                : "Inactive";
+        const payment =
+            getPaymentLabel(
+                program
+            );
 
 
         const fee =
-            Number(program.fee || 0);
+            Number(
+                program.fee || 0
+            ).toLocaleString(
+                "en-IN"
+            );
+
+
+        const statusClass =
+            program.status ===
+            "ACTIVE"
+                ? "active"
+                : "inactive";
+
+
+        const toggleText =
+            program.status ===
+            "ACTIVE"
+                ? "Deactivate"
+                : "Activate";
 
 
         return `
+
             <tr>
 
                 <td>
 
-                    <p class="program-name">
-                        ${escapeHtml(program.name)}
-                    </p>
+                    <div class="np-program-name">
 
-                    <p class="program-description">
-                        ${escapeHtml(program.description || "No description")}
-                    </p>
+                        <strong>
+                            ${escapeHtml(
+                                program.name ||
+                                "Unnamed Program"
+                            )}
+                        </strong>
 
-                    <div class="program-tech-list">
-                        ${technologyHtml}
+                        <small>
+                            ${escapeHtml(
+                                program.category ||
+                                "—"
+                            )}
+                        </small>
+
                     </div>
 
                 </td>
 
 
                 <td>
-                    <span class="program-meta">
-                        ${escapeHtml(program.category || "—")}
+
+                    <span class="np-badge">
+                        ${escapeHtml(
+                            type
+                        )}
                     </span>
+
                 </td>
 
 
                 <td>
-                    <span class="program-meta">
-                        ${formatLevel(program.level)}
-                    </span>
+                    ${duration}
                 </td>
 
 
                 <td>
-                    <span class="program-meta">
-                        ${formatProgramType(program.program_type)}
-                    </span>
+                    ₹${fee}
                 </td>
 
 
                 <td>
-                    <span class="program-meta">
-                        ${escapeHtml(program.duration || "—")}
-                    </span>
-                </td>
-
-
-                <td>
-                    <strong>
-                        ₹${fee.toLocaleString("en-IN")}
-                    </strong>
+                    ${escapeHtml(
+                        payment
+                    )}
                 </td>
 
 
                 <td>
 
-                    <span class="admin-status ${statusClass}">
-                        ${statusLabel}
+                    <span
+                        class="np-status-badge ${statusClass}"
+                    >
+                        ${escapeHtml(
+                            program.status ||
+                            "UNKNOWN"
+                        )}
                     </span>
 
                 </td>
@@ -546,32 +744,29 @@ document.addEventListener("DOMContentLoaded", async () => {
 
                 <td>
 
-                    <div class="admin-actions">
+                    <div class="np-actions">
 
                         <button
                             type="button"
-                            class="admin-btn admin-btn-secondary admin-btn-small"
+                            class="np-action"
                             data-action="edit"
-                            data-id="${program.id}"
+                            data-id="${escapeHtml(
+                                program.id
+                            )}"
                         >
                             Edit
                         </button>
 
+
                         <button
                             type="button"
-                            class="admin-btn ${
-                                program.status === "ACTIVE"
-                                    ? "admin-btn-danger"
-                                    : "admin-btn-primary"
-                            } admin-btn-small"
+                            class="np-action"
                             data-action="toggle"
-                            data-id="${program.id}"
+                            data-id="${escapeHtml(
+                                program.id
+                            )}"
                         >
-                            ${
-                                program.status === "ACTIVE"
-                                    ? "Deactivate"
-                                    : "Activate"
-                            }
+                            ${toggleText}
                         </button>
 
                     </div>
@@ -579,391 +774,879 @@ document.addEventListener("DOMContentLoaded", async () => {
                 </td>
 
             </tr>
+
         `;
+
     }
 
 
+
     /* =====================================================
-       ROW EVENTS
-       ===================================================== */
+       SUMMARY
+    ===================================================== */
 
-    function attachProgramRowEvents() {
+    function updateSummary() {
 
-        const actionButtons =
-            programsTableBody.querySelectorAll(
-                "[data-action]"
+        let active =
+            0;
+
+        let inactive =
+            0;
+
+        let internship =
+            0;
+
+
+        programs.forEach(
+            function (program) {
+
+                if (
+                    program.status ===
+                    "ACTIVE"
+                ) {
+
+                    active++;
+
+                }
+
+
+                if (
+                    program.status ===
+                    "INACTIVE"
+                ) {
+
+                    inactive++;
+
+                }
+
+
+                if (
+                    program.program_type ===
+                    "INTERNSHIP"
+                ) {
+
+                    internship++;
+
+                }
+
+            }
+        );
+
+
+        setText(
+            "totalProgramsCount",
+            programs.length
+        );
+
+
+        setText(
+            "activeProgramsCount",
+            active
+        );
+
+
+        setText(
+            "inactiveProgramsCount",
+            inactive
+        );
+
+
+        setText(
+            "internshipProgramsCount",
+            internship
+        );
+
+    }
+
+
+
+    /* =====================================================
+       OPEN ADD MODAL
+    ===================================================== */
+
+    function openAddModal() {
+
+        console.log(
+            "NITRIXA: Opening Add Program modal."
+        );
+
+
+        editingProgramId =
+            null;
+
+
+        const form =
+            document.getElementById(
+                "programForm"
             );
 
 
-        actionButtons.forEach((button) => {
-
-            button.addEventListener(
-                "click",
-                async () => {
-
-                    const action =
-                        button.dataset.action;
-
-                    const id =
-                        button.dataset.id;
+        if (form) {
+            form.reset();
+        }
 
 
-                    if (action === "edit") {
-
-                        const program =
-                            programs.find(
-                                (item) =>
-                                    item.id === id
-                            );
-
-                        if (program) {
-                            openProgramModal(program);
-                        }
-
-                        return;
-                    }
+        setValue(
+            "programId",
+            ""
+        );
 
 
-                    if (action === "toggle") {
+        setValue(
+            "programStatus",
+            "ACTIVE"
+        );
 
-                        await toggleProgram(id);
-                    }
+
+        const title =
+            document.getElementById(
+                "programModalTitle"
+            );
+
+
+        if (title) {
+
+            title.textContent =
+                "Add Program";
+        }
+
+
+        const save =
+            document.getElementById(
+                "saveProgramButton"
+            );
+
+
+        if (save) {
+
+            save.textContent =
+                "Save Program";
+        }
+
+
+        updateTypeFields();
+
+
+        openModal();
+
+    }
+
+
+
+    /* =====================================================
+       EDIT
+    ===================================================== */
+
+    function editProgram(
+        id
+    ) {
+
+        const program =
+            programs.find(
+                function (item) {
+
+                    return String(
+                        item.id
+                    ) ===
+                    String(
+                        id
+                    );
 
                 }
             );
 
-        });
-    }
 
+        if (!program) {
 
-    /* =====================================================
-       OPEN MODAL
-       ===================================================== */
+            showStatus(
+                "Program not found.",
+                "error"
+            );
 
-    function openProgramModal(program = null) {
-
-        clearModalMessage();
-
-
-        if (program) {
-
-            editingProgramId =
-                program.id;
-
-            programModalTitle.textContent =
-                "Edit Program";
-
-            saveProgramButton.textContent =
-                "Update Program";
-
-
-            programName.value =
-                program.name || "";
-
-            programCategory.value =
-                program.category || "";
-
-            programLevel.value =
-                program.level ||
-                "BEGINNER";
-
-            programType.value =
-                program.program_type ||
-                "TRAINING";
-
-            programDuration.value =
-                program.duration || "";
-
-            programFee.value =
-                Number(program.fee || 0);
-
-            programTechnologies.value =
-                Array.isArray(program.technologies)
-                    ? program.technologies.join(", ")
-                    : "";
-
-            programDescription.value =
-                program.description || "";
-
-            programActive.checked =
-                program.status === "ACTIVE";
-
-        } else {
-
-            editingProgramId =
-                null;
-
-            programModalTitle.textContent =
-                "Add Program";
-
-            saveProgramButton.textContent =
-                "Save Program";
-
-            programForm.reset();
-
-            programLevel.value =
-                "BEGINNER";
-
-            programType.value =
-                "TRAINING";
-
-            programFee.value =
-                "0";
-
-            programActive.checked =
-                true;
+            return;
         }
 
 
-        programModal.classList.add("open");
+        editingProgramId =
+            program.id;
 
-        programModal.setAttribute(
-            "aria-hidden",
-            "false"
+
+        setValue(
+            "programId",
+            program.id
         );
 
 
-        setTimeout(() => {
-            programName.focus();
-        }, 50);
+        setValue(
+            "programName",
+            program.name
+        );
+
+
+        setValue(
+            "programSlug",
+            program.slug
+        );
+
+
+        setValue(
+            "programCategory",
+            program.category
+        );
+
+
+        setValue(
+            "programDescription",
+            program.description
+        );
+
+
+        setValue(
+            "programLevel",
+            program.level
+        );
+
+
+        setValue(
+            "programType",
+            program.program_type
+        );
+
+
+        setValue(
+            "programDuration",
+            program.duration
+        );
+
+
+        setValue(
+            "trainingDuration",
+            program.training_duration
+        );
+
+
+        setValue(
+            "internshipDuration",
+            program.internship_duration
+        );
+
+
+        setValue(
+            "programFee",
+            program.fee
+        );
+
+
+        setValue(
+            "paymentModel",
+            program.payment_model
+        );
+
+
+        setValue(
+            "programTechnologies",
+            normalizeTechnologies(
+                program.technologies
+            ).join(", ")
+        );
+
+
+        setValue(
+            "programStatus",
+            program.status ||
+            "ACTIVE"
+        );
+
+
+        const title =
+            document.getElementById(
+                "programModalTitle"
+            );
+
+
+        if (title) {
+
+            title.textContent =
+                "Edit Program";
+        }
+
+
+        const save =
+            document.getElementById(
+                "saveProgramButton"
+            );
+
+
+        if (save) {
+
+            save.textContent =
+                "Update Program";
+        }
+
+
+        updateTypeFields();
+
+
+        openModal();
+
     }
+
 
 
     /* =====================================================
-       CLOSE MODAL
-       ===================================================== */
+       PROGRAM TYPE
+    ===================================================== */
 
-    function closeProgramModalHandler() {
+    function updateTypeFields() {
 
-        programModal.classList.remove("open");
+        const type =
+            getValue(
+                "programType"
+            );
 
-        programModal.setAttribute(
-            "aria-hidden",
-            "true"
-        );
 
-        clearModalMessage();
+        const trainingGroup =
+            document.getElementById(
+                "trainingDurationGroup"
+            );
 
-        editingProgramId =
-            null;
+
+        const trainingInput =
+            document.getElementById(
+                "trainingDuration"
+            );
+
+
+        const internshipInput =
+            document.getElementById(
+                "internshipDuration"
+            );
+
+
+        const payment =
+            document.getElementById(
+                "paymentModel"
+            );
+
+
+        const note =
+            document.getElementById(
+                "paymentConfigurationNote"
+            );
+
+
+        if (!trainingGroup) {
+            return;
+        }
+
+
+        if (
+            type ===
+            "TRAINING_AND_INTERNSHIP"
+        ) {
+
+            trainingGroup.style.display =
+                "";
+
+
+            trainingInput.required =
+                true;
+
+
+            internshipInput.required =
+                true;
+
+
+            payment.value =
+                "FULL_ONLY";
+
+
+            payment.disabled =
+                true;
+
+
+            note.textContent =
+                "Training + Internship uses full payment during enrollment. Internship unlocks after training completion and approval.";
+
+        } else if (
+            type ===
+            "INTERNSHIP"
+        ) {
+
+            trainingGroup.style.display =
+                "none";
+
+
+            trainingInput.required =
+                false;
+
+
+            internshipInput.required =
+                true;
+
+
+            payment.disabled =
+                false;
+
+
+            payment.required =
+                true;
+
+
+            if (!payment.value) {
+
+                payment.value =
+                    "FULL_AND_INSTALLMENT";
+            }
+
+
+            note.textContent =
+                "Internship can use full payment or the 3-month installment option.";
+
+        } else {
+
+            trainingGroup.style.display =
+                "";
+
+
+            trainingInput.required =
+                false;
+
+
+            internshipInput.required =
+                false;
+
+
+            payment.disabled =
+                false;
+
+
+            payment.required =
+                true;
+
+
+            note.textContent =
+                "Select a program type to configure payment.";
+
+        }
+
     }
+
 
 
     /* =====================================================
        SAVE PROGRAM
-       ===================================================== */
+    ===================================================== */
 
-    async function saveProgram(event) {
+    async function saveProgram(
+        event
+    ) {
 
         event.preventDefault();
 
-        clearModalMessage();
 
-
-        const name =
-            programName.value.trim();
-
-        const category =
-            programCategory.value.trim();
-
-        const level =
-            programLevel.value;
-
-        const type =
-            programType.value;
-
-        const duration =
-            programDuration.value.trim();
-
-        const fee =
-            Number(programFee.value || 0);
-
-        const technologies =
-            programTechnologies.value
-                .split(",")
-                .map(
-                    (item) =>
-                        item.trim()
-                )
-                .filter(Boolean);
-
-        const description =
-            programDescription.value.trim();
-
-        const status =
-            programActive.checked
-                ? "ACTIVE"
-                : "INACTIVE";
-
-
-        if (!name) {
-
-            showModalMessage(
-                "Program name is required.",
-                "error"
+        const button =
+            document.getElementById(
+                "saveProgramButton"
             );
-
-            programName.focus();
-
-            return;
-        }
-
-
-        if (!category) {
-
-            showModalMessage(
-                "Program category is required.",
-                "error"
-            );
-
-            programCategory.focus();
-
-            return;
-        }
-
-
-        if (Number.isNaN(fee) || fee < 0) {
-
-            showModalMessage(
-                "Please enter a valid fee.",
-                "error"
-            );
-
-            programFee.focus();
-
-            return;
-        }
-
-
-        saveProgramButton.disabled =
-            true;
-
-        saveProgramButton.textContent =
-            editingProgramId
-                ? "Updating..."
-                : "Saving...";
 
 
         try {
 
-            const baseData = {
-                name,
-                category,
-                description:
-                    description || null,
-                level,
-                program_type: type,
-                duration:
-                    duration || null,
-                fee,
-                technologies,
-                status
-            };
+            if (button) {
 
+                button.disabled =
+                    true;
 
-            if (editingProgramId) {
+                button.textContent =
+                    "Saving...";
 
-                const {
-                    error
-                } = await supabaseClient
-                    .from("programs")
-                    .update(baseData)
-                    .eq(
-                        "id",
-                        editingProgramId
-                    );
-
-
-                if (error) {
-                    throw error;
-                }
-
-
-                showToast(
-                    "Program updated successfully.",
-                    "success"
-                );
-
-            } else {
-
-                const slug =
-                    await createUniqueSlug(name);
-
-
-                const {
-                    error
-                } = await supabaseClient
-                    .from("programs")
-                    .insert({
-                        ...baseData,
-                        slug
-                    });
-
-
-                if (error) {
-                    throw error;
-                }
-
-
-                showToast(
-                    "Program added successfully.",
-                    "success"
-                );
             }
 
 
-            closeProgramModalHandler();
+            const payload =
+                collectForm();
+
+
+            validateProgram(
+                payload
+            );
+
+
+            let response;
+
+
+            if (
+                editingProgramId
+            ) {
+
+                response =
+                    await window.supabaseClient
+                        .from("programs")
+                        .update(
+                            payload
+                        )
+                        .eq(
+                            "id",
+                            editingProgramId
+                        );
+
+            } else {
+
+                response =
+                    await window.supabaseClient
+                        .from("programs")
+                        .insert(
+                            [
+                                payload
+                            ]
+                        );
+
+            }
+
+
+            if (
+                response.error
+            ) {
+
+                throw response.error;
+            }
+
+
+            console.log(
+                "NITRIXA: Program saved successfully."
+            );
+
+
+            const wasEditing =
+                Boolean(
+                    editingProgramId
+                );
+
+
+            closeModal();
+
+
+            showStatus(
+                wasEditing
+                    ? "Program updated successfully."
+                    : "Program created successfully.",
+                "success"
+            );
+
+
+            editingProgramId =
+                null;
+
 
             await loadPrograms();
+
 
         } catch (error) {
 
             console.error(
-                "NITRIXA Program Save Error:",
+                "NITRIXA: Save program error:",
                 error
             );
 
 
-            let message =
-                "Program could not be saved. Please try again.";
-
-
-            if (
-                error?.code === "23505"
-            ) {
-                message =
-                    "A program with this name or slug already exists.";
-            }
-
-
-            showModalMessage(
-                message,
+            showStatus(
+                error.message ||
+                "Program could not be saved.",
                 "error"
             );
 
         } finally {
 
-            saveProgramButton.disabled =
-                false;
+            if (button) {
 
-            saveProgramButton.textContent =
-                editingProgramId
-                    ? "Update Program"
-                    : "Save Program";
+                button.disabled =
+                    false;
+
+                button.textContent =
+                    editingProgramId
+                        ? "Update Program"
+                        : "Save Program";
+
+            }
+
         }
+
     }
 
 
-    /* =====================================================
-       TOGGLE PROGRAM
-       ===================================================== */
 
-    async function toggleProgram(id) {
+    /* =====================================================
+       COLLECT FORM
+    ===================================================== */
+
+    function collectForm() {
+
+        const type =
+            getValue(
+                "programType"
+            );
+
+
+        const technologyText =
+            getValue(
+                "programTechnologies"
+            );
+
+
+        const technologies =
+            technologyText
+                ? technologyText
+                    .split(",")
+                    .map(
+                        function (item) {
+
+                            return item.trim();
+
+                        }
+                    )
+                    .filter(
+                        Boolean
+                    )
+                : [];
+
+
+        let paymentModel =
+            getValue(
+                "paymentModel"
+            );
+
+
+        if (
+            type ===
+            "TRAINING_AND_INTERNSHIP"
+        ) {
+
+            paymentModel =
+                "FULL_ONLY";
+        }
+
+
+        return {
+
+            name:
+                getValue(
+                    "programName"
+                ),
+
+            slug:
+                getValue(
+                    "programSlug"
+                )
+                    .toLowerCase()
+                    .replace(
+                        /\s+/g,
+                        "-"
+                    ),
+
+            category:
+                getValue(
+                    "programCategory"
+                ),
+
+            description:
+                getValue(
+                    "programDescription"
+                ),
+
+            level:
+                getValue(
+                    "programLevel"
+                ),
+
+            program_type:
+                type,
+
+            duration:
+                getValue(
+                    "programDuration"
+                ),
+
+            fee:
+                Number(
+                    getValue(
+                        "programFee"
+                    ) || 0
+                ),
+
+            technologies:
+                technologies,
+
+            status:
+                getValue(
+                    "programStatus"
+                ) ||
+                "ACTIVE",
+
+            training_duration:
+                type ===
+                "TRAINING_AND_INTERNSHIP"
+                    ? getValue(
+                        "trainingDuration"
+                    )
+                    : null,
+
+            internship_duration:
+                getValue(
+                    "internshipDuration"
+                ) ||
+                null,
+
+            payment_model:
+                paymentModel ||
+                "FULL_ONLY",
+
+            updated_at:
+                new Date().toISOString()
+
+        };
+
+    }
+
+
+
+    /* =====================================================
+       VALIDATION
+    ===================================================== */
+
+    function validateProgram(
+        data
+    ) {
+
+        if (!data.name) {
+
+            throw new Error(
+                "Program name is required."
+            );
+
+        }
+
+
+        if (!data.slug) {
+
+            throw new Error(
+                "Program slug is required."
+            );
+
+        }
+
+
+        if (!data.category) {
+
+            throw new Error(
+                "Category is required."
+            );
+
+        }
+
+
+        if (!data.level) {
+
+            throw new Error(
+                "Level is required."
+            );
+
+        }
+
+
+        if (
+            data.program_type !==
+            "INTERNSHIP" &&
+            data.program_type !==
+            "TRAINING_AND_INTERNSHIP"
+        ) {
+
+            throw new Error(
+                "Please select a valid program type."
+            );
+
+        }
+
+
+        if (
+            Number.isNaN(
+                data.fee
+            ) ||
+            data.fee < 0
+        ) {
+
+            throw new Error(
+                "Please enter a valid program fee."
+            );
+
+        }
+
+
+        if (
+            data.program_type ===
+            "INTERNSHIP" &&
+            !data.internship_duration
+        ) {
+
+            throw new Error(
+                "Internship duration is required."
+            );
+
+        }
+
+
+        if (
+            data.program_type ===
+            "TRAINING_AND_INTERNSHIP"
+        ) {
+
+            if (
+                !data.training_duration
+            ) {
+
+                throw new Error(
+                    "Training duration is required."
+                );
+
+            }
+
+
+            if (
+                !data.internship_duration
+            ) {
+
+                throw new Error(
+                    "Internship duration is required."
+                );
+
+            }
+
+        }
+
+    }
+
+
+
+    /* =====================================================
+       TOGGLE STATUS
+    ===================================================== */
+
+    async function toggleProgram(
+        id
+    ) {
 
         const program =
             programs.find(
-                (item) =>
-                    item.id === id
+                function (item) {
+
+                    return String(
+                        item.id
+                    ) ===
+                    String(
+                        id
+                    );
+
+                }
             );
 
 
@@ -973,35 +1656,61 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 
         const newStatus =
-            program.status === "ACTIVE"
+            program.status ===
+            "ACTIVE"
                 ? "INACTIVE"
                 : "ACTIVE";
 
 
+        const confirmText =
+            newStatus ===
+            "ACTIVE"
+                ? "Activate this program?"
+                : "Deactivate this program?";
+
+
+        if (
+            !window.confirm(
+                confirmText
+            )
+        ) {
+
+            return;
+        }
+
+
         try {
 
-            const {
-                error
-            } = await supabaseClient
-                .from("programs")
-                .update({
-                    status: newStatus
-                })
-                .eq(
-                    "id",
-                    id
-                );
+            const response =
+                await window.supabaseClient
+                    .from("programs")
+                    .update(
+                        {
+                            status:
+                                newStatus,
+
+                            updated_at:
+                                new Date().toISOString()
+                        }
+                    )
+                    .eq(
+                        "id",
+                        program.id
+                    );
 
 
-            if (error) {
-                throw error;
+            if (
+                response.error
+            ) {
+
+                throw response.error;
             }
 
 
-            showToast(
-                newStatus === "ACTIVE"
-                    ? "Program activated."
-                    : "Program deactivated.",
+            showStatus(
+                "Program " +
+                newStatus.toLowerCase() +
+                " successfully.",
                 "success"
             );
 
@@ -1011,310 +1720,392 @@ document.addEventListener("DOMContentLoaded", async () => {
         } catch (error) {
 
             console.error(
-                "NITRIXA Program Status Error:",
                 error
             );
 
 
-            showToast(
+            showStatus(
+                error.message ||
                 "Program status could not be updated.",
                 "error"
             );
+
         }
+
     }
 
 
+
     /* =====================================================
-       UNIQUE SLUG
-       ===================================================== */
+       MODAL
+    ===================================================== */
 
-    async function createUniqueSlug(name) {
+    function openModal() {
 
-        const baseSlug =
-            slugify(name);
-
-
-        let slug =
-            baseSlug;
-
-        let counter =
-            1;
+        const modal =
+            document.getElementById(
+                "programModal"
+            );
 
 
-        while (true) {
+        if (!modal) {
 
-            const {
-                data,
-                error
-            } = await supabaseClient
-                .from("programs")
-                .select("id")
-                .eq(
-                    "slug",
-                    slug
-                )
-                .maybeSingle();
+            console.error(
+                "NITRIXA: programModal not found."
+            );
 
-
-            if (error) {
-                throw error;
-            }
-
-
-            if (!data) {
-                return slug;
-            }
-
-
-            counter++;
-
-            slug =
-                `${baseSlug}-${counter}`;
+            return;
         }
+
+
+        modal.hidden =
+            false;
+
+
+        document.body.style.overflow =
+            "hidden";
+
     }
 
 
-    /* =====================================================
-       UPDATE STATS
-       ===================================================== */
+    function closeModal() {
 
-    function updateStats() {
-
-        const total =
-            programs.length;
+        const modal =
+            document.getElementById(
+                "programModal"
+            );
 
 
-        const active =
-            programs.filter(
-                (program) =>
-                    program.status === "ACTIVE"
-            ).length;
+        if (modal) {
+
+            modal.hidden =
+                true;
+
+        }
 
 
-        const inactive =
-            programs.filter(
-                (program) =>
-                    program.status === "INACTIVE"
-            ).length;
-
-
-        totalPrograms.textContent =
-            total;
-
-        activePrograms.textContent =
-            active;
-
-        inactivePrograms.textContent =
-            inactive;
-    }
-
-
-    /* =====================================================
-       LOADING STATE
-       ===================================================== */
-
-    function showLoadingState() {
-
-        programsTableBody.innerHTML = `
-            <tr>
-                <td colspan="8">
-
-                    <div class="admin-state">
-
-                        <div class="admin-spinner"></div>
-
-                        <p class="admin-state-title">
-                            Loading programs...
-                        </p>
-
-                        <p class="admin-state-text">
-                            Please wait while the program data is loaded.
-                        </p>
-
-                    </div>
-
-                </td>
-            </tr>
-        `;
-    }
-
-
-    /* =====================================================
-       PAGE MESSAGE
-       ===================================================== */
-
-    function showPageMessage(
-        message,
-        type
-    ) {
-
-        formMessage.textContent =
-            message;
-
-        formMessage.className =
-            `admin-form-message ${type}`;
-
-        formMessage.style.display =
-            "block";
-    }
-
-
-    /* =====================================================
-       MODAL MESSAGE
-       ===================================================== */
-
-    function showModalMessage(
-        message,
-        type
-    ) {
-
-        modalFormMessage.textContent =
-            message;
-
-        modalFormMessage.className =
-            `admin-form-message ${type}`;
-
-        modalFormMessage.style.display =
-            "block";
-    }
-
-
-    function clearModalMessage() {
-
-        modalFormMessage.textContent =
+        document.body.style.overflow =
             "";
 
-        modalFormMessage.className =
-            "admin-form-message";
-
-        modalFormMessage.style.display =
-            "none";
     }
 
-
-    /* =====================================================
-       TOAST
-       ===================================================== */
-
-    let toastTimer = null;
-
-
-    function showToast(
-        message,
-        type = "success"
-    ) {
-
-        clearTimeout(toastTimer);
-
-
-        adminToast.textContent =
-            message;
-
-        adminToast.className =
-            `admin-toast ${type} show`;
-
-
-        toastTimer =
-            setTimeout(
-                () => {
-
-                    adminToast.className =
-                        "admin-toast";
-
-                },
-                2800
-            );
-    }
 
 
     /* =====================================================
        LOGOUT
-       ===================================================== */
+    ===================================================== */
 
     async function logoutAdmin() {
 
-        logoutButton.disabled =
-            true;
-
-        logoutButton.textContent =
-            "Logging out...";
-
-
         try {
 
-            await supabaseClient.auth.signOut();
+            await window.supabaseClient
+                .auth
+                .signOut();
 
         } finally {
 
             window.location.href =
                 "login.html";
+
         }
+
     }
+
 
 
     /* =====================================================
-       FORMATTERS
-       ===================================================== */
+       LOADING
+    ===================================================== */
 
-    function formatLevel(level) {
+    function showLoading() {
 
-        const map = {
-            BEGINNER:
-                "Beginner",
-
-            BEGINNER_TO_INTERMEDIATE:
-                "Beginner → Intermediate",
-
-            INTERMEDIATE:
-                "Intermediate"
-        };
-
-
-        return map[level] || level || "—";
-    }
-
-
-    function formatProgramType(type) {
-
-        const map = {
-            TRAINING:
-                "Training",
-
-            INTERNSHIP:
-                "Internship",
-
-            TRAINING_AND_INTERNSHIP:
-                "Training + Internship"
-        };
-
-
-        return map[type] || type || "—";
-    }
-
-
-    function slugify(value) {
-
-        return value
-            .toLowerCase()
-            .trim()
-            .replace(
-                /[^a-z0-9]+/g,
-                "-"
-            )
-            .replace(
-                /^-+|-+$/g,
-                ""
+        const loading =
+            document.getElementById(
+                "programsLoadingState"
             );
+
+
+        const table =
+            document.getElementById(
+                "programsTableWrapper"
+            );
+
+
+        const empty =
+            document.getElementById(
+                "programsEmptyState"
+            );
+
+
+        if (loading) {
+            loading.hidden =
+                false;
+        }
+
+
+        if (table) {
+            table.hidden =
+                true;
+        }
+
+
+        if (empty) {
+            empty.hidden =
+                true;
+        }
+
     }
 
 
+    function hideLoading() {
+
+        const loading =
+            document.getElementById(
+                "programsLoadingState"
+            );
+
+
+        if (loading) {
+
+            loading.hidden =
+                true;
+
+        }
+
+    }
+
+
+
     /* =====================================================
-       HTML ESCAPE
-       ===================================================== */
+       HELPERS
+    ===================================================== */
 
-    function escapeHtml(value) {
+    function getValue(
+        id
+    ) {
 
-        return String(value ?? "")
+        const element =
+            document.getElementById(
+                id
+            );
+
+
+        if (!element) {
+            return "";
+        }
+
+
+        return String(
+            element.value ||
+            ""
+        ).trim();
+
+    }
+
+
+    function setValue(
+        id,
+        value
+    ) {
+
+        const element =
+            document.getElementById(
+                id
+            );
+
+
+        if (element) {
+
+            element.value =
+                value === null ||
+                typeof value ===
+                "undefined"
+                    ? ""
+                    : value;
+
+        }
+
+    }
+
+
+    function setText(
+        id,
+        value
+    ) {
+
+        const element =
+            document.getElementById(
+                id
+            );
+
+
+        if (element) {
+
+            element.textContent =
+                value;
+
+        }
+
+    }
+
+
+    function formatProgramType(
+        type
+    ) {
+
+        if (
+            type ===
+            "INTERNSHIP"
+        ) {
+
+            return "Internship";
+
+        }
+
+
+        if (
+            type ===
+            "TRAINING_AND_INTERNSHIP"
+        ) {
+
+            return "Training + Internship";
+
+        }
+
+
+        return type ||
+            "Program";
+
+    }
+
+
+    function getProgramDuration(
+        program
+    ) {
+
+        if (
+            program.program_type ===
+            "TRAINING_AND_INTERNSHIP"
+        ) {
+
+            return (
+                escapeHtml(
+                    program.training_duration ||
+                    "—"
+                ) +
+                " + " +
+                escapeHtml(
+                    program.internship_duration ||
+                    "—"
+                )
+            );
+
+        }
+
+
+        return escapeHtml(
+            program.internship_duration ||
+            program.duration ||
+            "—"
+        );
+
+    }
+
+
+    function getPaymentLabel(
+        program
+    ) {
+
+        if (
+            program.program_type ===
+            "TRAINING_AND_INTERNSHIP"
+        ) {
+
+            return "Full Only";
+
+        }
+
+
+        if (
+            program.payment_model ===
+            "FULL_AND_INSTALLMENT"
+        ) {
+
+            return "Full + Installment";
+
+        }
+
+
+        return "Full Only";
+
+    }
+
+
+    function normalizeTechnologies(
+        technologies
+    ) {
+
+        if (
+            Array.isArray(
+                technologies
+            )
+        ) {
+
+            return technologies
+                .map(
+                    function (item) {
+
+                        return String(
+                            item
+                        ).trim();
+
+                    }
+                )
+                .filter(
+                    Boolean
+                );
+
+        }
+
+
+        if (
+            typeof technologies ===
+            "string"
+        ) {
+
+            return technologies
+                .split(",")
+                .map(
+                    function (item) {
+
+                        return item.trim();
+
+                    }
+                )
+                .filter(
+                    Boolean
+                );
+
+        }
+
+
+        return [];
+
+    }
+
+
+    function escapeHtml(
+        value
+    ) {
+
+        return String(
+            value === null ||
+            typeof value ===
+            "undefined"
+                ? ""
+                : value
+        )
             .replace(
                 /&/g,
                 "&amp;"
@@ -1335,6 +2126,65 @@ document.addEventListener("DOMContentLoaded", async () => {
                 /'/g,
                 "&#039;"
             );
+
     }
 
-});
+
+
+    /* =====================================================
+       STATUS MESSAGE
+    ===================================================== */
+
+    function showStatus(
+        message,
+        type
+    ) {
+
+        const element =
+            document.getElementById(
+                "programStatusMessage"
+            );
+
+
+        if (!element) {
+            return;
+        }
+
+
+        element.textContent =
+            message;
+
+
+        element.className =
+            "np-status " +
+            (
+                type ===
+                "success"
+                    ? "success"
+                    : "error"
+            );
+
+
+        element.hidden =
+            false;
+
+
+        clearTimeout(
+            showStatus.timer
+        );
+
+
+        showStatus.timer =
+            setTimeout(
+                function () {
+
+                    element.hidden =
+                        true;
+
+                },
+                7000
+            );
+
+    }
+
+})();

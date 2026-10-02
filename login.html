@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Login / Register | NITRIXA TECHNOLOGIES
+    </title>
+
+    <meta
+        name="description"
+        content="Login or create your NITRIXA TECHNOLOGIES account."
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/global.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/login.css"
+    >
+
+</head>
+
+<body class="auth-page">
+
+
+<!-- =========================================================
+     PAGE BACKGROUND
+========================================================= -->
+
+<div class="auth-background">
+
+    <div class="auth-orb auth-orb-one"></div>
+
+    <div class="auth-orb auth-orb-two"></div>
+
+    <div class="auth-grid"></div>
+
+</div>
+
+
+<!-- =========================================================
+     HEADER
+========================================================= -->
+
+<header class="auth-header">
+
+    <div class="auth-header-inner">
+
+        <a
+            href="index.html"
+            class="auth-brand"
+            aria-label="NITRIXA Technologies Home"
+        >
+
+            <img
+                src="assets/images/nitrixa-name-logo.png"
+                alt="NITRIXA TECHNOLOGIES"
+            >
+
+        </a>
+
+
+        <a
+            href="index.html"
+            class="auth-back-link"
+        >
+
+            <span aria-hidden="true">
+                ←
+            </span>
+
+            Back to Website
+
+        </a>
+
+    </div>
+
+</header>
+
+
+<!-- =========================================================
+     MAIN
+========================================================= -->
+
+<main class="auth-main">
+
+    <section
+        class="auth-shell"
+        aria-label="NITRIXA account"
+    >
+
+
+        <!-- =================================================
+             LEFT BRAND PANEL
+        ================================================== -->
+
+        <aside class="auth-brand-panel">
+
+            <div class="auth-brand-content">
+
+                <div class="auth-badge">
+
+                    <span class="auth-badge-dot"></span>
+
+                    NITRIXA ACCOUNT
+
+                </div>
+
+
+                <h1>
+
+                    Start your
+                    <span>technology journey.</span>
+
+                </h1>
+
+
+                <p>
+
+                    Create your NITRIXA account to continue
+                    with internship and training enrollment,
+                    payments, and future learning access.
+
+                </p>
+
+
+                <div class="auth-benefits">
+
+                    <div class="auth-benefit">
+
+                        <span class="auth-benefit-icon">
+                            ✓
+                        </span>
+
+                        <div>
+
+                            <strong>
+                                Secure account
+                            </strong>
+
+                            <small>
+                                Powered by Supabase Authentication
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="auth-benefit">
+
+                        <span class="auth-benefit-icon">
+                            ✓
+                        </span>
+
+                        <div>
+
+                            <strong>
+                                Enrollment ready
+                            </strong>
+
+                            <small>
+                                Continue directly to your selected program
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="auth-benefit">
+
+                        <span class="auth-benefit-icon">
+                            ✓
+                        </span>
+
+                        <div>
+
+                            <strong>
+                                One account
+                            </strong>
+
+                            <small>
+                                Use the same account for future NITRIXA services
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </aside>
+
+
+        <!-- =================================================
+             RIGHT AUTH PANEL
+        ================================================== -->
+
+        <section class="auth-card">
+
+
+            <!-- =================================================
+                 AUTH HEADER
+            ================================================== -->
+
+            <div class="auth-card-header">
+
+                <div>
+
+                    <span class="auth-eyebrow">
+                        NITRIXA TECHNOLOGIES
+                    </span>
+
+                    <h2 id="authTitle">
+                        Welcome back
+                    </h2>
+
+                    <p id="authSubtitle">
+                        Sign in to continue with your enrollment.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 MODE SWITCH
+            ================================================== -->
+
+            <div
+                class="auth-tabs"
+                role="tablist"
+                aria-label="Authentication options"
+            >
+
+                <button
+                    type="button"
+                    class="auth-tab active"
+                    id="loginTab"
+                    role="tab"
+                    aria-selected="true"
+                >
+                    Login
+                </button>
+
+
+                <button
+                    type="button"
+                    class="auth-tab"
+                    id="registerTab"
+                    role="tab"
+                    aria-selected="false"
+                >
+                    Create Account
+                </button>
+
+            </div>
+
+
+            <!-- =================================================
+                 GLOBAL MESSAGE
+            ================================================== -->
+
+            <div
+                id="authMessage"
+                class="auth-message"
+                role="alert"
+                aria-live="polite"
+                hidden
+            ></div>
+
+
+            <!-- =================================================
+                 LOGIN FORM
+            ================================================== -->
+
+            <form
+                id="loginForm"
+                class="auth-form"
+                novalidate
+            >
+
+                <div class="auth-field">
+
+                    <label for="loginEmail">
+                        Email Address
+                    </label>
+
+                    <input
+                        type="email"
+                        id="loginEmail"
+                        name="email"
+                        placeholder="you@example.com"
+                        autocomplete="email"
+                        inputmode="email"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="auth-field">
+
+                    <div class="auth-label-row">
+
+                        <label for="loginPassword">
+                            Password
+                        </label>
+
+                        <button
+                            type="button"
+                            class="auth-text-button"
+                            id="forgotPasswordButton"
+                        >
+                            Forgot password?
+                        </button>
+
+                    </div>
+
+                    <div class="password-wrapper">
+
+                        <input
+                            type="password"
+                            id="loginPassword"
+                            name="password"
+                            placeholder="Enter your password"
+                            autocomplete="current-password"
+                            required
+                        >
+
+                        <button
+                            type="button"
+                            class="password-toggle"
+                            data-target="loginPassword"
+                            aria-label="Show password"
+                        >
+                            Show
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="auth-submit"
+                    id="loginButton"
+                >
+
+                    <span class="auth-button-text">
+                        Sign In
+                    </span>
+
+                    <span
+                        class="auth-spinner"
+                        aria-hidden="true"
+                    ></span>
+
+                </button>
+
+
+                <p class="auth-switch-text">
+
+                    Don't have an account?
+
+                    <button
+                        type="button"
+                        class="auth-inline-button"
+                        id="switchToRegister"
+                    >
+                        Create one
+                    </button>
+
+                </p>
+
+            </form>
+
+
+            <!-- =================================================
+                 REGISTER FORM
+            ================================================== -->
+
+            <form
+                id="registerForm"
+                class="auth-form is-hidden"
+                novalidate
+            >
+
+                <div class="auth-form-grid">
+
+
+                    <div class="auth-field auth-field-full">
+
+                        <label for="registerName">
+                            Full Name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="registerName"
+                            name="full_name"
+                            placeholder="Your full name"
+                            autocomplete="name"
+                            maxlength="100"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="auth-field auth-field-full">
+
+                        <label for="registerEmail">
+                            Email Address
+                        </label>
+
+                        <input
+                            type="email"
+                            id="registerEmail"
+                            name="email"
+                            placeholder="you@example.com"
+                            autocomplete="email"
+                            inputmode="email"
+                            maxlength="150"
+                            required
+                        >
+
+                        <small class="field-help">
+                            Use an email address you can access.
+                        </small>
+
+                    </div>
+
+
+                    <div class="auth-field">
+
+                        <label for="registerMobile">
+                            Mobile Number
+                        </label>
+
+                        <input
+                            type="tel"
+                            id="registerMobile"
+                            name="mobile"
+                            placeholder="+91 9876543210"
+                            autocomplete="tel"
+                            inputmode="tel"
+                            maxlength="20"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="auth-field">
+
+                        <label for="registerPassword">
+                            Password
+                        </label>
+
+                        <div class="password-wrapper">
+
+                            <input
+                                type="password"
+                                id="registerPassword"
+                                name="password"
+                                placeholder="Minimum 8 characters"
+                                autocomplete="new-password"
+                                minlength="8"
+                                maxlength="72"
+                                required
+                            >
+
+                            <button
+                                type="button"
+                                class="password-toggle"
+                                data-target="registerPassword"
+                                aria-label="Show password"
+                            >
+                                Show
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="auth-field auth-field-full">
+
+                        <label for="registerConfirmPassword">
+                            Confirm Password
+                        </label>
+
+                        <div class="password-wrapper">
+
+                            <input
+                                type="password"
+                                id="registerConfirmPassword"
+                                name="confirm_password"
+                                placeholder="Re-enter your password"
+                                autocomplete="new-password"
+                                minlength="8"
+                                maxlength="72"
+                                required
+                            >
+
+                            <button
+                                type="button"
+                                class="password-toggle"
+                                data-target="registerConfirmPassword"
+                                aria-label="Show password"
+                            >
+                                Show
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <label class="auth-consent">
+
+                    <input
+                        type="checkbox"
+                        id="registerConsent"
+                        required
+                    >
+
+                    <span>
+
+                        I agree to the
+
+                        <a
+                            href="terms.html"
+                            target="_blank"
+                            rel="noopener"
+                        >
+                            Terms
+                        </a>
+
+                        and
+
+                        <a
+                            href="privacy.html"
+                            target="_blank"
+                            rel="noopener"
+                        >
+                            Privacy Policy
+                        </a>.
+
+                    </span>
+
+                </label>
+
+
+                <button
+                    type="submit"
+                    class="auth-submit"
+                    id="registerButton"
+                >
+
+                    <span class="auth-button-text">
+                        Create Account
+                    </span>
+
+                    <span
+                        class="auth-spinner"
+                        aria-hidden="true"
+                    ></span>
+
+                </button>
+
+
+                <p class="auth-switch-text">
+
+                    Already have an account?
+
+                    <button
+                        type="button"
+                        class="auth-inline-button"
+                        id="switchToLogin"
+                    >
+                        Sign in
+                    </button>
+
+                </p>
+
+            </form>
+
+
+            <!-- =================================================
+                 EMAIL CONFIRMATION
+            ================================================== -->
+
+            <div
+                id="confirmationPanel"
+                class="confirmation-panel is-hidden"
+            >
+
+                <div class="confirmation-icon">
+                    ✓
+                </div>
+
+                <h3>
+                    Check your email
+                </h3>
+
+                <p>
+                    Your account has been created.
+                    Please open the confirmation email sent
+                    to your registered email address before
+                    continuing.
+                </p>
+
+                <button
+                    type="button"
+                    class="auth-submit secondary"
+                    id="backToLoginButton"
+                >
+                    Back to Login
+                </button>
+
+            </div>
+
+
+            <!-- =================================================
+                 SECURITY NOTE
+            ================================================== -->
+
+            <div class="auth-security-note">
+
+                <span class="security-icon">
+                    🔒
+                </span>
+
+                <span>
+                    Your password is handled by Supabase
+                    Authentication. NITRIXA does not store
+                    your password in the website database.
+                </span>
+
+            </div>
+
+        </section>
+
+    </section>
+
+</main>
+
+
+<!-- =========================================================
+     JAVASCRIPT
+========================================================= -->
+
+<script
+    src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+    defer
+></script>
+
+<script
+    src="js/supabase.js"
+    defer
+></script>
+
+<script
+    src="js/login.js?v=3"
+    defer
+></script>
+
+
+</body>
+</html>

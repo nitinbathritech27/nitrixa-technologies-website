@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="Enroll in a NITRIXA TECHNOLOGIES internship or training program."
+    >
+
+    <meta
+        name="robots"
+        content="index, follow"
+    >
+
+    <title>
+        Enroll | NITRIXA TECHNOLOGIES
+    </title>
+
+
+    <!-- =====================================================
+         GLOBAL STYLES
+         ===================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="css/global.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/components.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/animations.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/responsive.css"
+    >
+
+
+    <!-- =====================================================
+         PAGE STYLES
+         ===================================================== -->
+
+    <style>
+
+        .enrollment-page {
+            min-height: 100vh;
+            padding: 120px 20px 80px;
+        }
+
+
+        .enrollment-container {
+            width: min(1180px, 100%);
+            margin: 0 auto;
+        }
+
+
+        .enrollment-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 30px;
+            color: inherit;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+
+        .enrollment-hero {
+            margin-bottom: 40px;
+        }
+
+
+        .enrollment-eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 14px;
+            font-size: 13px;
+            font-weight: 800;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            opacity: 0.7;
+        }
+
+
+        .enrollment-hero h1 {
+            margin: 0 0 14px;
+            font-size: clamp(34px, 5vw, 58px);
+            line-height: 1.05;
+        }
+
+
+        .enrollment-hero p {
+            max-width: 760px;
+            margin: 0;
+            font-size: 17px;
+            line-height: 1.7;
+            opacity: 0.78;
+        }
+
+
+        .enrollment-layout {
+            display: grid;
+            grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.95fr);
+            gap: 28px;
+            align-items: start;
+        }
+
+
+        .enrollment-card {
+            padding: 30px;
+            border-radius: 24px;
+            border: 1px solid rgba(30, 64, 175, 0.12);
+            background: rgba(255, 255, 255, 0.92);
+            box-shadow:
+                0 18px 55px rgba(15, 23, 42, 0.08);
+        }
+
+
+        .enrollment-card h2 {
+            margin: 0 0 12px;
+            font-size: 25px;
+        }
+
+
+        .enrollment-card p {
+            line-height: 1.7;
+        }
+
+
+        .program-summary {
+            position: sticky;
+            top: 100px;
+        }
+
+
+        .program-summary-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 18px;
+            margin-bottom: 22px;
+        }
+
+
+        .program-summary-header h2 {
+            margin: 0;
+        }
+
+
+        .program-fee {
+            white-space: nowrap;
+            font-size: 25px;
+            font-weight: 800;
+        }
+
+
+        .program-description {
+            margin-bottom: 22px;
+            opacity: 0.78;
+        }
+
+
+        .program-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 25px;
+        }
+
+
+        .program-tag {
+            display: inline-flex;
+            padding: 7px 11px;
+            border-radius: 999px;
+            background: rgba(37, 99, 235, 0.08);
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+
+        .program-details {
+            display: grid;
+            gap: 0;
+            border-top: 1px solid rgba(15, 23, 42, 0.08);
+        }
+
+
+        .program-detail-row {
+            display: grid;
+            grid-template-columns: 145px 1fr;
+            gap: 16px;
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+        }
+
+
+        .program-detail-row span {
+            opacity: 0.58;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+
+        .program-detail-row strong {
+            font-size: 14px;
+        }
+
+
+        .payment-note {
+            margin-top: 20px;
+            padding: 14px 16px;
+            border-radius: 14px;
+            background: rgba(14, 165, 233, 0.07);
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+
+        .enrollment-auth-gate {
+            padding: 24px;
+            border-radius: 18px;
+            border: 1px solid rgba(37, 99, 235, 0.14);
+            background: rgba(37, 99, 235, 0.045);
+        }
+
+
+        .enrollment-auth-gate h2 {
+            margin-bottom: 8px;
+        }
+
+
+        .enrollment-auth-gate p {
+            margin-top: 0;
+            opacity: 0.72;
+        }
+
+
+        .enrollment-auth-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            min-height: 48px;
+            padding: 0 22px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 750;
+        }
+
+
+        .enrollment-account-status {
+            margin-bottom: 24px;
+            padding: 14px 16px;
+            border-radius: 14px;
+            background: rgba(16, 185, 129, 0.07);
+            border: 1px solid rgba(16, 185, 129, 0.13);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+
+        .enrollment-path-section h2 {
+            margin-bottom: 8px;
+        }
+
+
+        .enrollment-path-intro {
+            margin-top: 0;
+            margin-bottom: 22px;
+            opacity: 0.7;
+        }
+
+
+        .path-grid {
+            display: grid;
+            gap: 18px;
+        }
+
+
+        .enrollment-path-card {
+            position: relative;
+            overflow: hidden;
+            padding: 24px;
+            border-radius: 20px;
+            border: 1px solid rgba(30, 64, 175, 0.12);
+            background: #fff;
+            transition:
+                transform 180ms ease,
+                box-shadow 180ms ease,
+                border-color 180ms ease;
+        }
+
+
+        .enrollment-path-card:hover {
+            transform: translateY(-3px);
+            border-color: rgba(37, 99, 235, 0.28);
+            box-shadow:
+                0 18px 40px rgba(15, 23, 42, 0.08);
+        }
+
+
+        .enrollment-path-card.is-featured {
+            border-color: rgba(37, 99, 235, 0.28);
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(239, 246, 255, 0.98),
+                    rgba(255, 255, 255, 0.98)
+                );
+        }
+
+
+        .enrollment-path-badge {
+            display: inline-flex;
+            margin-bottom: 12px;
+            padding: 6px 9px;
+            border-radius: 999px;
+            background: rgba(37, 99, 235, 0.08);
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+        }
+
+
+        .enrollment-path-card h3 {
+            margin: 0 0 9px;
+            font-size: 21px;
+        }
+
+
+        .enrollment-path-card p {
+            margin: 0 0 20px;
+            opacity: 0.7;
+            font-size: 14px;
+        }
+
+
+        .enrollment-path-meta {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+
+        .enrollment-path-meta div {
+            padding: 12px;
+            border-radius: 12px;
+            background: rgba(15, 23, 42, 0.035);
+        }
+
+
+        .enrollment-path-meta span {
+            display: block;
+            margin-bottom: 4px;
+            font-size: 11px;
+            opacity: 0.55;
+        }
+
+
+        .enrollment-path-meta strong {
+            display: block;
+            font-size: 13px;
+        }
+
+
+        .enrollment-path-button {
+            width: 100%;
+            min-height: 48px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+            border: 0;
+            border-radius: 12px;
+            cursor: pointer;
+            font: inherit;
+            font-weight: 750;
+            color: #fff;
+            background:
+                linear-gradient(
+                    135deg,
+                    #1d4ed8,
+                    #4f46e5
+                );
+            transition:
+                transform 180ms ease,
+                opacity 180ms ease;
+        }
+
+
+        .enrollment-path-button:hover {
+            transform: translateY(-1px);
+        }
+
+
+        .enrollment-path-button:disabled {
+            cursor: wait;
+            opacity: 0.65;
+            transform: none;
+        }
+
+
+        .enrollment-path-empty {
+            padding: 22px;
+            border-radius: 16px;
+            background: rgba(15, 23, 42, 0.04);
+        }
+
+
+        .enrollment-path-empty p {
+            margin-bottom: 0;
+            opacity: 0.7;
+        }
+
+
+        .enrollment-info {
+            margin-top: 28px;
+            padding: 22px;
+            border-radius: 18px;
+            background: rgba(15, 23, 42, 0.035);
+        }
+
+
+        .enrollment-info strong {
+            display: block;
+            margin-bottom: 7px;
+        }
+
+
+        .enrollment-info p {
+            margin: 0;
+            font-size: 13px;
+            line-height: 1.7;
+            opacity: 0.7;
+        }
+
+
+        .enrollment-error {
+            padding: 35px;
+            text-align: center;
+            border-radius: 22px;
+            border: 1px solid rgba(220, 38, 38, 0.15);
+            background: rgba(254, 242, 242, 0.9);
+        }
+
+
+        .enrollment-error h2 {
+            margin-top: 0;
+        }
+
+
+        .enrollment-error p {
+            margin-bottom: 22px;
+            opacity: 0.72;
+        }
+
+
+        .enrollment-back-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 46px;
+            padding: 0 20px;
+            border-radius: 11px;
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+
+        @media (max-width: 850px) {
+
+            .enrollment-page {
+                padding-top: 100px;
+            }
+
+            .enrollment-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .program-summary {
+                position: static;
+            }
+
+        }
+
+
+        @media (max-width: 560px) {
+
+            .enrollment-page {
+                padding:
+                    90px
+                    14px
+                    50px;
+            }
+
+            .enrollment-card {
+                padding: 20px;
+                border-radius: 18px;
+            }
+
+            .program-summary-header {
+                flex-direction: column;
+            }
+
+            .program-detail-row {
+                grid-template-columns: 1fr;
+                gap: 5px;
+            }
+
+            .enrollment-path-meta {
+                grid-template-columns: 1fr;
+            }
+
+            .enrollment-hero h1 {
+                font-size: 36px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         HEADER
+         ===================================================== -->
+
+    <header class="site-header">
+
+        <div class="container">
+
+            <div class="header-inner">
+
+                <a
+                    href="index.html"
+                    class="brand"
+                    aria-label="NITRIXA TECHNOLOGIES Home"
+                >
+
+                    <span class="brand-mark">
+                        N
+                    </span>
+
+                    <span class="brand-text">
+
+                        <strong>
+                            NITRIXA
+                        </strong>
+
+                        <small>
+                            TECHNOLOGIES
+                        </small>
+
+                    </span>
+
+                </a>
+
+
+                <nav
+                    class="main-nav"
+                    aria-label="Main navigation"
+                >
+
+                    <a href="index.html">
+                        Home
+                    </a>
+
+                    <a href="programs.html">
+                        Programs
+                    </a>
+
+                    <a href="about.html">
+                        About
+                    </a>
+
+                    <a href="contact.html">
+                        Contact
+                    </a>
+
+                    <a
+                        href="login.html"
+                        class="btn btn-primary"
+                        data-auth-link
+                        id="headerAuthButton"
+                    >
+                        Login / Register
+                        <span aria-hidden="true">
+                            →
+                        </span>
+                    </a>
+
+                </nav>
+
+
+                <button
+                    type="button"
+                    class="mobile-menu-toggle"
+                    aria-label="Open menu"
+                    aria-expanded="false"
+                    aria-controls="mainNavigation"
+                >
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- =====================================================
+         MAIN
+         ===================================================== -->
+
+    <main class="enrollment-page">
+
+        <div class="enrollment-container">
+
+
+            <!-- =================================================
+                 BACK
+                 ================================================= -->
+
+            <a
+                href="programs.html"
+                class="enrollment-back"
+            >
+                ← Back to Programs
+            </a>
+
+
+            <!-- =================================================
+                 HERO
+                 ================================================= -->
+
+            <section class="enrollment-hero">
+
+                <span class="enrollment-eyebrow">
+                    NITRIXA TECHNOLOGIES
+                    <span aria-hidden="true">•</span>
+                    Enrollment
+                </span>
+
+                <h1>
+                    Start Your Program
+                </h1>
+
+                <p>
+                    Review the selected program, choose the applicable
+                    enrollment path, and continue securely to payment.
+                </p>
+
+            </section>
+
+
+            <!-- =================================================
+                 LOADING
+                 ================================================= -->
+
+            <section
+                id="enrollmentLoading"
+                class="enrollment-card"
+            >
+
+                <h2>
+                    Loading program...
+                </h2>
+
+                <p>
+                    Please wait while we securely load the selected program.
+                </p>
+
+            </section>
+
+
+            <!-- =================================================
+                 ERROR
+                 ================================================= -->
+
+            <section
+                id="enrollmentError"
+                class="enrollment-error"
+                hidden
+            >
+
+                <h2>
+                    Enrollment unavailable
+                </h2>
+
+                <p
+                    id="enrollmentErrorMessage"
+                >
+                    We could not load this enrollment page.
+                </p>
+
+                <a
+                    href="programs.html"
+                    class="enrollment-back-button btn btn-primary"
+                >
+                    Back to Programs
+                </a>
+
+            </section>
+
+
+            <!-- =================================================
+                 APPLICATION
+                 ================================================= -->
+
+            <div
+                id="enrollmentApp"
+                class="enrollment-layout"
+                hidden
+            >
+
+
+                <!-- =============================================
+                     LEFT
+                     ============================================= -->
+
+                <section class="enrollment-card">
+
+
+                    <!-- =========================================
+                         AUTH GATE
+                         ========================================= -->
+
+                    <div
+                        id="enrollmentAuthGate"
+                        class="enrollment-auth-gate"
+                        hidden
+                    >
+
+                        <h2>
+                            Login to Continue
+                        </h2>
+
+                        <p>
+                            You need a NITRIXA account before you can
+                            start enrollment.
+                        </p>
+
+                        <a
+                            href="login.html"
+                            id="enrollmentLoginButton"
+                            class="enrollment-auth-button btn btn-primary"
+                        >
+                            Login / Register
+                            <span aria-hidden="true">
+                                →
+                            </span>
+                        </a>
+
+                    </div>
+
+
+                    <!-- =========================================
+                         ACCOUNT STATUS
+                         ========================================= -->
+
+                    <div
+                        id="enrollmentAccountStatus"
+                        class="enrollment-account-status"
+                        hidden
+                    >
+                        You are signed in.
+                    </div>
+
+
+                    <!-- =========================================
+                         PATH SELECTION
+                         ========================================= -->
+
+                    <section
+                        id="enrollmentPathSection"
+                        class="enrollment-path-section"
+                        hidden
+                    >
+
+                        <h2>
+                            Choose Your Enrollment Path
+                        </h2>
+
+                        <p class="enrollment-path-intro">
+                            Select the enrollment option available for
+                            this program. Your enrollment will be created
+                            first and payment will be completed securely
+                            on the next step.
+                        </p>
+
+
+                        <div
+                            id="pathGrid"
+                            class="path-grid"
+                        ></div>
+
+
+                        <div
+                            id="enrollmentMessage"
+                            class="enrollment-info"
+                            hidden
+                        >
+
+                            <strong>
+                                Enrollment message
+                            </strong>
+
+                            <p></p>
+
+                        </div>
+
+                    </section>
+
+
+                    <!-- =========================================
+                         INFORMATION
+                         ========================================= -->
+
+                    <div class="enrollment-info">
+
+                        <strong>
+                            Secure Enrollment
+                        </strong>
+
+                        <p>
+                            Your enrollment is created against your
+                            authenticated NITRIXA account. Payment is
+                            processed separately through the secure
+                            Razorpay checkout flow. An Intern ID is
+                            generated only after successful payment
+                            verification.
+                        </p>
+
+                    </div>
+
+
+                </section>
+
+
+                <!-- =============================================
+                     RIGHT — PROGRAM SUMMARY
+                     ============================================= -->
+
+                <aside
+                    class="enrollment-card program-summary"
+                >
+
+                    <div class="program-summary-header">
+
+                        <div>
+
+                            <span class="enrollment-eyebrow">
+                                Selected Program
+                            </span>
+
+                            <h2 id="programName">
+                                Loading...
+                            </h2>
+
+                        </div>
+
+                        <div
+                            id="programFee"
+                            class="program-fee"
+                        >
+                            ₹0
+                        </div>
+
+                    </div>
+
+
+                    <p
+                        id="programDescription"
+                        class="program-description"
+                    >
+                        Loading program description...
+                    </p>
+
+
+                    <div
+                        id="programTags"
+                        class="program-tags"
+                    ></div>
+
+
+                    <div class="program-details">
+
+
+                        <div class="program-detail-row">
+
+                            <span>
+                                Program Type
+                            </span>
+
+                            <strong id="programType">
+                                —
+                            </strong>
+
+                        </div>
+
+
+                        <div class="program-detail-row">
+
+                            <span>
+                                Duration
+                            </span>
+
+                            <strong id="programDuration">
+                                —
+                            </strong>
+
+                        </div>
+
+
+                        <div class="program-detail-row">
+
+                            <span>
+                                Level
+                            </span>
+
+                            <strong id="programLevel">
+                                —
+                            </strong>
+
+                        </div>
+
+
+                        <div class="program-detail-row">
+
+                            <span>
+                                Payment Model
+                            </span>
+
+                            <strong id="programPaymentModel">
+                                —
+                            </strong>
+
+                        </div>
+
+
+                    </div>
+
+
+                    <div
+                        id="programPaymentNote"
+                        class="payment-note"
+                    >
+                        Payment information will appear here.
+                    </div>
+
+                </aside>
+
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <!-- =====================================================
+         FOOTER
+         ===================================================== -->
+
+    <footer class="site-footer">
+
+        <div class="container">
+
+            <div class="footer-inner">
+
+                <span>
+                    ©
+                    <span id="currentYear">
+                        2026
+                    </span>
+                    NITRIXA TECHNOLOGIES
+                </span>
+
+                <div>
+
+                    <a href="privacy.html">
+                        Privacy
+                    </a>
+
+                    <a href="terms.html">
+                        Terms
+                    </a>
+
+                    <a href="contact.html">
+                        Contact
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </footer>
+
+
+    <!-- =====================================================
+         SUPABASE
+         ===================================================== -->
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+        defer
+    ></script>
+
+
+    <script
+        src="js/supabase.js"
+        defer
+    ></script>
+
+
+    <!-- =====================================================
+         GLOBAL JS
+         ===================================================== -->
+
+    <script
+        src="js/main.js"
+        defer
+    ></script>
+
+
+    <!-- =====================================================
+         ENROLLMENT JS
+         ===================================================== -->
+
+    <script
+        src="js/enrollment.js?v=2"
+        defer
+    ></script>
+
+
+</body>
+
+</html>

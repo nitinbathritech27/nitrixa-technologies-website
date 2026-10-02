@@ -1,0 +1,1531 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="NITRIXA TECHNOLOGIES Intern Dashboard."
+    >
+
+    <meta
+        name="robots"
+        content="noindex, nofollow"
+    >
+
+    <title>
+        Intern Dashboard | NITRIXA TECHNOLOGIES
+    </title>
+
+
+    <!-- =====================================================
+         GLOBAL STYLES
+         ===================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="css/global.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/components.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/animations.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/responsive.css"
+    >
+
+
+    <!-- =====================================================
+         INTERN DASHBOARD STYLES
+         ===================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="css/intern-dashboard.css"
+    >
+
+</head>
+
+
+<body
+    class="intern-portal-body"
+>
+
+
+    <!-- =====================================================
+         PORTAL SHELL
+         ===================================================== -->
+
+    <div class="intern-portal-shell">
+
+
+        <!-- =================================================
+             MOBILE OVERLAY
+             ================================================= -->
+
+        <div
+            id="internSidebarOverlay"
+            class="intern-sidebar-overlay"
+            aria-hidden="true"
+        ></div>
+
+
+        <!-- =================================================
+             SIDEBAR
+             ================================================= -->
+
+        <aside
+            id="internSidebar"
+            class="intern-sidebar"
+        >
+
+            <!-- =============================================
+                 SIDEBAR BRAND
+                 ============================================= -->
+
+            <div class="intern-sidebar-brand">
+
+                <a
+                    href="intern-dashboard.html"
+                    class="intern-brand-link"
+                    aria-label="NITRIXA Intern Dashboard"
+                >
+
+                    <span class="intern-brand-mark">
+                        N
+                    </span>
+
+                    <span class="intern-brand-text">
+
+                        <strong>
+                            NITRIXA
+                        </strong>
+
+                        <small>
+                            INTERN PORTAL
+                        </small>
+
+                    </span>
+
+                </a>
+
+
+                <button
+                    type="button"
+                    id="internSidebarClose"
+                    class="intern-sidebar-close"
+                    aria-label="Close navigation"
+                >
+                    ×
+                </button>
+
+            </div>
+
+
+            <!-- =============================================
+                 INTERN MINI PROFILE
+                 ============================================= -->
+
+            <div
+                class="intern-sidebar-profile"
+                id="sidebarProfile"
+            >
+
+                <div
+                    class="intern-avatar"
+                    id="sidebarAvatar"
+                >
+                    N
+                </div>
+
+
+                <div class="intern-sidebar-profile-info">
+
+                    <strong
+                        id="sidebarInternName"
+                    >
+                        Loading...
+                    </strong>
+
+                    <span
+                        id="sidebarInternId"
+                    >
+                        Intern ID
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- =============================================
+                 MAIN NAVIGATION
+                 ============================================= -->
+
+            <nav
+                class="intern-navigation"
+                aria-label="Intern Portal Navigation"
+            >
+
+                <!-- Dashboard -->
+
+                <a
+                    href="intern-dashboard.html"
+                    class="intern-nav-link active"
+                    data-module="dashboard"
+                >
+
+                    <span class="intern-nav-icon">
+                        ⌂
+                    </span>
+
+                    <span>
+                        Dashboard
+                    </span>
+
+                </a>
+
+
+                <!-- Profile -->
+
+                <a
+                    href="intern/profile.html"
+                    class="intern-nav-link"
+                    data-module="profile"
+                >
+
+                    <span class="intern-nav-icon">
+                        ◉
+                    </span>
+
+                    <span>
+                        My Profile
+                    </span>
+
+                </a>
+
+
+                <div class="intern-nav-section-label">
+                    LEARNING
+                </div>
+
+
+                <!-- Learning -->
+
+                <a
+                    href="intern/learning.html"
+                    class="intern-nav-link"
+                    data-module="learning"
+                >
+
+                    <span class="intern-nav-icon">
+                        ▣
+                    </span>
+
+                    <span>
+                        Learning
+                    </span>
+
+                </a>
+
+
+                <!-- Live Classes -->
+
+                <a
+                    href="intern/live-classes.html"
+                    class="intern-nav-link"
+                    data-module="live-classes"
+                >
+
+                    <span class="intern-nav-icon">
+                        ◉
+                    </span>
+
+                    <span>
+                        Live Classes
+                    </span>
+
+                    <span
+                        class="intern-nav-badge"
+                        id="liveClassBadge"
+                        hidden
+                    >
+                        0
+                    </span>
+
+                </a>
+
+
+                <!-- Recorded Classes -->
+
+                <a
+                    href="intern/recorded-classes.html"
+                    class="intern-nav-link"
+                    data-module="recorded-classes"
+                >
+
+                    <span class="intern-nav-icon">
+                        ▶
+                    </span>
+
+                    <span>
+                        Recorded Classes
+                    </span>
+
+                </a>
+
+
+                <!-- Tasks -->
+
+                <a
+                    href="intern/tasks.html"
+                    class="intern-nav-link"
+                    data-module="tasks"
+                >
+
+                    <span class="intern-nav-icon">
+                        ✓
+                    </span>
+
+                    <span>
+                        Tasks & Assignments
+                    </span>
+
+                    <span
+                        class="intern-nav-badge"
+                        id="taskBadge"
+                        hidden
+                    >
+                        0
+                    </span>
+
+                </a>
+
+
+                <div class="intern-nav-section-label">
+                    DEVELOPMENT
+                </div>
+
+
+                <!-- Projects -->
+
+                <a
+                    href="intern/projects.html"
+                    class="intern-nav-link"
+                    data-module="projects"
+                >
+
+                    <span class="intern-nav-icon">
+                        ◇
+                    </span>
+
+                    <span>
+                        Projects
+                    </span>
+
+                </a>
+
+
+                <!-- Milestones -->
+
+                <a
+                    href="intern/milestones.html"
+                    class="intern-nav-link"
+                    data-module="milestones"
+                >
+
+                    <span class="intern-nav-icon">
+                        ◈
+                    </span>
+
+                    <span>
+                        Progress & Milestones
+                    </span>
+
+                </a>
+
+
+                <!-- Evaluation -->
+
+                <a
+                    href="intern/evaluation.html"
+                    class="intern-nav-link"
+                    data-module="evaluation"
+                >
+
+                    <span class="intern-nav-icon">
+                        ★
+                    </span>
+
+                    <span>
+                        Evaluation
+                    </span>
+
+                </a>
+
+
+                <div class="intern-nav-section-label">
+                    COMPLETION
+                </div>
+
+
+                <!-- Certificate -->
+
+                <a
+                    href="intern/certificate.html"
+                    class="intern-nav-link"
+                    data-module="certificate"
+                >
+
+                    <span class="intern-nav-icon">
+                        ▤
+                    </span>
+
+                    <span>
+                        Certificate
+                    </span>
+
+                </a>
+
+            </nav>
+
+
+            <!-- =============================================
+                 SIDEBAR BOTTOM
+                 ============================================= -->
+
+            <div class="intern-sidebar-bottom">
+
+                <a
+                    href="index.html"
+                    class="intern-nav-link intern-home-link"
+                >
+
+                    <span class="intern-nav-icon">
+                        ↗
+                    </span>
+
+                    <span>
+                        Visit Website
+                    </span>
+
+                </a>
+
+
+                <button
+                    type="button"
+                    id="internLogoutButton"
+                    class="intern-logout-button"
+                >
+
+                    <span class="intern-nav-icon">
+                        ⇥
+                    </span>
+
+                    <span>
+                        Logout
+                    </span>
+
+                </button>
+
+            </div>
+
+        </aside>
+
+
+        <!-- =================================================
+             MAIN PORTAL AREA
+             ================================================= -->
+
+        <div class="intern-main-area">
+
+
+            <!-- =================================================
+                 TOP HEADER
+                 ================================================= -->
+
+            <header
+                class="intern-topbar"
+            >
+
+                <div class="intern-topbar-left">
+
+                    <button
+                        type="button"
+                        id="internSidebarToggle"
+                        class="intern-sidebar-toggle"
+                        aria-label="Open navigation"
+                        aria-expanded="false"
+                    >
+
+                        <span></span>
+                        <span></span>
+                        <span></span>
+
+                    </button>
+
+
+                    <div class="intern-page-heading">
+
+                        <span
+                            class="intern-page-kicker"
+                        >
+                            INTERN PORTAL
+                        </span>
+
+                        <h1>
+                            Dashboard
+                        </h1>
+
+                    </div>
+
+                </div>
+
+
+                <div class="intern-topbar-right">
+
+                    <!-- Notification -->
+
+                    <button
+                        type="button"
+                        class="intern-icon-button"
+                        id="notificationButton"
+                        aria-label="Notifications"
+                    >
+
+                        <span>
+                            ◌
+                        </span>
+
+                        <span
+                            id="notificationBadge"
+                            class="intern-notification-dot"
+                            hidden
+                        ></span>
+
+                    </button>
+
+
+                    <!-- User -->
+
+                    <button
+                        type="button"
+                        class="intern-user-menu"
+                        id="userMenuButton"
+                        aria-expanded="false"
+                    >
+
+                        <span
+                            class="intern-top-avatar"
+                            id="topAvatar"
+                        >
+                            N
+                        </span>
+
+                        <span class="intern-user-menu-text">
+
+                            <strong
+                                id="topUserName"
+                            >
+                                Loading...
+                            </strong>
+
+                            <small>
+                                Intern
+                            </small>
+
+                        </span>
+
+                        <span class="intern-user-chevron">
+                            ▾
+                        </span>
+
+                    </button>
+
+
+                    <!-- User dropdown -->
+
+                    <div
+                        id="userDropdown"
+                        class="intern-user-dropdown"
+                        hidden
+                    >
+
+                        <a
+                            href="intern/profile.html"
+                        >
+                            My Profile
+                        </a>
+
+                        <button
+                            type="button"
+                            id="dropdownLogoutButton"
+                        >
+                            Logout
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </header>
+
+
+            <!-- =================================================
+                 PAGE CONTENT
+                 ================================================= -->
+
+            <main
+                class="intern-dashboard-content"
+            >
+
+
+                <!-- =============================================
+                     LOADING
+                     ============================================= -->
+
+                <section
+                    id="dashboardLoadingState"
+                    class="intern-dashboard-state"
+                >
+
+                    <div class="intern-loading-spinner"></div>
+
+                    <h2>
+                        Loading your dashboard...
+                    </h2>
+
+                    <p>
+                        Please wait while we securely load
+                        your internship information.
+                    </p>
+
+                </section>
+
+
+                <!-- =============================================
+                     ACCESS ERROR
+                     ============================================= -->
+
+                <section
+                    id="dashboardErrorState"
+                    class="intern-dashboard-state intern-dashboard-error"
+                    hidden
+                >
+
+                    <div class="intern-state-icon">
+                        !
+                    </div>
+
+                    <h2>
+                        Dashboard unavailable
+                    </h2>
+
+                    <p
+                        id="dashboardErrorMessage"
+                    >
+                        We could not load your internship
+                        dashboard.
+                    </p>
+
+                    <div class="intern-state-actions">
+
+                        <button
+                            type="button"
+                            id="dashboardRetryButton"
+                            class="intern-primary-button"
+                        >
+                            Try Again
+                        </button>
+
+                        <a
+                            href="index.html"
+                            class="intern-secondary-button"
+                        >
+                            Back to Website
+                        </a>
+
+                    </div>
+
+                </section>
+
+
+                <!-- =============================================
+                     ACTUAL DASHBOARD
+                     ============================================= -->
+
+                <div
+                    id="dashboardContent"
+                    class="intern-dashboard-container"
+                    hidden
+                >
+
+
+                    <!-- =========================================
+                         WELCOME SECTION
+                         ========================================= -->
+
+                    <section
+                        class="intern-welcome-section"
+                    >
+
+                        <div class="intern-welcome-content">
+
+                            <span
+                                class="intern-section-kicker"
+                            >
+                                WELCOME BACK
+                            </span>
+
+                            <h2>
+                                Hello,
+                                <span
+                                    id="welcomeInternName"
+                                >
+                                    Intern
+                                </span>
+                                👋
+                            </h2>
+
+                            <p>
+                                Continue your learning journey
+                                and stay on track with your
+                                NITRIXA internship.
+                            </p>
+
+                        </div>
+
+
+                        <div
+                            class="intern-welcome-id"
+                        >
+
+                            <span>
+                                INTERN ID
+                            </span>
+
+                            <strong
+                                id="welcomeInternId"
+                            >
+                                —
+                            </strong>
+
+                        </div>
+
+                    </section>
+
+
+                    <!-- =========================================
+                         CHOOSE PROGRAM — REGISTERED USER STATE
+                         ========================================= -->
+
+                    <section
+                        id="dashboardChooseProgramCard"
+                        class="intern-dashboard-choose-program"
+                        hidden
+                        aria-labelledby="dashboardChooseProgramTitle"
+                    >
+
+                        <div class="intern-dashboard-choose-program-content">
+
+                            <span
+                                class="intern-section-kicker"
+                            >
+                                GET STARTED
+                            </span>
+
+                            <h2
+                                id="dashboardChooseProgramTitle"
+                            >
+                                Choose your program
+                            </h2>
+
+                            <p>
+                                Your account is ready. Select an
+                                internship or training program to
+                                continue with enrollment.
+                            </p>
+
+                            <div
+                                class="intern-dashboard-choose-program-meta"
+                            >
+
+                                <span>
+                                    No active enrollment
+                                </span>
+
+                                <span>
+                                    Payment is required only after
+                                    you select a program.
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <div
+                            class="intern-dashboard-choose-program-action"
+                        >
+
+                            <a
+                                href="programs.html"
+                                class="intern-primary-button"
+                                id="dashboardExploreProgramsButton"
+                            >
+                                Explore Programs
+                                <span aria-hidden="true">
+                                    →
+                                </span>
+                            </a>
+
+                        </div>
+
+                    </section>
+
+
+                    <!-- =========================================
+                         STATUS ROW
+                         ========================================= -->
+
+                    <section
+                        class="intern-status-grid"
+                    >
+
+
+                        <!-- Program -->
+
+                        <article
+                            class="intern-stat-card"
+                        >
+
+                            <div class="intern-stat-icon">
+                                ◇
+                            </div>
+
+                            <div class="intern-stat-content">
+
+                                <span>
+                                    PROGRAM
+                                </span>
+
+                                <strong
+                                    id="dashboardProgramName"
+                                >
+                                    —
+                                </strong>
+
+                                <small
+                                    id="dashboardProgramType"
+                                >
+                                    —
+                                </small>
+
+                            </div>
+
+                        </article>
+
+
+                        <!-- Enrollment -->
+
+                        <article
+                            class="intern-stat-card"
+                        >
+
+                            <div class="intern-stat-icon">
+                                ✓
+                            </div>
+
+                            <div class="intern-stat-content">
+
+                                <span>
+                                    ENROLLMENT
+                                </span>
+
+                                <strong
+                                    id="dashboardEnrollmentStatus"
+                                >
+                                    —
+                                </strong>
+
+                                <small
+                                    id="dashboardEnrollmentPath"
+                                >
+                                    —
+                                </small>
+
+                            </div>
+
+                        </article>
+
+
+                        <!-- Payment -->
+
+                        <article
+                            class="intern-stat-card"
+                        >
+
+                            <div class="intern-stat-icon">
+                                ₹
+                            </div>
+
+                            <div class="intern-stat-content">
+
+                                <span>
+                                    PAYMENT
+                                </span>
+
+                                <strong
+                                    id="dashboardPaymentStatus"
+                                >
+                                    —
+                                </strong>
+
+                                <small>
+                                    Verified
+                                </small>
+
+                            </div>
+
+                        </article>
+
+
+                        <!-- Progress -->
+
+                        <article
+                            class="intern-stat-card"
+                        >
+
+                            <div class="intern-stat-icon">
+                                %
+                            </div>
+
+                            <div class="intern-stat-content">
+
+                                <span>
+                                    PROGRESS
+                                </span>
+
+                                <strong
+                                    id="dashboardProgressValue"
+                                >
+                                    0%
+                                </strong>
+
+                                <small>
+                                    Internship progress
+                                </small>
+
+                            </div>
+
+                        </article>
+
+                    </section>
+
+
+                    <!-- =========================================
+                         MAIN DASHBOARD GRID
+                         ========================================= -->
+
+                    <section
+                        class="intern-dashboard-grid"
+                    >
+
+
+                        <!-- =====================================
+                             INTERNSHIP OVERVIEW
+                             ===================================== -->
+
+                        <article
+                            class="intern-panel intern-overview-panel"
+                        >
+
+                            <div class="intern-panel-header">
+
+                                <div>
+
+                                    <span
+                                        class="intern-section-kicker"
+                                    >
+                                        YOUR INTERNSHIP
+                                    </span>
+
+                                    <h3>
+                                        Internship Overview
+                                    </h3>
+
+                                </div>
+
+                                <span
+                                    id="internshipStatusBadge"
+                                    class="intern-status-badge"
+                                >
+                                    ACTIVE
+                                </span>
+
+                            </div>
+
+
+                            <div
+                                class="intern-overview-body"
+                            >
+
+                                <div
+                                    class="intern-overview-program"
+                                >
+
+                                    <div
+                                        class="intern-program-symbol"
+                                    >
+                                        N
+                                    </div>
+
+                                    <div>
+
+                                        <strong
+                                            id="overviewProgramName"
+                                        >
+                                            —
+                                        </strong>
+
+                                        <span
+                                            id="overviewProgramDuration"
+                                        >
+                                            —
+                                        </span>
+
+                                    </div>
+
+                                </div>
+
+
+                                <div
+                                    class="intern-overview-details"
+                                >
+
+                                    <div>
+
+                                        <span>
+                                            Enrollment Type
+                                        </span>
+
+                                        <strong
+                                            id="overviewEnrollmentPath"
+                                        >
+                                            —
+                                        </strong>
+
+                                    </div>
+
+
+                                    <div>
+
+                                        <span>
+                                            Enrolled On
+                                        </span>
+
+                                        <strong
+                                            id="overviewEnrollmentDate"
+                                        >
+                                            —
+                                        </strong>
+
+                                    </div>
+
+
+                                    <div>
+
+                                        <span>
+                                            Batch
+                                        </span>
+
+                                        <strong
+                                            id="overviewBatch"
+                                        >
+                                            Not assigned
+                                        </strong>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </article>
+
+
+                        <!-- =====================================
+                             PROGRESS
+                             ===================================== -->
+
+                        <article
+                            class="intern-panel intern-progress-panel"
+                        >
+
+                            <div class="intern-panel-header">
+
+                                <div>
+
+                                    <span
+                                        class="intern-section-kicker"
+                                    >
+                                        PROGRESS
+                                    </span>
+
+                                    <h3>
+                                        Your Journey
+                                    </h3>
+
+                                </div>
+
+                                <a
+                                    href="intern/milestones.html"
+                                    class="intern-panel-link"
+                                >
+                                    View Details →
+                                </a>
+
+                            </div>
+
+
+                            <div
+                                class="intern-progress-visual"
+                            >
+
+                                <div
+                                    class="intern-progress-circle"
+                                    id="progressCircle"
+                                >
+
+                                    <div>
+
+                                        <strong
+                                            id="progressCircleValue"
+                                        >
+                                            0%
+                                        </strong>
+
+                                        <span>
+                                            Complete
+                                        </span>
+
+                                    </div>
+
+                                </div>
+
+
+                                <div
+                                    class="intern-progress-summary"
+                                >
+
+                                    <strong>
+                                        Keep moving forward
+                                    </strong>
+
+                                    <p>
+                                        Your learning progress
+                                        will appear here as you
+                                        complete your internship
+                                        activities.
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                        </article>
+
+
+                        <!-- =====================================
+                             QUICK ACCESS
+                             ===================================== -->
+
+                        <article
+                            class="intern-panel intern-quick-panel"
+                        >
+
+                            <div class="intern-panel-header">
+
+                                <div>
+
+                                    <span
+                                        class="intern-section-kicker"
+                                    >
+                                        QUICK ACCESS
+                                    </span>
+
+                                    <h3>
+                                        Continue Learning
+                                    </h3>
+
+                                </div>
+
+                            </div>
+
+
+                            <div
+                                class="intern-quick-grid"
+                            >
+
+                                <a
+                                    href="intern/learning.html"
+                                    class="intern-quick-card"
+                                    data-enrollment-required
+                                >
+
+                                    <span class="intern-quick-icon">
+                                        ▣
+                                    </span>
+
+                                    <strong>
+                                        Learning
+                                    </strong>
+
+                                    <small>
+                                        Continue your courses
+                                    </small>
+
+                                    <span class="intern-quick-arrow">
+                                        →
+                                    </span>
+
+                                </a>
+
+
+                                <a
+                                    href="intern/live-classes.html"
+                                    class="intern-quick-card"
+                                    data-enrollment-required
+                                >
+
+                                    <span class="intern-quick-icon">
+                                        ◉
+                                    </span>
+
+                                    <strong>
+                                        Live Classes
+                                    </strong>
+
+                                    <small>
+                                        View upcoming sessions
+                                    </small>
+
+                                    <span class="intern-quick-arrow">
+                                        →
+                                    </span>
+
+                                </a>
+
+
+                                <a
+                                    href="intern/tasks.html"
+                                    class="intern-quick-card"
+                                    data-enrollment-required
+                                >
+
+                                    <span class="intern-quick-icon">
+                                        ✓
+                                    </span>
+
+                                    <strong>
+                                        Tasks
+                                    </strong>
+
+                                    <small>
+                                        Check your assignments
+                                    </small>
+
+                                    <span class="intern-quick-arrow">
+                                        →
+                                    </span>
+
+                                </a>
+
+
+                                <a
+                                    href="intern/projects.html"
+                                    class="intern-quick-card"
+                                    data-enrollment-required
+                                >
+
+                                    <span class="intern-quick-icon">
+                                        ◇
+                                    </span>
+
+                                    <strong>
+                                        Projects
+                                    </strong>
+
+                                    <small>
+                                        Manage your projects
+                                    </small>
+
+                                    <span class="intern-quick-arrow">
+                                        →
+                                    </span>
+
+                                </a>
+
+                            </div>
+
+                        </article>
+
+
+                        <!-- =====================================
+                             UPCOMING CLASSES
+                             ===================================== -->
+
+                        <article
+                            class="intern-panel intern-classes-panel"
+                        >
+
+                            <div class="intern-panel-header">
+
+                                <div>
+
+                                    <span
+                                        class="intern-section-kicker"
+                                    >
+                                        SCHEDULE
+                                    </span>
+
+                                    <h3>
+                                        Upcoming Classes
+                                    </h3>
+
+                                </div>
+
+                                <a
+                                    href="intern/live-classes.html"
+                                    class="intern-panel-link"
+                                >
+                                    View All →
+                                </a>
+
+                            </div>
+
+
+                            <div
+                                id="upcomingClassesContainer"
+                                class="intern-empty-state"
+                            >
+
+                                <div class="intern-empty-icon">
+                                    ◷
+                                </div>
+
+                                <strong>
+                                    No upcoming classes
+                                </strong>
+
+                                <p>
+                                    Your upcoming live classes
+                                    will appear here once they
+                                    are scheduled.
+                                </p>
+
+                            </div>
+
+                        </article>
+
+
+                        <!-- =====================================
+                             RECENT TASKS
+                             ===================================== -->
+
+                        <article
+                            class="intern-panel intern-tasks-panel"
+                        >
+
+                            <div class="intern-panel-header">
+
+                                <div>
+
+                                    <span
+                                        class="intern-section-kicker"
+                                    >
+                                        ACTION REQUIRED
+                                    </span>
+
+                                    <h3>
+                                        Recent Tasks
+                                    </h3>
+
+                                </div>
+
+                                <a
+                                    href="intern/tasks.html"
+                                    class="intern-panel-link"
+                                >
+                                    View All →
+                                </a>
+
+                            </div>
+
+
+                            <div
+                                id="recentTasksContainer"
+                                class="intern-empty-state"
+                            >
+
+                                <div class="intern-empty-icon">
+                                    ✓
+                                </div>
+
+                                <strong>
+                                    No pending tasks
+                                </strong>
+
+                                <p>
+                                    New assignments from your
+                                    internship will appear here.
+                                </p>
+
+                            </div>
+
+                        </article>
+
+
+                    </section>
+
+
+                    <!-- =========================================
+                         SUPPORT / HELP
+                         ========================================= -->
+
+                    <section
+                        class="intern-support-banner"
+                    >
+
+                        <div
+                            class="intern-support-content"
+                        >
+
+                            <span class="intern-support-icon">
+                                ?
+                            </span>
+
+                            <div>
+
+                                <strong>
+                                    Need help with your internship?
+                                </strong>
+
+                                <p>
+                                    Contact the NITRIXA TECHNOLOGIES
+                                    team if you need assistance.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <a
+                            href="contact.html"
+                            class="intern-secondary-button"
+                        >
+                            Contact Support
+                        </a>
+
+                    </section>
+
+
+                </div>
+
+            </main>
+
+
+            <!-- =================================================
+                 FOOTER
+                 ================================================= -->
+
+            <footer
+                class="intern-footer"
+            >
+
+                <span>
+                    ©
+                    <span id="internCurrentYear">
+                        2026
+                    </span>
+                    NITRIXA TECHNOLOGIES
+                </span>
+
+                <div>
+
+                    <a href="privacy.html">
+                        Privacy
+                    </a>
+
+                    <a href="terms.html">
+                        Terms
+                    </a>
+
+                    <a href="contact.html">
+                        Support
+                    </a>
+
+                </div>
+
+            </footer>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         SUPABASE
+         ===================================================== -->
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+        defer
+    ></script>
+
+
+    <script
+        src="js/supabase.js"
+        defer
+    ></script>
+
+
+    <!-- =====================================================
+         GLOBAL JS
+         ===================================================== -->
+
+    <script
+        src="js/main.js"
+        defer
+    ></script>
+
+
+    <!-- =====================================================
+         INTERN DASHBOARD JS
+         ===================================================== -->
+
+    <script
+        src="js/intern-dashboard.js?v=2"
+        defer
+    ></script>
+
+
+</body>
+
+</html>

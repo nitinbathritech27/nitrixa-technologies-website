@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="Secure NITRIXA TECHNOLOGIES internship and training payment checkout."
+    >
+
+    <title>
+        Secure Enrollment | NITRIXA TECHNOLOGIES
+    </title>
+
+
+    <!-- =====================================================
+         GLOBAL STYLES
+         ===================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="css/global.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/components.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/animations.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/responsive.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/payment.css"
+    >
+
+
+    <!-- =====================================================
+         RAZORPAY CHECKOUT
+         ===================================================== -->
+
+    <script
+        src="https://checkout.razorpay.com/v1/checkout.js"
+        defer
+    ></script>
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         HEADER
+         ===================================================== -->
+
+    <header class="site-header">
+
+        <div class="container">
+
+            <div class="site-header-inner">
+
+                <a
+                    href="index.html"
+                    class="site-logo"
+                >
+                    NITRIXA TECHNOLOGIES
+                </a>
+
+
+                <a
+                    href="programs.html"
+                    class="header-back-link"
+                >
+                    ← Back to Programs
+                </a>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =====================================================
+         MAIN
+         ===================================================== -->
+
+    <main class="payment-page">
+
+        <div class="container">
+
+
+            <!-- =================================================
+                 HERO
+                 ================================================= -->
+
+            <section class="payment-hero">
+
+                <div>
+
+                    <span class="section-kicker">
+                        SECURE ENROLLMENT
+                    </span>
+
+                    <h1>
+                        Complete Your Enrollment
+                    </h1>
+
+                    <p>
+                        Your payment is processed securely
+                        through Razorpay.
+                    </p>
+
+                </div>
+
+
+                <div class="payment-security-badge">
+
+                    <span>
+                        ✓
+                    </span>
+
+                    <div>
+
+                        <strong>
+                            Secure Checkout
+                        </strong>
+
+                        <small>
+                            Razorpay Test Mode
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 LOADING STATE
+                 ================================================= -->
+
+            <section
+                id="paymentLoadingState"
+                class="payment-card payment-state"
+            >
+
+                <div class="payment-loader"></div>
+
+                <h2>
+                    Loading payment details...
+                </h2>
+
+                <p>
+                    Please wait while we verify your program.
+                </p>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 ERROR STATE
+                 ================================================= -->
+
+            <section
+                id="paymentErrorState"
+                class="payment-card payment-state is-hidden"
+            >
+
+                <div class="state-icon state-icon-error">
+                    !
+                </div>
+
+                <h2>
+                    Payment unavailable
+                </h2>
+
+                <p
+                    id="paymentErrorMessage"
+                >
+                    We could not load the payment details.
+                </p>
+
+                <a
+                    href="programs.html"
+                    class="payment-secondary-button"
+                >
+                    Back to Programs
+                </a>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 CHECKOUT APPLICATION
+                 ================================================= -->
+
+            <section
+                id="paymentCheckout"
+                class="payment-layout is-hidden"
+            >
+
+
+                <!-- =============================================
+                     LEFT COLUMN
+                     ============================================= -->
+
+                <div class="payment-main-column">
+
+
+                    <!-- =========================================
+                         PROGRAM
+                         ========================================= -->
+
+                    <section class="payment-card">
+
+                        <div class="card-heading">
+
+                            <div>
+
+                                <span class="section-kicker">
+                                    PROGRAM
+                                </span>
+
+                                <h2>
+                                    Program Details
+                                </h2>
+
+                            </div>
+
+                            <span
+                                id="programTypeBadge"
+                                class="payment-badge"
+                            >
+                                -
+                            </span>
+
+                        </div>
+
+
+                        <div class="program-summary">
+
+                            <h3
+                                id="programName"
+                            >
+                                Loading...
+                            </h3>
+
+                            <p
+                                id="programDescription"
+                            >
+                                -
+                            </p>
+
+
+                            <div class="program-meta-grid">
+
+                                <div class="program-meta-item">
+
+                                    <span>
+                                        Duration
+                                    </span>
+
+                                    <strong
+                                        id="programDuration"
+                                    >
+                                        -
+                                    </strong>
+
+                                </div>
+
+
+                                <div class="program-meta-item">
+
+                                    <span>
+                                        Enrollment
+                                    </span>
+
+                                    <strong
+                                        id="enrollmentPathLabel"
+                                    >
+                                        -
+                                    </strong>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </section>
+
+
+
+                    <!-- =========================================
+                         ACCOUNT
+                         ========================================= -->
+
+                    <section class="payment-card">
+
+                        <div class="card-heading">
+
+                            <div>
+
+                                <span class="section-kicker">
+                                    ACCOUNT
+                                </span>
+
+                                <h2>
+                                    Account Status
+                                </h2>
+
+                            </div>
+
+                        </div>
+
+
+                        <div
+                            id="accountStatus"
+                            class="account-status"
+                        >
+
+                            <div class="account-status-icon">
+                                ✓
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    Account verified
+                                </strong>
+
+                                <p>
+                                    You are logged in and can
+                                    continue.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <div
+                            id="loginRequired"
+                            class="login-required is-hidden"
+                        >
+
+                            <div class="account-status-icon">
+                                !
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    Login required
+                                </strong>
+
+                                <p>
+                                    Please login or create your
+                                    account before continuing.
+                                </p>
+
+                                <a
+                                    id="loginLink"
+                                    href="login.html"
+                                    class="payment-secondary-button"
+                                >
+                                    Login / Create Account
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    </section>
+
+
+
+                    <!-- =========================================
+                         PAYMENT
+                         ========================================= -->
+
+                    <section class="payment-card">
+
+                        <div class="card-heading">
+
+                            <div>
+
+                                <span class="section-kicker">
+                                    PAYMENT
+                                </span>
+
+                                <h2>
+                                    Secure payment
+                                </h2>
+
+                                <p>
+                                    Your payment will be processed
+                                    securely through Razorpay.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="payment-methods">
+
+                            <span>
+                                UPI
+                            </span>
+
+                            <span>
+                                Cards
+                            </span>
+
+                            <span>
+                                Net Banking
+                            </span>
+
+                            <span>
+                                Wallets
+                            </span>
+
+                        </div>
+
+
+                        <button
+                            type="button"
+                            id="payNowButton"
+                            class="payment-primary-button"
+                            disabled
+                        >
+
+                            <span
+                                id="payNowButtonText"
+                            >
+                                Continue to Secure Payment
+                            </span>
+
+                            <span>
+                                →
+                            </span>
+
+                        </button>
+
+
+                        <div
+                            id="paymentProcessing"
+                            class="payment-processing is-hidden"
+                        >
+
+                            <div class="payment-loader small"></div>
+
+                            <span>
+                                Creating secure payment order...
+                            </span>
+
+                        </div>
+
+
+                        <div class="secure-note">
+
+                            <span>
+                                ✓
+                            </span>
+
+                            Secure Razorpay Checkout
+
+                        </div>
+
+                    </section>
+
+
+                </div>
+
+
+
+                <!-- =============================================
+                     RIGHT COLUMN
+                     ============================================= -->
+
+                <aside class="payment-sidebar">
+
+
+                    <!-- =========================================
+                         ORDER SUMMARY
+                         ========================================= -->
+
+                    <section class="payment-card order-summary-card">
+
+                        <span class="section-kicker">
+                            ORDER SUMMARY
+                        </span>
+
+                        <h2>
+                            Your Enrollment
+                        </h2>
+
+
+                        <div class="summary-program">
+
+                            <strong
+                                id="summaryProgramName"
+                            >
+                                Loading...
+                            </strong>
+
+                            <span
+                                id="summaryEnrollmentPath"
+                            >
+                                -
+                            </span>
+
+                        </div>
+
+
+                        <div class="summary-row">
+
+                            <span>
+                                Program Fee
+                            </span>
+
+                            <strong
+                                id="summaryProgramFee"
+                            >
+                                ₹0
+                            </strong>
+
+                        </div>
+
+
+                        <div class="summary-row total">
+
+                            <span>
+                                Total
+                            </span>
+
+                            <strong
+                                id="summaryTotal"
+                            >
+                                ₹0
+                            </strong>
+
+                        </div>
+
+
+                        <div class="test-mode-note">
+
+                            <strong>
+                                TEST MODE
+                            </strong>
+
+                            <p>
+                                This checkout currently uses
+                                Razorpay Test Mode. No real
+                                money will be charged.
+                            </p>
+
+                        </div>
+
+                    </section>
+
+
+
+                    <!-- =========================================
+                         SECURITY
+                         ========================================= -->
+
+                    <section class="payment-card security-card">
+
+                        <span class="section-kicker">
+                            SECURITY
+                        </span>
+
+                        <h3>
+                            Protected Checkout
+                        </h3>
+
+
+                        <ul>
+
+                            <li>
+                                ✓ Verified Program
+                            </li>
+
+                            <li>
+                                ✓ Secure Checkout
+                            </li>
+
+                            <li>
+                                ✓ Payment Verification
+                            </li>
+
+                        </ul>
+
+                    </section>
+
+                </aside>
+
+
+            </section>
+
+
+        </div>
+
+    </main>
+
+
+
+    <!-- =====================================================
+         FOOTER
+         ===================================================== -->
+
+    <footer class="payment-footer">
+
+        <div class="container">
+
+            <div class="payment-footer-inner">
+
+                <a
+                    href="programs.html"
+                >
+                    ← Back to Programs
+                </a>
+
+                <span>
+                    NITRIXA TECHNOLOGIES
+                </span>
+
+            </div>
+
+        </div>
+
+    </footer>
+
+
+
+    <!-- =====================================================
+         SCRIPTS
+         ===================================================== -->
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+        defer
+    ></script>
+
+
+    <script
+        src="js/supabase.js"
+        defer
+    ></script>
+
+
+    <script
+        src="js/main.js"
+        defer
+    ></script>
+
+
+    <script
+        src="js/payment.js?v=3"
+        defer
+    ></script>
+
+
+</body>
+
+</html>

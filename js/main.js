@@ -1,557 +1,979 @@
 /* =========================================================
    NITRIXA TECHNOLOGIES
    MAIN JAVASCRIPT
+
+   RESPONSIBILITIES:
+   - Mobile navigation
+   - Current year
+   - Escape key
+   - Scroll reveal
+   - Reduced motion
+   - Active navigation
+   - Smooth anchor scrolling
+   - Desktop tilt
+   - Hero parallax
+   - Authentication-aware public header
+
+   AUTHENTICATION FLOW:
+
+   LOGGED OUT
+        ↓
+   Login / Register
+
+   LOGGED IN
+        ↓
+   Dashboard
+
+   Dashboard
+        ↓
+   Logout
+        ↓
+   Public Website
    ========================================================= */
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener(
+    "DOMContentLoaded",
+    async () => {
 
-    /* =====================================================
-       MOBILE NAVIGATION
-    ===================================================== */
+        "use strict";
 
-    const menuToggle = document.querySelector(".menu-toggle");
-    const navMenu = document.querySelector(".nav-menu");
 
-    if (menuToggle && navMenu) {
+        /* =====================================================
+           MOBILE NAVIGATION
+        ===================================================== */
 
-        menuToggle.addEventListener("click", () => {
-
-            const opened = navMenu.classList.toggle("open");
-
-            menuToggle.setAttribute(
-                "aria-expanded",
-                String(opened)
+        const menuToggle =
+            document.querySelector(
+                ".menu-toggle"
             );
 
-            document.body.classList.toggle(
-                "no-scroll",
-                opened
+        const navMenu =
+            document.querySelector(
+                ".nav-menu"
             );
 
-        });
+
+        if (
+            menuToggle &&
+            navMenu
+        ) {
+
+            menuToggle.addEventListener(
+                "click",
+                () => {
+
+                    const opened =
+                        navMenu.classList.toggle(
+                            "open"
+                        );
 
 
-        navMenu.querySelectorAll("a").forEach((link) => {
-
-            link.addEventListener("click", () => {
-
-                navMenu.classList.remove("open");
-
-                menuToggle.setAttribute(
-                    "aria-expanded",
-                    "false"
-                );
-
-                document.body.classList.remove(
-                    "no-scroll"
-                );
-
-            });
-
-        });
-
-    }
+                    menuToggle.setAttribute(
+                        "aria-expanded",
+                        String(opened)
+                    );
 
 
-    /* =====================================================
-       CURRENT YEAR
-    ===================================================== */
+                    document.body.classList.toggle(
+                        "no-scroll",
+                        opened
+                    );
 
-    const currentYear =
-        document.getElementById("currentYear");
-
-    if (currentYear) {
-
-        currentYear.textContent =
-            new Date().getFullYear();
-
-    }
-
-
-    /* =====================================================
-       ESCAPE KEY
-    ===================================================== */
-
-    document.addEventListener("keydown", (event) => {
-
-        if (event.key === "Escape") {
-
-            if (navMenu) {
-                navMenu.classList.remove("open");
-            }
-
-            if (menuToggle) {
-
-                menuToggle.setAttribute(
-                    "aria-expanded",
-                    "false"
-                );
-
-            }
-
-            document.body.classList.remove(
-                "no-scroll"
+                }
             );
+
+
+            navMenu
+                .querySelectorAll("a")
+                .forEach(
+                    (link) => {
+
+                        link.addEventListener(
+                            "click",
+                            () => {
+
+                                navMenu.classList.remove(
+                                    "open"
+                                );
+
+
+                                menuToggle.setAttribute(
+                                    "aria-expanded",
+                                    "false"
+                                );
+
+
+                                document.body.classList.remove(
+                                    "no-scroll"
+                                );
+
+                            }
+                        );
+
+                    }
+                );
 
         }
 
-    });
 
+        /* =====================================================
+           CURRENT YEAR
+        ===================================================== */
 
-    /* =====================================================
-       SCROLL REVEAL
-       Supports both:
-       .reveal
-       .nx-reveal
-    ===================================================== */
-
-    const revealElements = document.querySelectorAll(
-        ".reveal, .nx-reveal"
-    );
-
-
-    if (
-        "IntersectionObserver" in window &&
-        revealElements.length > 0
-    ) {
-
-        const revealObserver =
-            new IntersectionObserver(
-                (entries, observer) => {
-
-                    entries.forEach((entry) => {
-
-                        if (!entry.isIntersecting) {
-                            return;
-                        }
-
-
-                        const element =
-                            entry.target;
-
-
-                        if (
-                            element.classList.contains(
-                                "nx-reveal"
-                            )
-                        ) {
-
-                            element.classList.add(
-                                "is-visible"
-                            );
-
-                        } else {
-
-                            element.classList.add(
-                                "visible"
-                            );
-
-                        }
-
-
-                        observer.unobserve(element);
-
-                    });
-
-                },
-                {
-                    threshold: 0.08,
-                    rootMargin: "0px 0px -40px 0px"
-                }
+        const currentYear =
+            document.getElementById(
+                "currentYear"
             );
 
 
-        revealElements.forEach((element) => {
+        if (currentYear) {
 
-            revealObserver.observe(element);
+            currentYear.textContent =
+                new Date().getFullYear();
 
-        });
-
-    } else {
-
-        /*
-         * Fallback for browsers where
-         * IntersectionObserver is unavailable.
-         */
-
-        revealElements.forEach((element) => {
-
-            if (
-                element.classList.contains(
-                    "nx-reveal"
-                )
-            ) {
-
-                element.classList.add(
-                    "is-visible"
-                );
-
-            } else {
-
-                element.classList.add(
-                    "visible"
-                );
-
-            }
-
-        });
-
-    }
+        }
 
 
-    /* =====================================================
-       REDUCED MOTION SUPPORT
-    ===================================================== */
+        /* =====================================================
+           ESCAPE KEY
+        ===================================================== */
 
-    const prefersReducedMotion =
-        window.matchMedia(
-            "(prefers-reduced-motion: reduce)"
-        ).matches;
-
-
-    if (prefersReducedMotion) {
-
-        revealElements.forEach((element) => {
-
-            element.classList.add(
-                element.classList.contains("nx-reveal")
-                    ? "is-visible"
-                    : "visible"
-            );
-
-        });
-
-    }
-
-
-    /* =====================================================
-       ACTIVE NAVIGATION
-       Automatically detects current page.
-    ===================================================== */
-
-    const currentPage =
-        window.location.pathname
-            .split("/")
-            .pop()
-            .toLowerCase();
-
-
-    if (navMenu) {
-
-        navMenu
-            .querySelectorAll(
-                "a.nav-link"
-            )
-            .forEach((link) => {
-
-                const href =
-                    link.getAttribute("href");
-
-
-                if (!href) {
-                    return;
-                }
-
-
-                const linkPage =
-                    href
-                        .split("/")
-                        .pop()
-                        .split("#")[0]
-                        .toLowerCase();
-
-
-                link.classList.remove("active");
-
-                link.removeAttribute(
-                    "aria-current"
-                );
-
+        document.addEventListener(
+            "keydown",
+            (event) => {
 
                 if (
-                    linkPage === currentPage ||
-                    (
-                        currentPage === "" &&
-                        linkPage === "index.html"
-                    )
+                    event.key ===
+                    "Escape"
                 ) {
 
-                    link.classList.add("active");
+                    if (navMenu) {
 
-                    link.setAttribute(
-                        "aria-current",
-                        "page"
+                        navMenu.classList.remove(
+                            "open"
+                        );
+
+                    }
+
+
+                    if (menuToggle) {
+
+                        menuToggle.setAttribute(
+                            "aria-expanded",
+                            "false"
+                        );
+
+                    }
+
+
+                    document.body.classList.remove(
+                        "no-scroll"
                     );
 
                 }
 
-            });
-
-    }
-
-
-    /* =====================================================
-       SMOOTH INTERNAL ANCHOR SCROLLING
-    ===================================================== */
-
-    if (!prefersReducedMotion) {
-
-        document
-            .querySelectorAll(
-                'a[href^="#"]'
-            )
-            .forEach((link) => {
-
-                link.addEventListener(
-                    "click",
-                    (event) => {
-
-                        const targetId =
-                            link
-                                .getAttribute("href")
-                                .substring(1);
+            }
+        );
 
 
-                        if (!targetId) {
-                            return;
-                        }
+        /* =====================================================
+           SCROLL REVEAL
+           Supports:
+           .reveal
+           .nx-reveal
+        ===================================================== */
+
+        const revealElements =
+            document.querySelectorAll(
+                ".reveal, .nx-reveal"
+            );
 
 
-                        const target =
-                            document.getElementById(
-                                targetId
+        if (
+            "IntersectionObserver" in window &&
+            revealElements.length > 0
+        ) {
+
+            const revealObserver =
+                new IntersectionObserver(
+                    (
+                        entries,
+                        observer
+                    ) => {
+
+                        entries.forEach(
+                            (entry) => {
+
+                                if (
+                                    !entry.isIntersecting
+                                ) {
+
+                                    return;
+
+                                }
+
+
+                                const element =
+                                    entry.target;
+
+
+                                if (
+                                    element.classList.contains(
+                                        "nx-reveal"
+                                    )
+                                ) {
+
+                                    element.classList.add(
+                                        "is-visible"
+                                    );
+
+                                } else {
+
+                                    element.classList.add(
+                                        "visible"
+                                    );
+
+                                }
+
+
+                                observer.unobserve(
+                                    element
+                                );
+
+                            }
+                        );
+
+                    },
+                    {
+                        threshold: 0.08,
+                        rootMargin:
+                            "0px 0px -40px 0px"
+                    }
+                );
+
+
+            revealElements.forEach(
+                (element) => {
+
+                    revealObserver.observe(
+                        element
+                    );
+
+                }
+            );
+
+        } else {
+
+            /*
+             * Fallback for browsers where
+             * IntersectionObserver is unavailable.
+             */
+
+            revealElements.forEach(
+                (element) => {
+
+                    if (
+                        element.classList.contains(
+                            "nx-reveal"
+                        )
+                    ) {
+
+                        element.classList.add(
+                            "is-visible"
+                        );
+
+                    } else {
+
+                        element.classList.add(
+                            "visible"
+                        );
+
+                    }
+
+                }
+            );
+
+        }
+
+
+        /* =====================================================
+           REDUCED MOTION SUPPORT
+        ===================================================== */
+
+        const prefersReducedMotion =
+            window.matchMedia(
+                "(prefers-reduced-motion: reduce)"
+            ).matches;
+
+
+        if (
+            prefersReducedMotion
+        ) {
+
+            revealElements.forEach(
+                (element) => {
+
+                    element.classList.add(
+                        element.classList.contains(
+                            "nx-reveal"
+                        )
+                            ? "is-visible"
+                            : "visible"
+                    );
+
+                }
+            );
+
+        }
+
+
+        /* =====================================================
+           ACTIVE NAVIGATION
+        ===================================================== */
+
+        const currentPage =
+            window.location.pathname
+                .split("/")
+                .pop()
+                .toLowerCase();
+
+
+        if (navMenu) {
+
+            navMenu
+                .querySelectorAll(
+                    "a.nav-link"
+                )
+                .forEach(
+                    (link) => {
+
+                        const href =
+                            link.getAttribute(
+                                "href"
                             );
 
 
-                        if (!target) {
+                        if (!href) {
+
                             return;
+
                         }
 
 
-                        event.preventDefault();
+                        const linkPage =
+                            href
+                                .split("/")
+                                .pop()
+                                .split("#")[0]
+                                .toLowerCase();
 
 
-                        target.scrollIntoView({
-                            behavior: "smooth",
-                            block: "start"
-                        });
+                        link.classList.remove(
+                            "active"
+                        );
+
+
+                        link.removeAttribute(
+                            "aria-current"
+                        );
+
+
+                        if (
+                            linkPage ===
+                                currentPage ||
+                            (
+                                currentPage ===
+                                    "" &&
+                                linkPage ===
+                                    "index.html"
+                            )
+                        ) {
+
+                            link.classList.add(
+                                "active"
+                            );
+
+
+                            link.setAttribute(
+                                "aria-current",
+                                "page"
+                            );
+
+                        }
 
                     }
                 );
 
-            });
-
-    }
+        }
 
 
-    /* =====================================================
-       DESKTOP TILT EFFECT
-       Only elements with .nx-tilt
-    ===================================================== */
+        /* =====================================================
+           SMOOTH INTERNAL ANCHOR SCROLLING
+        ===================================================== */
 
-    if (
-        window.matchMedia(
-            "(pointer: fine)"
-        ).matches &&
-        !prefersReducedMotion
-    ) {
+        if (
+            !prefersReducedMotion
+        ) {
 
-        const tiltElements =
-            document.querySelectorAll(
-                ".nx-tilt"
-            );
+            document
+                .querySelectorAll(
+                    'a[href^="#"]'
+                )
+                .forEach(
+                    (link) => {
+
+                        link.addEventListener(
+                            "click",
+                            (event) => {
+
+                                const targetId =
+                                    link
+                                        .getAttribute(
+                                            "href"
+                                        )
+                                        .substring(
+                                            1
+                                        );
 
 
-        tiltElements.forEach((element) => {
+                                if (!targetId) {
 
-            let frame = null;
+                                    return;
+
+                                }
 
 
-            element.addEventListener(
-                "mousemove",
-                (event) => {
+                                const target =
+                                    document.getElementById(
+                                        targetId
+                                    );
 
-                    if (frame) {
-                        cancelAnimationFrame(frame);
+
+                                if (!target) {
+
+                                    return;
+
+                                }
+
+
+                                event.preventDefault();
+
+
+                                target.scrollIntoView(
+                                    {
+                                        behavior:
+                                            "smooth",
+                                        block:
+                                            "start"
+                                    }
+                                );
+
+                            }
+                        );
+
                     }
+                );
+
+        }
 
 
-                    frame =
-                        requestAnimationFrame(() => {
+        /* =====================================================
+           DESKTOP TILT EFFECT
+           Only elements with .nx-tilt
+        ===================================================== */
 
-                            const rect =
-                                element.getBoundingClientRect();
+        if (
+            window.matchMedia(
+                "(pointer: fine)"
+            ).matches &&
+            !prefersReducedMotion
+        ) {
 
-
-                            const x =
-                                event.clientX -
-                                rect.left;
-
-
-                            const y =
-                                event.clientY -
-                                rect.top;
-
-
-                            const rotateY =
-                                (
-                                    x /
-                                    rect.width -
-                                    0.5
-                                ) * 6;
+            const tiltElements =
+                document.querySelectorAll(
+                    ".nx-tilt"
+                );
 
 
-                            const rotateX =
-                                (
-                                    0.5 -
-                                    y /
-                                    rect.height
-                                ) * 6;
+            tiltElements.forEach(
+                (element) => {
+
+                    let frame = null;
+
+
+                    element.addEventListener(
+                        "mousemove",
+                        (event) => {
+
+                            if (frame) {
+
+                                cancelAnimationFrame(
+                                    frame
+                                );
+
+                            }
+
+
+                            frame =
+                                requestAnimationFrame(
+                                    () => {
+
+                                        const rect =
+                                            element.getBoundingClientRect();
+
+
+                                        const x =
+                                            event.clientX -
+                                            rect.left;
+
+
+                                        const y =
+                                            event.clientY -
+                                            rect.top;
+
+
+                                        const rotateY =
+                                            (
+                                                x /
+                                                rect.width -
+                                                0.5
+                                            ) * 6;
+
+
+                                        const rotateX =
+                                            (
+                                                0.5 -
+                                                y /
+                                                rect.height
+                                            ) * 6;
+
+
+                                        element.style.transform =
+                                            `perspective(900px)
+                                             rotateX(${rotateX}deg)
+                                             rotateY(${rotateY}deg)
+                                             translateY(-2px)`;
+
+                                    }
+                                );
+
+                        }
+                    );
+
+
+                    element.addEventListener(
+                        "mouseleave",
+                        () => {
+
+                            if (frame) {
+
+                                cancelAnimationFrame(
+                                    frame
+                                );
+
+                            }
 
 
                             element.style.transform =
-                                `perspective(900px)
-                                 rotateX(${rotateX}deg)
-                                 rotateY(${rotateY}deg)
-                                 translateY(-2px)`;
+                                "";
 
-                        });
+                        }
+                    );
+
+                }
+            );
+
+        }
+
+
+        /* =====================================================
+           HOME HERO PARALLAX
+        ===================================================== */
+
+        const heroVisual =
+            document.querySelector(
+                ".nx-hero-visual"
+            );
+
+
+        if (
+            heroVisual &&
+            !prefersReducedMotion &&
+            window.matchMedia(
+                "(pointer: fine)"
+            ).matches
+        ) {
+
+            let heroFrame = null;
+
+
+            window.addEventListener(
+                "mousemove",
+                (event) => {
+
+                    if (heroFrame) {
+
+                        cancelAnimationFrame(
+                            heroFrame
+                        );
+
+                    }
+
+
+                    heroFrame =
+                        requestAnimationFrame(
+                            () => {
+
+                                const x =
+                                    (
+                                        event.clientX /
+                                        window.innerWidth
+                                    ) - 0.5;
+
+
+                                const y =
+                                    (
+                                        event.clientY /
+                                        window.innerHeight
+                                    ) - 0.5;
+
+
+                                heroVisual.style.transform =
+                                    `translate3d(
+                                        ${x * 8}px,
+                                        ${y * 6}px,
+                                        0
+                                    )`;
+
+                            }
+                        );
 
                 }
             );
 
 
-            element.addEventListener(
+            window.addEventListener(
                 "mouseleave",
                 () => {
 
-                    if (frame) {
-                        cancelAnimationFrame(frame);
+                    if (heroFrame) {
+
+                        cancelAnimationFrame(
+                            heroFrame
+                        );
+
                     }
 
 
-                    element.style.transform =
+                    heroVisual.style.transform =
                         "";
 
                 }
             );
 
-        });
-
-    }
+        }
 
 
-    /* =====================================================
-       HOME HERO PARALLAX
-    ===================================================== */
+        /* =====================================================
+           HERO REVEAL SAFETY
+        ===================================================== */
 
-    const heroVisual =
-        document.querySelector(
-            ".nx-hero-visual"
-        );
-
-
-    if (
-        heroVisual &&
-        !prefersReducedMotion &&
-        window.matchMedia(
-            "(pointer: fine)"
-        ).matches
-    ) {
-
-        let heroFrame = null;
-
-
-        window.addEventListener(
-            "mousemove",
-            (event) => {
-
-                if (heroFrame) {
-                    cancelAnimationFrame(
-                        heroFrame
-                    );
-                }
-
-
-                heroFrame =
-                    requestAnimationFrame(() => {
-
-                        const x =
-                            (
-                                event.clientX /
-                                window.innerWidth
-                            ) - 0.5;
-
-
-                        const y =
-                            (
-                                event.clientY /
-                                window.innerHeight
-                            ) - 0.5;
-
-
-                        heroVisual.style.transform =
-                            `translate3d(
-                                ${x * 8}px,
-                                ${y * 6}px,
-                                0
-                            )`;
-
-                    });
-
-            }
-        );
-
-
-        window.addEventListener(
-            "mouseleave",
+        requestAnimationFrame(
             () => {
 
-                if (heroFrame) {
-                    cancelAnimationFrame(
-                        heroFrame
+                document
+                    .querySelectorAll(
+                        ".nx-hero .nx-reveal"
+                    )
+                    .forEach(
+                        (element) => {
+
+                            element.classList.add(
+                                "is-visible"
+                            );
+
+                        }
                     );
-                }
-
-
-                heroVisual.style.transform =
-                    "";
 
             }
         );
 
-    }
+
+        /* =====================================================
+           AUTHENTICATION UI
+           PUBLIC WEBSITE HEADER
+        ===================================================== */
+
+        async function initializeAuthenticationUI() {
+
+            /*
+             * Supabase client may not be available on
+             * pages that do not load Supabase.
+             *
+             * In that case, simply leave the existing
+             * public navigation untouched.
+             */
+
+            if (
+                !window.supabaseClient ||
+                !window.supabaseClient.auth
+            ) {
+
+                return;
+
+            }
 
 
-    /* =====================================================
-       HERO REVEAL SAFETY
-       Prevents Home hero from remaining invisible
-       if observer does not trigger immediately.
-    ===================================================== */
+            const supabase =
+                window.supabaseClient;
 
-    requestAnimationFrame(() => {
 
-        document
-            .querySelectorAll(
-                ".nx-hero .nx-reveal"
-            )
-            .forEach((element) => {
+            /*
+             * Find common authentication links/buttons.
+             *
+             * We intentionally support multiple selectors
+             * so existing public-page HTML does not need
+             * to be rewritten unnecessarily.
+             */
 
-                element.classList.add(
-                    "is-visible"
+            const authElements =
+                Array.from(
+                    document.querySelectorAll(
+                        [
+                            "[data-auth-link]",
+                            "#headerAuthButton",
+                            "#authHeaderButton",
+                            ".header-auth-button"
+                        ].join(",")
+                    )
                 );
 
-            });
 
-    });
+            /*
+             * Remove duplicates.
+             */
+
+            const uniqueAuthElements =
+                [...new Set(
+                    authElements
+                )];
 
 
-    /* =====================================================
-       PAGE READY
-    ===================================================== */
+            /*
+             * If this page does not have a dedicated
+             * authentication button, there is nothing
+             * to change.
+             */
 
-    document.documentElement.classList.add(
-        "nx-page-ready"
-    );
+            if (
+                uniqueAuthElements.length === 0
+            ) {
 
-});
+                return;
+
+            }
+
+
+            /*
+             * Helper:
+             * Update a single auth element.
+             */
+
+            function updateAuthElement(
+                element,
+                session
+            ) {
+
+                if (!element) {
+                    return;
+                }
+
+
+                const loggedIn =
+                    Boolean(
+                        session &&
+                        session.user
+                    );
+
+
+                if (loggedIn) {
+
+                    /*
+                     * Logged in:
+                     * → Dashboard
+                     */
+
+                    element.href =
+                        "intern-dashboard.html";
+
+
+                    element.textContent =
+                        "Dashboard";
+
+
+                    element.setAttribute(
+                        "aria-label",
+                        "Open Intern Dashboard"
+                    );
+
+
+                    element.dataset.authState =
+                        "authenticated";
+
+
+                    element.classList.add(
+                        "is-authenticated"
+                    );
+
+
+                    element.classList.remove(
+                        "is-logged-out"
+                    );
+
+                } else {
+
+                    /*
+                     * Logged out:
+                     * → Login / Register
+                     */
+
+                    element.href =
+                        "login.html";
+
+
+                    element.textContent =
+                        "Login / Register";
+
+
+                    element.setAttribute(
+                        "aria-label",
+                        "Login or create an account"
+                    );
+
+
+                    element.dataset.authState =
+                        "unauthenticated";
+
+
+                    element.classList.add(
+                        "is-logged-out"
+                    );
+
+
+                    element.classList.remove(
+                        "is-authenticated"
+                    );
+
+                }
+
+            }
+
+
+            /*
+             * Initial session.
+             */
+
+            try {
+
+                const {
+                    data,
+                    error
+                } =
+                    await supabase.auth.getSession();
+
+
+                if (error) {
+
+                    console.error(
+                        "NITRIXA: Public auth session check failed:",
+                        error
+                    );
+
+                    /*
+                     * Do not modify the UI on a
+                     * session-check error.
+                     */
+
+                    return;
+
+                }
+
+
+                const session =
+                    data?.session || null;
+
+
+                uniqueAuthElements.forEach(
+                    (element) => {
+
+                        updateAuthElement(
+                            element,
+                            session
+                        );
+
+                    }
+                );
+
+
+            } catch (error) {
+
+                console.error(
+                    "NITRIXA: Authentication UI initialization failed:",
+                    error
+                );
+
+            }
+
+
+            /*
+             * Listen for login/logout changes.
+             *
+             * This means the header updates automatically
+             * without requiring a manual page refresh.
+             */
+
+            supabase.auth.onAuthStateChange(
+                (
+                    event,
+                    session
+                ) => {
+
+                    /*
+                     * Update the public header for all
+                     * authentication changes.
+                     */
+
+                    uniqueAuthElements.forEach(
+                        (element) => {
+
+                            updateAuthElement(
+                                element,
+                                session
+                            );
+
+                        }
+                    );
+
+                }
+            );
+
+        }
+
+
+        /*
+         * Initialize authentication UI.
+         */
+
+        await initializeAuthenticationUI();
+
+
+        /* =====================================================
+           PAGE READY
+        ===================================================== */
+
+        document.documentElement.classList.add(
+            "nx-page-ready"
+        );
+
+    }
+);

@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
 
     <meta
@@ -8,12 +10,14 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <meta
-        name="description"
-        content="NITRIXA Technologies Admin Programs Management"
-    >
+    <title>
+        Programs Management | NITRIXA TECHNOLOGIES
+    </title>
 
-    <title>Programs Management | NITRIXA Technologies</title>
+    <meta
+        name="theme-color"
+        content="#ffffff"
+    >
 
     <link
         rel="icon"
@@ -21,50 +25,750 @@
         href="../assets/images/nitrixa-logo.png"
     >
 
-    <link rel="stylesheet" href="../css/admin.css">
-    <link rel="stylesheet" href="../css/admin-responsive.css">
+    <!-- Existing CSS -->
+    <link
+        rel="stylesheet"
+        href="../css/global.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="../css/components.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="../css/admin.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="../css/admin-responsive.css"
+    >
+
+
+    <!-- =====================================================
+         PROGRAM ADMIN PAGE STYLE
+         Self-contained so page does not depend on missing
+         admin component classes.
+    ====================================================== -->
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: #f6f8fc;
+            color: #172033;
+            font-family:
+                Inter,
+                ui-sans-serif,
+                system-ui,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                sans-serif;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        button,
+        input,
+        textarea,
+        select {
+            font: inherit;
+        }
+
+        /* =================================================
+           HEADER
+        ================================================= */
+
+        .np-header {
+            height: 72px;
+            background: #ffffff;
+            border-bottom: 1px solid #e5eaf2;
+            display: flex;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .np-header-inner {
+            width: min(1440px, calc(100% - 40px));
+            margin: auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+        }
+
+        .np-logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .np-logo img {
+            width: 155px;
+            height: auto;
+            display: block;
+        }
+
+        .np-header-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .np-header-link {
+            color: #334155;
+            padding: 9px 12px;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .np-header-link:hover {
+            background: #f1f5f9;
+            color: #2454ff;
+        }
+
+        .np-logout {
+            border: 1px solid #d8dee9;
+            background: #ffffff;
+            color: #334155;
+            padding: 9px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .np-logout:hover {
+            border-color: #2454ff;
+            color: #2454ff;
+        }
+
+        /* =================================================
+           LAYOUT
+        ================================================= */
+
+        .np-layout {
+            width: min(1440px, calc(100% - 40px));
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 220px minmax(0, 1fr);
+            min-height: calc(100vh - 72px);
+        }
+
+        .np-sidebar {
+            padding: 28px 14px;
+            border-right: 1px solid #e5eaf2;
+            background: #ffffff;
+        }
+
+        .np-sidebar-title {
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: .12em;
+            color: #64748b;
+            padding: 0 12px 14px;
+        }
+
+        .np-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .np-nav a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 11px 12px;
+            border-radius: 9px;
+            color: #475569;
+            font-size: 14px;
+        }
+
+        .np-nav a:hover {
+            background: #f1f5ff;
+            color: #2454ff;
+        }
+
+        .np-nav a.active {
+            background: #edf2ff;
+            color: #2454ff;
+            font-weight: 700;
+        }
+
+        .np-main {
+            min-width: 0;
+            padding: 38px;
+        }
+
+        /* =================================================
+           PAGE HEADER
+        ================================================= */
+
+        .np-page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            gap: 24px;
+            margin-bottom: 28px;
+        }
+
+        .np-eyebrow {
+            display: block;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: .13em;
+            color: #3158d8;
+            margin-bottom: 8px;
+        }
+
+        .np-page-header h1 {
+            margin: 0;
+            font-size: clamp(28px, 4vw, 40px);
+            line-height: 1.1;
+            color: #15213b;
+        }
+
+        .np-page-header p {
+            margin: 10px 0 0;
+            color: #64748b;
+            max-width: 650px;
+        }
+
+        /* =================================================
+           BUTTONS
+        ================================================= */
+
+        .np-btn {
+            border: 0;
+            border-radius: 10px;
+            padding: 11px 17px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 14px;
+            transition: .2s ease;
+        }
+
+        .np-btn-primary {
+            background: #2854ff;
+            color: #ffffff;
+            box-shadow: 0 8px 24px rgba(40, 84, 255, .18);
+        }
+
+        .np-btn-primary:hover {
+            background: #1e45df;
+            transform: translateY(-1px);
+        }
+
+        .np-btn-secondary {
+            background: #ffffff;
+            color: #334155;
+            border: 1px solid #dbe2ec;
+        }
+
+        .np-btn-secondary:hover {
+            border-color: #2854ff;
+            color: #2854ff;
+        }
+
+        /* =================================================
+           STATUS
+        ================================================= */
+
+        .np-status {
+            padding: 13px 16px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .np-status.success {
+            background: #ecfdf3;
+            border: 1px solid #b7ebc8;
+            color: #087443;
+        }
+
+        .np-status.error {
+            background: #fff1f2;
+            border: 1px solid #fecdd3;
+            color: #be123c;
+        }
+
+        /* =================================================
+           SUMMARY
+        ================================================= */
+
+        .np-summary {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .np-summary-card {
+            background: #ffffff;
+            border: 1px solid #e5eaf2;
+            border-radius: 14px;
+            padding: 20px;
+            box-shadow: 0 5px 20px rgba(20, 32, 55, .04);
+        }
+
+        .np-summary-card span {
+            display: block;
+            color: #64748b;
+            font-size: 13px;
+            margin-bottom: 8px;
+        }
+
+        .np-summary-card strong {
+            display: block;
+            font-size: 27px;
+            color: #17213b;
+        }
+
+        /* =================================================
+           CONFIGURATION
+        ================================================= */
+
+        .np-config {
+            background: #ffffff;
+            border: 1px solid #e5eaf2;
+            border-radius: 14px;
+            padding: 22px;
+            margin-bottom: 20px;
+        }
+
+        .np-config h2 {
+            margin: 0;
+            font-size: 19px;
+        }
+
+        .np-config p {
+            color: #64748b;
+            margin: 7px 0 0;
+        }
+
+        .np-config-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            margin-top: 18px;
+        }
+
+        .np-config-item {
+            border: 1px solid #e6ebf2;
+            background: #f9fbff;
+            border-radius: 10px;
+            padding: 15px;
+        }
+
+        .np-config-item strong {
+            display: block;
+            color: #1e3a8a;
+            margin-bottom: 5px;
+        }
+
+        .np-config-item span {
+            font-size: 13px;
+            color: #64748b;
+            line-height: 1.5;
+        }
+
+        /* =================================================
+           TABLE CARD
+        ================================================= */
+
+        .np-card {
+            background: #ffffff;
+            border: 1px solid #e5eaf2;
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(20, 32, 55, .04);
+        }
+
+        .np-card-header {
+            padding: 20px 22px;
+            border-bottom: 1px solid #e8edf4;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .np-card-header h2 {
+            margin: 0;
+            font-size: 19px;
+        }
+
+        .np-loading,
+        .np-empty {
+            padding: 55px 20px;
+            text-align: center;
+            color: #64748b;
+        }
+
+        .np-empty h3 {
+            margin: 0 0 8px;
+            color: #17213b;
+        }
+
+        .np-table-wrap {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        .np-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 900px;
+        }
+
+        .np-table th {
+            text-align: left;
+            padding: 13px 16px;
+            background: #f8fafc;
+            border-bottom: 1px solid #e5eaf2;
+            color: #64748b;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: .05em;
+            white-space: nowrap;
+        }
+
+        .np-table td {
+            padding: 16px;
+            border-bottom: 1px solid #eef2f6;
+            vertical-align: middle;
+            color: #334155;
+            font-size: 14px;
+        }
+
+        .np-table tr:last-child td {
+            border-bottom: 0;
+        }
+
+        .np-program-name strong {
+            display: block;
+            color: #17213b;
+            margin-bottom: 4px;
+        }
+
+        .np-program-name small {
+            color: #64748b;
+        }
+
+        .np-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 5px 9px;
+            border-radius: 999px;
+            background: #eef2ff;
+            color: #3158d8;
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+        .np-status-badge {
+            display: inline-flex;
+            padding: 5px 9px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+        .np-status-badge.active {
+            background: #eafaf1;
+            color: #087443;
+        }
+
+        .np-status-badge.inactive {
+            background: #f1f5f9;
+            color: #64748b;
+        }
+
+        .np-actions {
+            display: flex;
+            gap: 7px;
+            flex-wrap: wrap;
+        }
+
+        .np-action {
+            border: 1px solid #dbe2ec;
+            background: #ffffff;
+            color: #334155;
+            padding: 7px 10px;
+            border-radius: 7px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .np-action:hover {
+            border-color: #2854ff;
+            color: #2854ff;
+        }
+
+        /* =================================================
+           MODAL
+        ================================================= */
+
+        .np-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, .45);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            z-index: 500;
+        }
+
+        .np-modal[hidden] {
+            display: none;
+        }
+
+        .np-modal-box {
+            width: min(760px, 100%);
+            max-height: 92vh;
+            overflow-y: auto;
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 30px 80px rgba(15, 23, 42, .22);
+        }
+
+        .np-modal-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid #e5eaf2;
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .np-modal-header h2 {
+            margin: 0;
+            font-size: 21px;
+        }
+
+        .np-close {
+            border: 0;
+            background: #f1f5f9;
+            width: 34px;
+            height: 34px;
+            border-radius: 8px;
+            font-size: 22px;
+            cursor: pointer;
+        }
+
+        .np-form {
+            padding: 24px;
+        }
+
+        .np-form-section {
+            margin-bottom: 25px;
+        }
+
+        .np-form-section h3 {
+            margin: 0 0 15px;
+            font-size: 16px;
+            color: #17213b;
+        }
+
+        .np-form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .np-form-group {
+            margin-bottom: 15px;
+        }
+
+        .np-form-group label {
+            display: block;
+            margin-bottom: 7px;
+            font-size: 13px;
+            font-weight: 700;
+            color: #334155;
+        }
+
+        .np-form-group input,
+        .np-form-group select,
+        .np-form-group textarea {
+            width: 100%;
+            border: 1px solid #d9e0ea;
+            border-radius: 9px;
+            padding: 11px 12px;
+            background: #ffffff;
+            color: #172033;
+            outline: none;
+        }
+
+        .np-form-group input:focus,
+        .np-form-group select:focus,
+        .np-form-group textarea:focus {
+            border-color: #2854ff;
+            box-shadow: 0 0 0 3px rgba(40, 84, 255, .09);
+        }
+
+        .np-form-group small {
+            display: block;
+            margin-top: 6px;
+            color: #64748b;
+            font-size: 12px;
+        }
+
+        .np-note {
+            padding: 12px;
+            background: #f5f8ff;
+            border: 1px solid #dce6ff;
+            color: #3158a8;
+            border-radius: 9px;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .np-modal-footer {
+            padding-top: 20px;
+            border-top: 1px solid #e5eaf2;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        /* =================================================
+           MOBILE
+        ================================================= */
+
+        @media (max-width: 900px) {
+
+            .np-layout {
+                grid-template-columns: 1fr;
+                width: 100%;
+            }
+
+            .np-sidebar {
+                border-right: 0;
+                border-bottom: 1px solid #e5eaf2;
+                padding: 12px;
+            }
+
+            .np-nav {
+                flex-direction: row;
+                overflow-x: auto;
+            }
+
+            .np-nav a {
+                white-space: nowrap;
+            }
+
+            .np-main {
+                padding: 24px 16px;
+            }
+
+            .np-summary {
+                grid-template-columns: 1fr 1fr;
+            }
+
+        }
+
+        @media (max-width: 650px) {
+
+            .np-header-inner {
+                width: calc(100% - 24px);
+            }
+
+            .np-logo img {
+                width: 125px;
+            }
+
+            .np-header-link {
+                display: none;
+            }
+
+            .np-page-header {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .np-page-header .np-btn {
+                width: 100%;
+            }
+
+            .np-summary {
+                grid-template-columns: 1fr;
+            }
+
+            .np-config-grid,
+            .np-form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .np-form {
+                padding: 18px;
+            }
+
+        }
+
+    </style>
+
 </head>
 
-<body class="admin-page">
 
-<header class="admin-header">
-    <div class="admin-container admin-header-inner">
+<body>
+
+
+<!-- =====================================================
+     HEADER
+===================================================== -->
+
+<header class="np-header">
+
+    <div class="np-header-inner">
 
         <a
             href="dashboard.html"
-            class="admin-brand"
-            aria-label="NITRIXA Technologies Admin Dashboard"
+            class="np-logo"
         >
+
             <img
-                src="../assets/images/nitrixa-logo.png"
-                alt="NITRIXA Technologies"
-                class="admin-brand-logo"
+                src="../assets/images/nitrixa-name-logo.png"
+                alt="NITRIXA TECHNOLOGIES"
             >
 
-            <div class="admin-brand-content">
-                <p class="admin-brand-name">
-                    NITRIXA TECHNOLOGIES
-                </p>
-
-                <p class="admin-brand-label">
-                    Admin Panel
-                </p>
-            </div>
         </a>
 
-        <div class="admin-header-actions">
+
+        <div class="np-header-actions">
 
             <a
                 href="dashboard.html"
-                class="admin-btn admin-btn-secondary"
+                class="np-header-link"
             >
                 Dashboard
             </a>
 
+            <a
+                href="../index.html"
+                class="np-header-link"
+                target="_blank"
+                rel="noopener"
+            >
+                View Website
+            </a>
+
             <button
                 type="button"
-                class="admin-btn admin-btn-danger"
-                id="logoutButton"
+                class="np-logout"
+                id="adminLogoutButton"
             >
                 Logout
             </button>
@@ -72,37 +776,88 @@
         </div>
 
     </div>
+
 </header>
 
 
-<main class="admin-main">
 
-    <div class="admin-container">
+<!-- =====================================================
+     LAYOUT
+===================================================== -->
 
-        <!-- PAGE HEADING -->
-        <section class="admin-page-heading">
+<div class="np-layout">
 
-            <div class="admin-page-heading-content">
 
-                <p class="admin-eyebrow">
-                    Administration
-                </p>
+    <!-- SIDEBAR -->
 
-                <h1 class="admin-page-title">
+    <aside class="np-sidebar">
+
+        <div class="np-sidebar-title">
+            ADMIN PANEL
+        </div>
+
+        <nav class="np-nav">
+
+            <a href="dashboard.html">
+                ▦ Dashboard
+            </a>
+
+            <a
+                href="programs.html"
+                class="active"
+            >
+                ◈ Programs
+            </a>
+
+            <a href="batches.html">
+                ▣ Batches
+            </a>
+
+            <a
+                href="../index.html"
+                target="_blank"
+                rel="noopener"
+            >
+                ↗ Public Website
+            </a>
+
+        </nav>
+
+    </aside>
+
+
+
+    <!-- MAIN -->
+
+    <main class="np-main">
+
+
+        <!-- PAGE HEADER -->
+
+        <section class="np-page-header">
+
+            <div>
+
+                <span class="np-eyebrow">
+                    PROGRAM MANAGEMENT
+                </span>
+
+                <h1>
                     Programs
                 </h1>
 
-                <p class="admin-page-description">
-                    Manage NITRIXA Technologies training and internship
-                    programs, including program details, fees and availability.
+                <p>
+                    Create and manage NITRIXA Technologies
+                    internship and training programs.
                 </p>
 
             </div>
 
+
             <button
                 type="button"
-                class="admin-btn admin-btn-primary"
-                id="addProgramButton"
+                class="np-btn np-btn-primary"
+                id="openProgramModalButton"
             >
                 + Add Program
             </button>
@@ -110,113 +865,152 @@
         </section>
 
 
-        <!-- STATS -->
-        <section
-            class="admin-stats-grid"
-            aria-label="Program statistics"
-        >
 
-            <article class="admin-stat-card">
+        <!-- STATUS -->
 
-                <p class="admin-stat-label">
+        <div
+            id="programStatusMessage"
+            class="np-status"
+            hidden
+        ></div>
+
+
+
+        <!-- SUMMARY -->
+
+        <section class="np-summary">
+
+            <div class="np-summary-card">
+
+                <span>
                     Total Programs
-                </p>
+                </span>
 
-                <p
-                    class="admin-stat-value"
-                    id="totalPrograms"
-                >
+                <strong id="totalProgramsCount">
                     0
-                </p>
-
-            </article>
-
-
-            <article class="admin-stat-card">
-
-                <p class="admin-stat-label">
-                    Active Programs
-                </p>
-
-                <p
-                    class="admin-stat-value"
-                    id="activePrograms"
-                >
-                    0
-                </p>
-
-            </article>
-
-
-            <article class="admin-stat-card">
-
-                <p class="admin-stat-label">
-                    Inactive Programs
-                </p>
-
-                <p
-                    class="admin-stat-value"
-                    id="inactivePrograms"
-                >
-                    0
-                </p>
-
-            </article>
-
-        </section>
-
-
-        <!-- TOOLBAR -->
-        <section class="admin-toolbar">
-
-            <div class="admin-toolbar-left">
-
-                <div class="admin-search">
-
-                    <label
-                        for="programSearch"
-                        class="admin-form-label"
-                        style="display:none;"
-                    >
-                        Search programs
-                    </label>
-
-                    <input
-                        type="search"
-                        id="programSearch"
-                        class="admin-input"
-                        placeholder="Search programs..."
-                        autocomplete="off"
-                    >
-
-                </div>
-
-                <select
-                    id="statusFilter"
-                    class="admin-select"
-                    aria-label="Filter programs by status"
-                >
-                    <option value="ALL">
-                        All Status
-                    </option>
-
-                    <option value="ACTIVE">
-                        Active
-                    </option>
-
-                    <option value="INACTIVE">
-                        Inactive
-                    </option>
-                </select>
+                </strong>
 
             </div>
 
 
-            <div class="admin-toolbar-right">
+            <div class="np-summary-card">
+
+                <span>
+                    Active Programs
+                </span>
+
+                <strong id="activeProgramsCount">
+                    0
+                </strong>
+
+            </div>
+
+
+            <div class="np-summary-card">
+
+                <span>
+                    Inactive Programs
+                </span>
+
+                <strong id="inactiveProgramsCount">
+                    0
+                </strong>
+
+            </div>
+
+
+            <div class="np-summary-card">
+
+                <span>
+                    Internship Programs
+                </span>
+
+                <strong id="internshipProgramsCount">
+                    0
+                </strong>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- CONFIGURATION -->
+
+        <section class="np-config">
+
+            <span class="np-eyebrow">
+                PROGRAM CONFIGURATION
+            </span>
+
+            <h2>
+                Current enrollment models
+            </h2>
+
+            <p>
+                Only ACTIVE programs are shown on the public
+                Programs page.
+            </p>
+
+
+            <div class="np-config-grid">
+
+                <div class="np-config-item">
+
+                    <strong>
+                        Internship
+                    </strong>
+
+                    <span>
+                        3 or 6 month internship with full payment
+                        or eligible 3-month installment option.
+                    </span>
+
+                </div>
+
+
+                <div class="np-config-item">
+
+                    <strong>
+                        Training + Internship
+                    </strong>
+
+                    <span>
+                        Combined program with one full payment
+                        during enrollment. Internship unlocks
+                        after training completion and approval.
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- PROGRAM TABLE -->
+
+        <section class="np-card">
+
+            <div class="np-card-header">
+
+                <div>
+
+                    <span class="np-eyebrow">
+                        PROGRAM CATALOG
+                    </span>
+
+                    <h2>
+                        All Programs
+                    </h2>
+
+                </div>
+
 
                 <button
                     type="button"
-                    class="admin-btn admin-btn-secondary"
+                    class="np-btn np-btn-secondary"
                     id="refreshProgramsButton"
                 >
                     Refresh
@@ -224,63 +1018,79 @@
 
             </div>
 
-        </section>
+
+            <div
+                id="programsLoadingState"
+                class="np-loading"
+            >
+                Loading programs...
+            </div>
 
 
-        <!-- FORM MESSAGE -->
-        <div
-            id="formMessage"
-            class="admin-form-message"
-            role="status"
-            aria-live="polite"
-        ></div>
+            <div
+                id="programsEmptyState"
+                class="np-empty"
+                hidden
+            >
+
+                <h3>
+                    No programs found
+                </h3>
+
+                <p>
+                    Create your first NITRIXA Technologies program.
+                </p>
+
+            </div>
 
 
-        <!-- TABLE -->
-        <section class="admin-table-card">
+            <div
+                id="programsTableWrapper"
+                class="np-table-wrap"
+                hidden
+            >
 
-            <div class="admin-table-scroll">
-
-                <table class="admin-table">
+                <table class="np-table">
 
                     <thead>
 
-                    <tr>
-                        <th>Program</th>
-                        <th>Category</th>
-                        <th>Level</th>
-                        <th>Type</th>
-                        <th>Duration</th>
-                        <th>Fee</th>
-                        <th>Status</th>
-                        <th>Actions</th>
-                    </tr>
+                        <tr>
+
+                            <th>
+                                Program
+                            </th>
+
+                            <th>
+                                Type
+                            </th>
+
+                            <th>
+                                Duration
+                            </th>
+
+                            <th>
+                                Fee
+                            </th>
+
+                            <th>
+                                Payment
+                            </th>
+
+                            <th>
+                                Status
+                            </th>
+
+                            <th>
+                                Actions
+                            </th>
+
+                        </tr>
 
                     </thead>
 
-                    <tbody id="programsTableBody">
-
-                    <tr>
-                        <td colspan="8">
-
-                            <div class="admin-state">
-
-                                <div class="admin-spinner"></div>
-
-                                <p class="admin-state-title">
-                                    Loading programs...
-                                </p>
-
-                                <p class="admin-state-text">
-                                    Please wait while the program data is loaded.
-                                </p>
-
-                            </div>
-
-                        </td>
-                    </tr>
-
-                    </tbody>
+                    <tbody
+                        id="programsTableBody"
+                    ></tbody>
 
                 </table>
 
@@ -288,50 +1098,45 @@
 
         </section>
 
-    </div>
+    </main>
 
-</main>
+</div>
 
 
-<!-- =======================================================
+
+<!-- =====================================================
      PROGRAM MODAL
-     ======================================================= -->
+===================================================== -->
 
 <div
-    class="admin-modal"
+    class="np-modal"
     id="programModal"
-    aria-hidden="true"
+    hidden
 >
 
-    <div
-        class="admin-modal-card"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="programModalTitle"
-    >
+    <div class="np-modal-box">
 
-        <div class="admin-modal-header">
+
+        <div class="np-modal-header">
 
             <div>
 
-                <h2
-                    class="admin-modal-title"
-                    id="programModalTitle"
-                >
+                <span class="np-eyebrow">
+                    PROGRAM MANAGEMENT
+                </span>
+
+                <h2 id="programModalTitle">
                     Add Program
                 </h2>
 
-                <p class="admin-modal-description">
-                    Enter the program information below.
-                </p>
-
             </div>
+
 
             <button
                 type="button"
-                class="admin-modal-close"
-                id="closeProgramModal"
-                aria-label="Close program form"
+                class="np-close"
+                id="closeProgramModalButton"
+                aria-label="Close"
             >
                 ×
             </button>
@@ -339,78 +1144,91 @@
         </div>
 
 
-        <form id="programForm">
 
-            <div class="admin-modal-body">
+        <form
+            id="programForm"
+            class="np-form"
+        >
 
-                <div
-                    id="modalFormMessage"
-                    class="admin-form-message"
-                    role="alert"
-                    aria-live="polite"
-                ></div>
+            <input
+                type="hidden"
+                id="programId"
+            >
 
 
-                <div class="admin-form-grid">
+            <!-- BASIC -->
 
-                    <!-- NAME -->
-                    <div class="admin-form-group full">
+            <section class="np-form-section">
 
-                        <label
-                            for="programName"
-                            class="admin-form-label"
-                        >
+                <h3>
+                    Basic Information
+                </h3>
+
+
+                <div class="np-form-grid">
+
+                    <div class="np-form-group">
+
+                        <label for="programName">
                             Program Name *
                         </label>
 
                         <input
                             type="text"
                             id="programName"
-                            class="admin-input"
-                            maxlength="120"
                             required
+                            placeholder="Java Development"
                         >
 
                     </div>
 
 
-                    <!-- CATEGORY -->
-                    <div class="admin-form-group">
+                    <div class="np-form-group">
 
-                        <label
-                            for="programCategory"
-                            class="admin-form-label"
+                        <label for="programSlug">
+                            Slug *
+                        </label>
+
+                        <input
+                            type="text"
+                            id="programSlug"
+                            required
+                            placeholder="java-development"
                         >
+
+                    </div>
+
+
+                    <div class="np-form-group">
+
+                        <label for="programCategory">
                             Category *
                         </label>
 
                         <input
                             type="text"
                             id="programCategory"
-                            class="admin-input"
-                            maxlength="80"
-                            placeholder="e.g. Development"
                             required
+                            placeholder="Software Development"
                         >
 
                     </div>
 
 
-                    <!-- LEVEL -->
-                    <div class="admin-form-group">
+                    <div class="np-form-group">
 
-                        <label
-                            for="programLevel"
-                            class="admin-form-label"
-                        >
+                        <label for="programLevel">
                             Level *
                         </label>
 
                         <select
                             id="programLevel"
-                            class="admin-select"
                             required
                         >
+
+                            <option value="">
+                                Select Level
+                            </option>
 
                             <option value="BEGINNER">
                                 Beginner
@@ -428,25 +1246,52 @@
 
                     </div>
 
+                </div>
 
-                    <!-- TYPE -->
-                    <div class="admin-form-group">
 
-                        <label
-                            for="programType"
-                            class="admin-form-label"
-                        >
+                <div class="np-form-group">
+
+                    <label for="programDescription">
+                        Description *
+                    </label>
+
+                    <textarea
+                        id="programDescription"
+                        rows="4"
+                        required
+                        placeholder="Describe the program..."
+                    ></textarea>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- TYPE -->
+
+            <section class="np-form-section">
+
+                <h3>
+                    Program Type & Duration
+                </h3>
+
+
+                <div class="np-form-grid">
+
+                    <div class="np-form-group">
+
+                        <label for="programType">
                             Program Type *
                         </label>
 
                         <select
                             id="programType"
-                            class="admin-select"
                             required
                         >
 
-                            <option value="TRAINING">
-                                Training
+                            <option value="">
+                                Select Program Type
                             </option>
 
                             <option value="INTERNSHIP">
@@ -462,128 +1307,213 @@
                     </div>
 
 
-                    <!-- DURATION -->
-                    <div class="admin-form-group">
+                    <div class="np-form-group">
 
-                        <label
-                            for="programDuration"
-                            class="admin-form-label"
-                        >
-                            Duration
+                        <label for="programDuration">
+                            General Duration
                         </label>
 
                         <input
                             type="text"
                             id="programDuration"
-                            class="admin-input"
-                            maxlength="50"
-                            placeholder="e.g. 8 Weeks"
+                            placeholder="3 Months"
                         >
 
                     </div>
 
 
-                    <!-- FEE -->
-                    <div class="admin-form-group">
+                    <div
+                        class="np-form-group"
+                        id="trainingDurationGroup"
+                    >
 
-                        <label
-                            for="programFee"
-                            class="admin-form-label"
-                        >
-                            Fee (INR)
-                        </label>
-
-                        <input
-                            type="number"
-                            id="programFee"
-                            class="admin-input"
-                            min="0"
-                            step="1"
-                            value="0"
-                        >
-
-                    </div>
-
-
-                    <!-- TECHNOLOGIES -->
-                    <div class="admin-form-group full">
-
-                        <label
-                            for="programTechnologies"
-                            class="admin-form-label"
-                        >
-                            Technologies
+                        <label for="trainingDuration">
+                            Training Duration
                         </label>
 
                         <input
                             type="text"
-                            id="programTechnologies"
-                            class="admin-input"
-                            placeholder="Java, OOP, Programming, Git"
+                            id="trainingDuration"
+                            placeholder="3 Months"
                         >
-
-                        <p class="admin-form-help">
-                            Separate technologies with commas.
-                        </p>
 
                     </div>
 
 
-                    <!-- DESCRIPTION -->
-                    <div class="admin-form-group full">
+                    <div
+                        class="np-form-group"
+                        id="internshipDurationGroup"
+                    >
 
-                        <label
-                            for="programDescription"
-                            class="admin-form-label"
+                        <label for="internshipDuration">
+                            Internship Duration
+                        </label>
+
+                        <input
+                            type="text"
+                            id="internshipDuration"
+                            placeholder="3 Months / 6 Months"
                         >
-                            Description
-                        </label>
-
-                        <textarea
-                            id="programDescription"
-                            class="admin-input admin-textarea"
-                            maxlength="500"
-                            placeholder="Short description of the program"
-                        ></textarea>
-
-                    </div>
-
-
-                    <!-- STATUS -->
-                    <div class="admin-form-group full">
-
-                        <label class="admin-checkbox">
-
-                            <input
-                                type="checkbox"
-                                id="programActive"
-                                checked
-                            >
-
-                            Program is active
-
-                        </label>
 
                     </div>
 
                 </div>
 
-            </div>
+            </section>
 
 
-            <div class="admin-modal-footer">
+
+            <!-- PAYMENT -->
+
+            <section class="np-form-section">
+
+                <h3>
+                    Payment Configuration
+                </h3>
+
+
+                <div class="np-form-grid">
+
+                    <div class="np-form-group">
+
+                        <label for="programFee">
+                            Program Fee (₹) *
+                        </label>
+
+                        <input
+                            type="number"
+                            id="programFee"
+                            min="0"
+                            step="1"
+                            required
+                            placeholder="999"
+                        >
+
+                    </div>
+
+
+                    <div class="np-form-group">
+
+                        <label for="paymentModel">
+                            Payment Model *
+                        </label>
+
+                        <select
+                            id="paymentModel"
+                            required
+                        >
+
+                            <option value="">
+                                Select Payment Model
+                            </option>
+
+                            <option value="FULL_ONLY">
+                                Full Payment Only
+                            </option>
+
+                            <option value="FULL_AND_INSTALLMENT">
+                                Full Payment + 3-Month Installment
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="np-note"
+                    id="paymentConfigurationNote"
+                >
+                    Select a program type to configure payment.
+                </div>
+
+            </section>
+
+
+
+            <!-- TECHNOLOGY -->
+
+            <section class="np-form-section">
+
+                <h3>
+                    Technologies
+                </h3>
+
+
+                <div class="np-form-group">
+
+                    <label for="programTechnologies">
+                        Technologies
+                    </label>
+
+                    <input
+                        type="text"
+                        id="programTechnologies"
+                        placeholder="Java, Spring Boot, PostgreSQL, Git"
+                    >
+
+                    <small>
+                        Separate technologies with commas.
+                    </small>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- STATUS -->
+
+            <section class="np-form-section">
+
+                <h3>
+                    Publication Status
+                </h3>
+
+
+                <div class="np-form-group">
+
+                    <label for="programStatus">
+                        Status *
+                    </label>
+
+                    <select
+                        id="programStatus"
+                        required
+                    >
+
+                        <option value="ACTIVE">
+                            ACTIVE
+                        </option>
+
+                        <option value="INACTIVE">
+                            INACTIVE
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </section>
+
+
+
+            <div class="np-modal-footer">
 
                 <button
                     type="button"
-                    class="admin-btn admin-btn-secondary"
+                    class="np-btn np-btn-secondary"
                     id="cancelProgramButton"
                 >
                     Cancel
                 </button>
 
+
                 <button
                     type="submit"
-                    class="admin-btn admin-btn-primary"
+                    class="np-btn np-btn-primary"
                     id="saveProgramButton"
                 >
                     Save Program
@@ -598,28 +1528,23 @@
 </div>
 
 
-<div
-    id="adminToast"
-    class="admin-toast"
-    role="status"
-    aria-live="polite"
-></div>
 
-
-<!-- =======================================================
+<!-- =====================================================
      SCRIPTS
-     ======================================================= -->
+===================================================== -->
 
 <script
     src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
 ></script>
 
-<script src="../js/supabase.js"></script>
+<script
+    src="../js/supabase.js"
+></script>
 
 <script
     src="../js/admin-programs.js"
-    defer
 ></script>
+
 
 </body>
 </html>
