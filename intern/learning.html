@@ -1,0 +1,1908 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="NITRIXA Technologies - Intern Learning"
+    >
+
+    <meta
+        name="robots"
+        content="noindex, nofollow"
+    >
+
+    <title>Learning | NITRIXA Technologies</title>
+
+
+    <!-- Main Website Styles -->
+
+    <link
+        rel="stylesheet"
+        href="../css/global.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="../css/components.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="../css/animations.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="../css/responsive.css"
+    >
+
+
+    <!-- Intern Portal Master Styles -->
+
+    <link
+        rel="stylesheet"
+        href="../css/intern-dashboard.css"
+    >
+
+
+    <style>
+
+        /* =====================================================
+           NITRIXA INTERN LEARNING
+           Page-specific content only.
+           Portal shell comes from intern-dashboard.css.
+           ===================================================== */
+
+
+        .learning-content {
+            width: 100%;
+            max-width: 1500px;
+            margin: 0 auto;
+            padding: 30px 30px 42px;
+        }
+
+
+        /* =====================================================
+           PAGE INTRO
+           ===================================================== */
+
+        .learning-intro {
+            margin-bottom: 22px;
+        }
+
+        .learning-eyebrow {
+            margin: 0 0 7px;
+
+            color: var(--intern-primary);
+
+            font-size: 10px;
+            font-weight: 800;
+
+            letter-spacing: 0.10em;
+            text-transform: uppercase;
+        }
+
+        .learning-title {
+            margin: 0;
+
+            color: var(--intern-text);
+
+            font-size: clamp(24px, 2.3vw, 32px);
+            line-height: 1.18;
+            font-weight: 850;
+
+            letter-spacing: -0.035em;
+        }
+
+        .learning-description {
+            max-width: 680px;
+
+            margin: 9px 0 0;
+
+            color: var(--intern-text-soft);
+
+            font-size: 13px;
+            line-height: 1.65;
+        }
+
+
+        /* =====================================================
+           PROGRAM HERO
+           ===================================================== */
+
+        .learning-program-card {
+            position: relative;
+
+            overflow: hidden;
+
+            margin-bottom: 16px;
+            padding: 25px 27px;
+
+            border: 1px solid #dfe6ff;
+            border-radius: var(--intern-radius-lg);
+
+            background:
+                radial-gradient(
+                    circle at 100% 0%,
+                    rgba(109, 74, 255, 0.13),
+                    transparent 32%
+                ),
+                radial-gradient(
+                    circle at 75% 100%,
+                    rgba(8, 166, 201, 0.08),
+                    transparent 32%
+                ),
+                linear-gradient(
+                    135deg,
+                    #ffffff,
+                    #f7f9ff
+                );
+
+            box-shadow: var(--intern-shadow-sm);
+        }
+
+        .learning-program-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .learning-program-label {
+            display: block;
+
+            margin-bottom: 7px;
+
+            color: var(--intern-primary);
+
+            font-size: 10px;
+            font-weight: 800;
+
+            letter-spacing: 0.09em;
+            text-transform: uppercase;
+        }
+
+        .learning-program-name {
+            margin: 0;
+
+            color: var(--intern-text);
+
+            font-size: 22px;
+            line-height: 1.3;
+            font-weight: 800;
+
+            letter-spacing: -0.025em;
+        }
+
+        .learning-program-meta {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+
+            margin-top: 10px;
+
+            flex-wrap: wrap;
+        }
+
+        .learning-program-badge {
+            display: inline-flex;
+            align-items: center;
+
+            min-height: 27px;
+
+            padding: 5px 10px;
+
+            border: 1px solid #dfe6ff;
+            border-radius: 999px;
+
+            background: #ffffff;
+
+            color: var(--intern-primary);
+
+            font-size: 10px;
+            font-weight: 750;
+        }
+
+
+        /* =====================================================
+           OVERALL PROGRESS
+           ===================================================== */
+
+        .learning-progress-section {
+            margin-top: 22px;
+        }
+
+        .learning-progress-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 14px;
+
+            margin-bottom: 9px;
+        }
+
+        .learning-progress-label {
+            color: var(--intern-text-soft);
+
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .learning-progress-value {
+            color: var(--intern-primary);
+
+            font-size: 13px;
+            font-weight: 850;
+        }
+
+        .learning-progress-bar {
+            width: 100%;
+            height: 9px;
+
+            overflow: hidden;
+
+            border-radius: 999px;
+
+            background: #e9edf5;
+        }
+
+        .learning-progress-fill {
+            width: 0;
+            height: 100%;
+
+            border-radius: inherit;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    var(--intern-primary),
+                    var(--intern-secondary)
+                );
+
+            transition: width 300ms ease;
+        }
+
+
+        /* =====================================================
+           SUMMARY CARDS
+           ===================================================== */
+
+        .learning-summary {
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, minmax(0, 1fr));
+
+            gap: 14px;
+
+            margin-bottom: 16px;
+        }
+
+        .learning-summary-card {
+            min-width: 0;
+
+            padding: 19px;
+
+            border: 1px solid var(--intern-border);
+            border-radius: var(--intern-radius-md);
+
+            background: var(--intern-surface);
+
+            box-shadow: var(--intern-shadow-sm);
+        }
+
+        .learning-summary-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 12px;
+        }
+
+        .learning-summary-icon {
+            width: 38px;
+            height: 38px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            flex: 0 0 38px;
+
+            border-radius: 11px;
+
+            background: #f0f4ff;
+            color: var(--intern-primary);
+        }
+
+        .learning-summary-icon svg {
+            width: 18px;
+            height: 18px;
+
+            stroke: currentColor;
+        }
+
+        .learning-summary-value {
+            display: block;
+
+            margin-top: 13px;
+
+            color: var(--intern-text);
+
+            font-size: 23px;
+            line-height: 1;
+            font-weight: 850;
+        }
+
+        .learning-summary-label {
+            display: block;
+
+            margin-top: 6px;
+
+            color: var(--intern-text-muted);
+
+            font-size: 10px;
+            font-weight: 700;
+
+            text-transform: uppercase;
+            letter-spacing: 0.055em;
+        }
+
+
+        /* =====================================================
+           COURSE PANEL
+           ===================================================== */
+
+        .learning-panel {
+            overflow: hidden;
+
+            border: 1px solid var(--intern-border);
+            border-radius: var(--intern-radius-lg);
+
+            background: var(--intern-surface);
+
+            box-shadow: var(--intern-shadow-sm);
+        }
+
+        .learning-panel-header {
+            min-height: 70px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 18px;
+
+            padding: 17px 22px;
+
+            border-bottom: 1px solid var(--intern-border-soft);
+        }
+
+        .learning-panel-title {
+            margin: 0;
+
+            color: var(--intern-text);
+
+            font-size: 17px;
+            line-height: 1.3;
+            font-weight: 800;
+        }
+
+        .learning-panel-description {
+            margin: 4px 0 0;
+
+            color: var(--intern-text-muted);
+
+            font-size: 11px;
+        }
+
+        .learning-status {
+            flex: 0 0 auto;
+
+            color: var(--intern-text-muted);
+
+            font-size: 11px;
+            font-weight: 650;
+        }
+
+        .learning-panel-body {
+            padding: 20px;
+        }
+
+
+        /* =====================================================
+           MODULE LIST
+           ===================================================== */
+
+        .learning-modules {
+            display: flex;
+            flex-direction: column;
+
+            gap: 12px;
+        }
+
+        .learning-module {
+            overflow: hidden;
+
+            border: 1px solid var(--intern-border);
+            border-radius: var(--intern-radius-md);
+
+            background: #ffffff;
+
+            transition:
+                border-color var(--intern-transition),
+                box-shadow var(--intern-transition);
+        }
+
+        .learning-module:hover {
+            border-color: #d9e1f8;
+            box-shadow: var(--intern-shadow-sm);
+        }
+
+
+        /* =====================================================
+           MODULE HEADER
+           ===================================================== */
+
+        .learning-module-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 18px;
+
+            padding: 18px 19px;
+        }
+
+        .learning-module-info {
+            min-width: 0;
+            flex: 1;
+        }
+
+        .learning-module-heading {
+            display: flex;
+            align-items: center;
+
+            gap: 10px;
+        }
+
+        .learning-module-order {
+            width: 31px;
+            height: 31px;
+
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            flex: 0 0 31px;
+
+            border-radius: 10px;
+
+            background: #edf2ff;
+            color: var(--intern-primary);
+
+            font-size: 11px;
+            font-weight: 850;
+        }
+
+        .learning-module-title {
+            margin: 0;
+
+            color: var(--intern-text);
+
+            font-size: 14px;
+            line-height: 1.4;
+            font-weight: 800;
+        }
+
+        .learning-module-description {
+            margin: 8px 0 0 41px;
+
+            color: var(--intern-text-soft);
+
+            font-size: 11px;
+            line-height: 1.6;
+        }
+
+
+        /* =====================================================
+           MODULE PROGRESS
+           ===================================================== */
+
+        .learning-module-progress {
+            flex: 0 0 130px;
+
+            text-align: right;
+        }
+
+        .learning-module-progress-value {
+            display: block;
+
+            margin-bottom: 6px;
+
+            color: var(--intern-text-soft);
+
+            font-size: 10px;
+            font-weight: 750;
+        }
+
+        .learning-module-progress-bar {
+            width: 130px;
+            height: 6px;
+
+            overflow: hidden;
+
+            margin-left: auto;
+
+            border-radius: 999px;
+
+            background: #edf0f5;
+        }
+
+        .learning-module-progress-fill {
+            width: 0;
+            height: 100%;
+
+            border-radius: inherit;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    var(--intern-primary),
+                    var(--intern-secondary)
+                );
+        }
+
+
+        /* =====================================================
+           LESSONS
+           ===================================================== */
+
+        .learning-lessons {
+            display: flex;
+            flex-direction: column;
+
+            border-top: 1px solid var(--intern-border-soft);
+        }
+
+        .learning-lesson {
+            min-height: 58px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 14px;
+
+            padding: 11px 18px 11px 60px;
+
+            border-bottom: 1px solid var(--intern-border-soft);
+
+            color: inherit;
+            text-decoration: none;
+
+            transition:
+                background var(--intern-transition),
+                padding-left var(--intern-transition);
+        }
+
+        .learning-lesson:last-child {
+            border-bottom: 0;
+        }
+
+        .learning-lesson:hover {
+            padding-left: 63px;
+
+            background: #f8faff;
+        }
+
+        .learning-lesson-info {
+            min-width: 0;
+            flex: 1;
+        }
+
+        .learning-lesson-title {
+            display: block;
+
+            overflow: hidden;
+            text-overflow: ellipsis;
+
+            color: var(--intern-text);
+
+            font-size: 12px;
+            line-height: 1.5;
+            font-weight: 700;
+        }
+
+        .learning-lesson-subtitle {
+            display: block;
+
+            margin-top: 3px;
+
+            color: var(--intern-text-muted);
+
+            font-size: 10px;
+        }
+
+        .learning-lesson-status {
+            flex: 0 0 auto;
+
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+
+            min-height: 25px;
+
+            padding: 4px 8px;
+
+            border-radius: 999px;
+
+            font-size: 9px;
+            font-weight: 800;
+
+            white-space: nowrap;
+        }
+
+        .learning-lesson-status.completed {
+            background: #ebf9f4;
+            color: var(--intern-success);
+        }
+
+        .learning-lesson-status.pending {
+            background: #f3f5f8;
+            color: var(--intern-text-soft);
+        }
+
+
+        /* =====================================================
+           EMPTY / LOADING / ERROR
+           ===================================================== */
+
+        .learning-loading,
+        .learning-empty {
+            padding: 48px 24px;
+
+            border: 1px dashed var(--intern-border);
+            border-radius: var(--intern-radius-md);
+
+            background: var(--intern-surface-soft);
+
+            text-align: center;
+        }
+
+        .learning-loading {
+            color: var(--intern-text-soft);
+
+            font-size: 12px;
+        }
+
+        .learning-empty h3 {
+            margin: 0 0 7px;
+
+            color: var(--intern-text);
+
+            font-size: 15px;
+            font-weight: 800;
+        }
+
+        .learning-empty p {
+            max-width: 500px;
+
+            margin: 0 auto;
+
+            color: var(--intern-text-soft);
+
+            font-size: 11px;
+            line-height: 1.6;
+        }
+
+        .learning-error {
+            padding: 16px 18px;
+
+            border: 1px solid #f0d7db;
+            border-radius: var(--intern-radius-md);
+
+            background: #fff5f6;
+            color: var(--intern-danger);
+
+            font-size: 11px;
+            line-height: 1.6;
+        }
+
+
+        /* =====================================================
+           MOBILE
+           ===================================================== */
+
+        @media (max-width: 1180px) {
+
+            .learning-content {
+                padding-left: 22px;
+                padding-right: 22px;
+            }
+
+        }
+
+
+        @media (max-width: 760px) {
+
+            .learning-content {
+                padding: 20px 14px 30px;
+            }
+
+            .learning-title {
+                font-size: 25px;
+            }
+
+            .learning-description {
+                font-size: 12px;
+            }
+
+            .learning-program-card {
+                padding: 21px;
+            }
+
+            .learning-program-name {
+                font-size: 19px;
+            }
+
+            .learning-summary {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .learning-panel-header {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 6px;
+            }
+
+            .learning-panel-body {
+                padding: 14px;
+            }
+
+            .learning-module-header {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .learning-module-progress {
+                width: 100%;
+                text-align: left;
+            }
+
+            .learning-module-progress-bar {
+                width: 180px;
+                margin-left: 0;
+            }
+
+            .learning-lesson {
+                padding: 12px 14px 12px 20px;
+            }
+
+            .learning-lesson:hover {
+                padding-left: 20px;
+            }
+
+        }
+
+
+        @media (max-width: 480px) {
+
+            .learning-content {
+                padding: 17px 11px 26px;
+            }
+
+            .learning-title {
+                font-size: 22px;
+            }
+
+            .learning-summary {
+                grid-template-columns: 1fr;
+                gap: 9px;
+            }
+
+            .learning-summary-card {
+                padding: 16px;
+            }
+
+            .learning-program-card {
+                padding: 18px;
+            }
+
+            .learning-program-name {
+                font-size: 18px;
+            }
+
+            .learning-module-header {
+                padding: 16px;
+            }
+
+            .learning-module-description {
+                margin-left: 0;
+            }
+
+            .learning-module-heading {
+                align-items: flex-start;
+            }
+
+            .learning-lesson {
+                align-items: flex-start;
+            }
+
+            .learning-lesson-status {
+                margin-top: 1px;
+            }
+
+        }
+
+
+        @media (prefers-reduced-motion: reduce) {
+
+            .learning-content *,
+            .learning-content *::before,
+            .learning-content *::after {
+                transition-duration: 0.01ms !important;
+                animation-duration: 0.01ms !important;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body class="intern-dashboard-page">
+
+
+    <!-- =====================================================
+         APP SHELL
+         ===================================================== -->
+
+    <div class="intern-app-shell">
+
+
+        <!-- =================================================
+             SIDEBAR
+             ================================================= -->
+
+        <aside
+            class="intern-sidebar"
+            id="internSidebar"
+        >
+
+            <!-- Brand -->
+
+            <div class="intern-sidebar-brand">
+
+                <a
+                    href="../index.html"
+                    aria-label="NITRIXA Technologies Home"
+                >
+
+                    <span class="intern-brand-mark">
+                        N
+                    </span>
+
+                    <span class="intern-sidebar-brand-text">
+
+                        <span class="intern-sidebar-brand-name">
+                            NITRIXA
+                        </span>
+
+                        <span class="intern-sidebar-brand-label">
+                            Intern Portal
+                        </span>
+
+                    </span>
+
+                </a>
+
+            </div>
+
+
+            <!-- Profile -->
+
+            <div class="intern-sidebar-profile">
+
+                <div
+                    class="intern-sidebar-avatar"
+                    id="sidebarAvatar"
+                >
+                    I
+                </div>
+
+                <div class="intern-sidebar-profile-info">
+
+                    <p
+                        class="intern-sidebar-profile-name"
+                        id="sidebarInternName"
+                    >
+                        Intern
+                    </p>
+
+                    <p
+                        class="intern-sidebar-profile-id"
+                        id="sidebarInternId"
+                    >
+                        Intern ID
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- Navigation -->
+
+            <nav
+                class="intern-sidebar-nav"
+                aria-label="Intern navigation"
+            >
+
+                <div class="intern-nav-list">
+
+                    <a
+                        href="../intern-dashboard.html"
+                        class="intern-nav-link"
+                    >
+
+                        <span class="intern-nav-icon">
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke-width="1.8"
+                                aria-hidden="true"
+                            >
+                                <rect
+                                    x="3"
+                                    y="3"
+                                    width="7"
+                                    height="7"
+                                    rx="1"
+                                />
+                                <rect
+                                    x="14"
+                                    y="3"
+                                    width="7"
+                                    height="7"
+                                    rx="1"
+                                />
+                                <rect
+                                    x="3"
+                                    y="14"
+                                    width="7"
+                                    height="7"
+                                    rx="1"
+                                />
+                                <rect
+                                    x="14"
+                                    y="14"
+                                    width="7"
+                                    height="7"
+                                    rx="1"
+                                />
+                            </svg>
+                        </span>
+
+                        <span class="intern-nav-label">
+                            Dashboard
+                        </span>
+
+                    </a>
+
+
+                    <a
+                        href="profile.html"
+                        class="intern-nav-link"
+                    >
+
+                        <span class="intern-nav-icon">
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke-width="1.8"
+                                aria-hidden="true"
+                            >
+                                <circle
+                                    cx="12"
+                                    cy="8"
+                                    r="3.5"
+                                />
+                                <path
+                                    d="M5 20c.8-3.4 3.2-5.2 7-5.2s6.2 1.8 7 5.2"
+                                />
+                            </svg>
+                        </span>
+
+                        <span class="intern-nav-label">
+                            Profile
+                        </span>
+
+                    </a>
+
+
+                </div>
+
+
+                <!-- Learning -->
+
+                <div class="intern-nav-section">
+                    LEARNING
+                </div>
+
+                <div class="intern-nav-list">
+
+                    <a
+                        href="learning.html"
+                        class="intern-nav-link active"
+                    >
+
+                        <span class="intern-nav-icon">
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke-width="1.8"
+                                aria-hidden="true"
+                            >
+                                <path
+                                    d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21V5.5Z"
+                                />
+                                <path
+                                    d="M4 18.5A2.5 2.5 0 0 1 6.5 16H20"
+                                />
+                            </svg>
+                        </span>
+
+                        <span class="intern-nav-label">
+                            Learning
+                        </span>
+
+                    </a>
+
+
+                    <a
+                        href="live-classes.html"
+                        class="intern-nav-link"
+                    >
+
+                        <span class="intern-nav-icon">
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke-width="1.8"
+                                aria-hidden="true"
+                            >
+                                <rect
+                                    x="3"
+                                    y="5"
+                                    width="18"
+                                    height="14"
+                                    rx="2"
+                                />
+                                <path d="m10 9 5 3-5 3V9Z" />
+                            </svg>
+                        </span>
+
+                        <span class="intern-nav-label">
+                            Live Classes
+                        </span>
+
+                    </a>
+
+
+                    <a
+                        href="recorded-classes.html"
+                        class="intern-nav-link"
+                    >
+
+                        <span class="intern-nav-icon">
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke-width="1.8"
+                                aria-hidden="true"
+                            >
+                                <rect
+                                    x="3"
+                                    y="5"
+                                    width="18"
+                                    height="14"
+                                    rx="2"
+                                />
+                                <path d="m10 9 5 3-5 3V9Z" />
+                            </svg>
+                        </span>
+
+                        <span class="intern-nav-label">
+                            Recorded Classes
+                        </span>
+
+                    </a>
+
+
+                    <a
+                        href="tasks.html"
+                        class="intern-nav-link"
+                    >
+
+                        <span class="intern-nav-icon">
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke-width="1.8"
+                                aria-hidden="true"
+                            >
+                                <path d="M9 5h6" />
+                                <path d="M9 3h6v4H9z" />
+                                <path d="M6 6H5a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-1" />
+                                <path d="m8 13 2 2 5-5" />
+                            </svg>
+                        </span>
+
+                        <span class="intern-nav-label">
+                            Tasks
+                        </span>
+
+                    </a>
+
+                </div>
+
+
+                <!-- Development -->
+
+                <div class="intern-nav-section">
+                    DEVELOPMENT
+                </div>
+
+                <div class="intern-nav-list">
+
+                    <a
+                        href="projects.html"
+                        class="intern-nav-link"
+                    >
+
+                        <span class="intern-nav-icon">
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke-width="1.8"
+                                aria-hidden="true"
+                            >
+                                <path d="M4 6h16v13H4z" />
+                                <path d="M8 6V4h8v2" />
+                                <path d="M8 11h8" />
+                            </svg>
+                        </span>
+
+                        <span class="intern-nav-label">
+                            Projects
+                        </span>
+
+                    </a>
+
+
+                    <a
+                        href="milestones.html"
+                        class="intern-nav-link"
+                    >
+
+                        <span class="intern-nav-icon">
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke-width="1.8"
+                                aria-hidden="true"
+                            >
+                                <path d="M5 19V5" />
+                                <path d="M5 6h11l-2 4 2 4H5" />
+                            </svg>
+                        </span>
+
+                        <span class="intern-nav-label">
+                            Milestones
+                        </span>
+
+                    </a>
+
+
+                    <a
+                        href="evaluation.html"
+                        class="intern-nav-link"
+                    >
+
+                        <span class="intern-nav-icon">
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke-width="1.8"
+                                aria-hidden="true"
+                            >
+                                <path d="m12 3 2.6 5.3 5.9.9-4.3 4.2 1 5.9-5.2-2.8-5.2 2.8 1-5.9-4.3-4.2 5.9-.9L12 3Z" />
+                            </svg>
+                        </span>
+
+                        <span class="intern-nav-label">
+                            Evaluation
+                        </span>
+
+                    </a>
+
+                </div>
+
+
+                <!-- Completion -->
+
+                <div class="intern-nav-section">
+                    COMPLETION
+                </div>
+
+                <div class="intern-nav-list">
+
+                    <a
+                        href="certificate.html"
+                        class="intern-nav-link"
+                    >
+
+                        <span class="intern-nav-icon">
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke-width="1.8"
+                                aria-hidden="true"
+                            >
+                                <path d="M6 3h12v18l-6-3-6 3V3Z" />
+                                <path d="m9 10 2 2 4-4" />
+                            </svg>
+                        </span>
+
+                        <span class="intern-nav-label">
+                            Certificate
+                        </span>
+
+                    </a>
+
+                </div>
+
+
+                <!-- Website -->
+
+                <div class="intern-nav-list">
+
+                    <a
+                        href="../index.html"
+                        class="intern-nav-link"
+                    >
+
+                        <span class="intern-nav-icon">
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke-width="1.8"
+                                aria-hidden="true"
+                            >
+                                <path d="M3 11.5 12 4l9 7.5" />
+                                <path d="M5 10v10h14V10" />
+                                <path d="M9 20v-6h6v6" />
+                            </svg>
+                        </span>
+
+                        <span class="intern-nav-label">
+                            Visit Website
+                        </span>
+
+                    </a>
+
+                </div>
+
+            </nav>
+
+
+            <!-- Sidebar Footer -->
+
+            <div class="intern-sidebar-footer">
+
+                <button
+                    type="button"
+                    id="logoutButton"
+                    class="intern-btn intern-btn-secondary"
+                    style="width:100%;"
+                >
+                    Logout
+                </button>
+
+            </div>
+
+        </aside>
+
+
+        <!-- Mobile Overlay -->
+
+        <div
+            class="intern-sidebar-overlay"
+            id="internSidebarOverlay"
+            aria-hidden="true"
+        ></div>
+
+
+        <!-- =================================================
+             MAIN AREA
+             ================================================= -->
+
+        <div class="intern-main-area">
+
+
+            <!-- Topbar -->
+
+            <header class="intern-topbar">
+
+                <div class="intern-topbar-left">
+
+                    <button
+                        type="button"
+                        class="intern-sidebar-toggle"
+                        id="internSidebarToggle"
+                        aria-label="Open navigation"
+                        aria-controls="internSidebar"
+                        aria-expanded="false"
+                    >
+
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            aria-hidden="true"
+                        >
+                            <path d="M4 6h16" />
+                            <path d="M4 12h16" />
+                            <path d="M4 18h16" />
+                        </svg>
+
+                    </button>
+
+
+                    <div class="intern-page-heading">
+
+                        <h1>
+                            Learning
+                        </h1>
+
+                        <p>
+                            Your structured learning journey
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="intern-topbar-right">
+
+                    <div class="intern-user-menu-trigger">
+
+                        <span
+                            class="intern-user-avatar"
+                            id="topAvatar"
+                        >
+                            I
+                        </span>
+
+                        <span class="intern-user-info">
+
+                            <span
+                                class="intern-user-name"
+                                id="topUserName"
+                            >
+                                Intern
+                            </span>
+
+                            <span class="intern-user-role">
+                                Intern
+                            </span>
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </header>
+
+
+            <!-- =================================================
+                 LEARNING CONTENT
+                 ================================================= -->
+
+            <main class="learning-content">
+
+
+                <!-- Page Intro -->
+
+                <section class="learning-intro">
+
+                    <p class="learning-eyebrow">
+                        Learning Center
+                    </p>
+
+                    <h2 class="learning-title">
+                        Continue Your Learning
+                    </h2>
+
+                    <p class="learning-description">
+                        Follow your enrolled program, complete
+                        each lesson step by step, and track your
+                        learning progress from one place.
+                    </p>
+
+                </section>
+
+
+                <!-- Program -->
+
+                <section class="learning-program-card">
+
+                    <div class="learning-program-content">
+
+                        <span class="learning-program-label">
+                            Enrolled Program
+                        </span>
+
+                        <h2
+                            class="learning-program-name"
+                            id="learningProgramName"
+                        >
+                            Loading...
+                        </h2>
+
+                        <div class="learning-program-meta">
+
+                            <span class="learning-program-badge">
+                                Active Learning
+                            </span>
+
+                        </div>
+
+
+                        <!-- Overall Progress -->
+
+                        <div class="learning-progress-section">
+
+                            <div class="learning-progress-top">
+
+                                <span class="learning-progress-label">
+                                    Overall Learning Progress
+                                </span>
+
+                                <span
+                                    class="learning-progress-value"
+                                    id="overallProgressValue"
+                                >
+                                    0%
+                                </span>
+
+                            </div>
+
+                            <div
+                                class="learning-progress-bar"
+                                aria-label="Overall learning progress"
+                            >
+
+                                <div
+                                    class="learning-progress-fill"
+                                    id="overallProgressFill"
+                                ></div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <!-- Summary -->
+
+                <section
+                    class="learning-summary"
+                    aria-label="Learning summary"
+                >
+
+
+                    <!-- Modules -->
+
+                    <div class="learning-summary-card">
+
+                        <div class="learning-summary-top">
+
+                            <span>
+                                <span
+                                    class="learning-summary-value"
+                                    id="moduleCount"
+                                >
+                                    0
+                                </span>
+
+                                <span class="learning-summary-label">
+                                    Modules
+                                </span>
+                            </span>
+
+                            <span class="learning-summary-icon">
+
+                                <svg
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke-width="1.8"
+                                    aria-hidden="true"
+                                >
+                                    <path d="M4 5h16v14H4z" />
+                                    <path d="M8 9h8" />
+                                    <path d="M8 13h5" />
+                                </svg>
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Lessons -->
+
+                    <div class="learning-summary-card">
+
+                        <div class="learning-summary-top">
+
+                            <span>
+                                <span
+                                    class="learning-summary-value"
+                                    id="lessonCount"
+                                >
+                                    0
+                                </span>
+
+                                <span class="learning-summary-label">
+                                    Lessons
+                                </span>
+                            </span>
+
+                            <span class="learning-summary-icon">
+
+                                <svg
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke-width="1.8"
+                                    aria-hidden="true"
+                                >
+                                    <path d="M5 4h14v16H5z" />
+                                    <path d="M8 8h8" />
+                                    <path d="M8 12h8" />
+                                    <path d="M8 16h5" />
+                                </svg>
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Completed -->
+
+                    <div class="learning-summary-card">
+
+                        <div class="learning-summary-top">
+
+                            <span>
+                                <span
+                                    class="learning-summary-value"
+                                    id="completedLessonCount"
+                                >
+                                    0
+                                </span>
+
+                                <span class="learning-summary-label">
+                                    Completed
+                                </span>
+                            </span>
+
+                            <span class="learning-summary-icon">
+
+                                <svg
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke-width="1.8"
+                                    aria-hidden="true"
+                                >
+                                    <circle
+                                        cx="12"
+                                        cy="12"
+                                        r="8"
+                                    />
+                                    <path d="m8.5 12 2.2 2.2 4.8-5" />
+                                </svg>
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <!-- Course Modules -->
+
+                <section class="learning-panel">
+
+                    <header class="learning-panel-header">
+
+                        <div>
+
+                            <h2 class="learning-panel-title">
+                                Course Modules
+                            </h2>
+
+                            <p class="learning-panel-description">
+                                Complete the lessons in sequence
+                                and track your progress.
+                            </p>
+
+                        </div>
+
+                        <span
+                            class="learning-status"
+                            id="learningStatus"
+                        >
+                            Loading learning content...
+                        </span>
+
+                    </header>
+
+
+                    <div class="learning-panel-body">
+
+                        <div
+                            id="learningContent"
+                            class="learning-modules"
+                        >
+
+                            <div class="learning-loading">
+                                Loading your learning content...
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+            </main>
+
+
+            <!-- Footer -->
+
+            <footer class="intern-dashboard-footer">
+
+                NITRIXA Technologies
+                &nbsp;•&nbsp;
+                Intern Learning Portal
+                &nbsp;•&nbsp;
+                <a href="../index.html">
+                    Visit Website
+                </a>
+
+            </footer>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         SUPABASE
+         ===================================================== -->
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+    ></script>
+
+
+    <script
+        src="../js/supabase.js"
+    ></script>
+
+
+    <script
+        src="../js/main.js"
+    ></script>
+
+
+    <script
+        src="../js/intern-learning.js"
+    ></script>
+
+
+    <!-- =====================================================
+         INTERN PORTAL MOBILE NAVIGATION
+         ===================================================== -->
+
+    <script>
+
+        (function () {
+
+            "use strict";
+
+
+            const sidebar =
+                document.getElementById(
+                    "internSidebar"
+                );
+
+            const overlay =
+                document.getElementById(
+                    "internSidebarOverlay"
+                );
+
+            const toggle =
+                document.getElementById(
+                    "internSidebarToggle"
+                );
+
+
+            function openSidebar() {
+
+                if (sidebar) {
+                    sidebar.classList.add(
+                        "is-open"
+                    );
+                }
+
+                if (overlay) {
+                    overlay.classList.add(
+                        "is-visible"
+                    );
+
+                    overlay.setAttribute(
+                        "aria-hidden",
+                        "false"
+                    );
+                }
+
+                if (toggle) {
+                    toggle.setAttribute(
+                        "aria-expanded",
+                        "true"
+                    );
+                }
+
+                document.body.classList.add(
+                    "intern-sidebar-open"
+                );
+
+            }
+
+
+            function closeSidebar() {
+
+                if (sidebar) {
+                    sidebar.classList.remove(
+                        "is-open"
+                    );
+                }
+
+                if (overlay) {
+                    overlay.classList.remove(
+                        "is-visible"
+                    );
+
+                    overlay.setAttribute(
+                        "aria-hidden",
+                        "true"
+                    );
+                }
+
+                if (toggle) {
+                    toggle.setAttribute(
+                        "aria-expanded",
+                        "false"
+                    );
+                }
+
+                document.body.classList.remove(
+                    "intern-sidebar-open"
+                );
+
+            }
+
+
+            if (toggle) {
+
+                toggle.addEventListener(
+                    "click",
+                    function () {
+
+                        if (
+                            sidebar &&
+                            sidebar.classList.contains(
+                                "is-open"
+                            )
+                        ) {
+                            closeSidebar();
+                        } else {
+                            openSidebar();
+                        }
+
+                    }
+                );
+
+            }
+
+
+            if (overlay) {
+
+                overlay.addEventListener(
+                    "click",
+                    closeSidebar
+                );
+
+            }
+
+
+            document
+                .querySelectorAll(
+                    ".intern-nav-link"
+                )
+                .forEach(
+                    function (link) {
+
+                        link.addEventListener(
+                            "click",
+                            function () {
+
+                                if (
+                                    window.innerWidth <=
+                                    980
+                                ) {
+                                    closeSidebar();
+                                }
+
+                            }
+                        );
+
+                    }
+                );
+
+
+            window.addEventListener(
+                "resize",
+                function () {
+
+                    if (
+                        window.innerWidth > 980
+                    ) {
+                        closeSidebar();
+                    }
+
+                }
+            );
+
+        })();
+
+    </script>
+
+
+</body>
+
+</html>

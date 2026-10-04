@@ -2,7 +2,7 @@
    NITRIXA TECHNOLOGIES
    PUBLIC LOGIN / REGISTRATION
 
-   NEW LOCKED AUTHENTICATION FLOW
+   LOCKED AUTHENTICATION FLOW
 
    PUBLIC WEBSITE
         ↓
@@ -10,24 +10,26 @@
         ↓
    AUTHENTICATION SUCCESS
         ↓
-   INTERN DASHBOARD
+   CHECK ADMIN
         ↓
-   PROGRAMS
-        ↓
-   ENROLLMENT
-        ↓
-   PAYMENT
-        ↓
-   INTERN ACTIVATION
+   ┌───────────────┬────────────────┐
+   │               │                │
+   ADMIN          USER             USER
+   │               │                │
+   ↓               ↓                ↓
+   ADMIN        INTERN           DASHBOARD
+   DASHBOARD    DASHBOARD        FLOW
 
    IMPORTANT:
    - Registration creates a user account.
-   - Login always opens Intern Dashboard.
+   - Admin users go to Admin Dashboard.
+   - Normal users go to Intern Dashboard.
    - Intern ID is NOT required to enter dashboard.
    - Enrollment happens from the dashboard.
    - Payment / Intern ID generation is handled separately.
    - No program/path dependency exists here.
    ========================================================= */
+
 
 document.addEventListener(
     "DOMContentLoaded",
@@ -129,6 +131,205 @@ document.addEventListener(
 
 
         /* =====================================================
+           URL PARAMETERS
+        ===================================================== */
+
+        const params =
+            new URLSearchParams(
+                window.location.search
+            );
+
+
+        /*
+         * Selected program.
+         */
+
+        const program =
+            (
+                params.get(
+                    "program"
+                ) || ""
+            )
+                .trim();
+
+
+        /*
+         * Enrollment path.
+         *
+         * internship
+         * training-internship
+         */
+
+        const path =
+            (
+                params.get(
+                    "path"
+                ) || ""
+            )
+                .trim()
+                .toLowerCase();
+
+
+        /*
+         * Redirect parameter.
+         */
+
+        let redirectPage =
+            params.get(
+                "redirect"
+            );
+
+
+        /*
+         * Legacy parameter.
+         */
+
+        const returnTarget =
+            (
+                params.get(
+                    "return"
+                ) || ""
+            )
+                .trim()
+                .toLowerCase();
+
+
+        /* =====================================================
+           SAFE REDIRECT
+        ===================================================== */
+
+        function getSafeRedirect(
+            redirect
+        ) {
+
+            if (!redirect) {
+
+                return "login.html";
+
+            }
+
+
+            const value =
+                String(
+                    redirect
+                ).trim();
+
+
+            /*
+             * Never allow external URLs.
+             */
+
+            if (
+                value.startsWith("/") ||
+                value.startsWith("\\") ||
+                value.includes("://") ||
+                value.includes("\\")
+            ) {
+
+                return "login.html";
+
+            }
+
+
+            /*
+             * Only local HTML pages are allowed.
+             */
+
+            if (
+                !value.endsWith(".html")
+            ) {
+
+                return "login.html";
+
+            }
+
+
+            /*
+             * Admin pages must never be
+             * accepted as public login redirects.
+             */
+
+            if (
+                value.startsWith("admin/")
+            ) {
+
+                return "login.html";
+
+            }
+
+
+            return value;
+
+        }
+
+
+        /* =====================================================
+           BUILD REDIRECT URL
+        ===================================================== */
+
+        function buildRedirectUrl() {
+
+            const safeRedirect =
+                getSafeRedirect(
+                    redirectPage
+                );
+
+
+            if (
+                safeRedirect !==
+                "login.html"
+            ) {
+
+                const redirectParams =
+                    new URLSearchParams();
+
+
+                if (
+                    program
+                ) {
+
+                    redirectParams.set(
+                        "program",
+                        program
+                    );
+
+                }
+
+
+                if (
+                    path
+                ) {
+
+                    redirectParams.set(
+                        "path",
+                        path
+                    );
+
+                }
+
+
+                const query =
+                    redirectParams.toString();
+
+
+                return (
+                    safeRedirect +
+                    (
+                        query
+                            ? "?" + query
+                            : ""
+                    )
+                );
+
+            }
+
+
+            return "login.html";
+
+        }
+
+
+        /* =====================================================
            MESSAGE
         ===================================================== */
 
@@ -190,6 +391,7 @@ document.addEventListener(
                     ".auth-button-text"
                 );
 
+
             if (
                 !button.dataset.defaultText
             ) {
@@ -201,6 +403,7 @@ document.addEventListener(
 
             }
 
+
             button.disabled =
                 loading;
 
@@ -208,6 +411,7 @@ document.addEventListener(
                 "loading",
                 loading
             );
+
 
             if (textElement) {
 
@@ -230,6 +434,7 @@ document.addEventListener(
         ) {
 
             clearMessage();
+
 
             const isLogin =
                 mode === "login";
@@ -580,10 +785,94 @@ document.addEventListener(
 
 
         /* =====================================================
+           ADMIN ACCESS CHECK
+        ===================================================== */
+
+        async function isCurrentUserAdmin() {
+
+            try {
+
+                const {
+                    data,
+                    error
+                } =
+                    await supabase.rpc(
+                        "is_admin"
+                    );
+
+
+                if (error) {
+
+                    console.error(
+                        "NITRIXA: Admin access check failed:",
+                        error
+                    );
+
+                    return {
+                        isAdmin: false,
+                        error
+                    };
+
+                }
+
+
+                return {
+                    isAdmin:
+                        data === true,
+                    error: null
+                };
+
+            } catch (error) {
+
+                console.error(
+                    "NITRIXA: Unexpected admin access check error:",
+                    error
+                );
+
+                return {
+                    isAdmin: false,
+                    error
+                };
+
+            }
+
+        }
+
+
+        /* =====================================================
+           ADMIN DASHBOARD REDIRECT
+        ===================================================== */
+
+        function redirectToAdminDashboard(
+            message
+        ) {
+
+            showMessage(
+                message ||
+                "Login successful. Opening your Admin Dashboard...",
+                "success"
+            );
+
+            window.setTimeout(
+                () => {
+
+                    window.location.href =
+                        "admin/dashboard.html";
+
+                },
+                400
+            );
+
+        }
+
+
+        /* =====================================================
            LOGIN
         ===================================================== */
 
-        if (loginForm) {
+        if (
+            loginForm
+        ) {
 
             loginForm.addEventListener(
                 "submit",
@@ -591,7 +880,9 @@ document.addEventListener(
 
                     event.preventDefault();
 
+
                     clearMessage();
+
 
                     clearInputErrors(
                         loginForm
@@ -602,6 +893,7 @@ document.addEventListener(
                         document.getElementById(
                             "loginEmail"
                         );
+
 
                     const passwordInput =
                         document.getElementById(
@@ -628,6 +920,7 @@ document.addEventListener(
                         normalizeEmail(
                             emailInput.value
                         );
+
 
                     const password =
                         passwordInput.value;
@@ -693,6 +986,12 @@ document.addEventListener(
                             email
                         );
 
+
+                        /*
+                         * STEP 1
+                         *
+                         * Authenticate with Supabase.
+                         */
 
                         const {
                             data,
@@ -788,8 +1087,70 @@ document.addEventListener(
                         }
 
 
+                        /* =================================================
+                           STEP 2 — CHECK ADMIN FIRST
+                        ================================================= */
+
+                        console.log(
+                            "NITRIXA: Checking account role..."
+                        );
+
+
+                        const {
+                            isAdmin,
+                            error: adminError
+                        } =
+                            await isCurrentUserAdmin();
+
+
                         /*
-                         * NEW LOCKED FLOW:
+                         * Do NOT send a user to the
+                         * wrong dashboard if admin
+                         * verification failed.
+                         */
+
+                        if (
+                            adminError
+                        ) {
+
+                            showMessage(
+                                "We could not verify your account access. Please try again.",
+                                "error"
+                            );
+
+                            return;
+
+                        }
+
+
+                        /*
+                         * ADMIN USER
+                         */
+
+                        if (
+                            isAdmin
+                        ) {
+
+                            console.log(
+                                "NITRIXA: Admin user detected."
+                            );
+
+
+                            redirectToAdminDashboard(
+                                "Login successful. Opening your Admin Dashboard..."
+                            );
+
+                            return;
+
+                        }
+
+
+                        /* =================================================
+                           STEP 3 — NORMAL USER
+                        ================================================= */
+
+                        /*
+                         * Existing locked flow:
                          *
                          * Authentication success is enough
                          * to enter the Intern Dashboard.
@@ -801,6 +1162,11 @@ document.addEventListener(
                          * - program
                          * - path
                          */
+
+                        console.log(
+                            "NITRIXA: Normal user detected."
+                        );
+
 
                         redirectToDashboard(
                             "Login successful. Opening your Intern Dashboard..."
@@ -838,7 +1204,9 @@ document.addEventListener(
            REGISTRATION
         ===================================================== */
 
-        if (registerForm) {
+        if (
+            registerForm
+        ) {
 
             registerForm.addEventListener(
                 "submit",
@@ -846,7 +1214,9 @@ document.addEventListener(
 
                     event.preventDefault();
 
+
                     clearMessage();
+
 
                     clearInputErrors(
                         registerForm
@@ -858,25 +1228,30 @@ document.addEventListener(
                             "registerName"
                         );
 
+
                     const emailInput =
                         document.getElementById(
                             "registerEmail"
                         );
+
 
                     const mobileInput =
                         document.getElementById(
                             "registerMobile"
                         );
 
+
                     const passwordInput =
                         document.getElementById(
                             "registerPassword"
                         );
 
+
                     const confirmPasswordInput =
                         document.getElementById(
                             "registerConfirmPassword"
                         );
+
 
                     const consentInput =
                         document.getElementById(
@@ -910,18 +1285,22 @@ document.addEventListener(
                     const fullName =
                         nameInput.value.trim();
 
+
                     const email =
                         normalizeEmail(
                             emailInput.value
                         );
+
 
                     const mobile =
                         normalizeMobile(
                             mobileInput.value
                         );
 
+
                     const password =
                         passwordInput.value;
+
 
                     const confirmPassword =
                         confirmPasswordInput.value;
@@ -929,6 +1308,7 @@ document.addEventListener(
 
                     emailInput.value =
                         email;
+
 
                     mobileInput.value =
                         mobile;
@@ -1146,9 +1526,8 @@ document.addEventListener(
                          * Supabase may return a session
                          * when email confirmation is disabled.
                          *
-                         * In the new flow, a successfully
-                         * authenticated user goes directly
-                         * to the dashboard.
+                         * A newly registered user is a
+                         * normal user, not an admin.
                          */
 
                         if (
@@ -1168,10 +1547,7 @@ document.addEventListener(
 
                         /*
                          * If Supabase requires email
-                         * confirmation, show the existing
-                         * confirmation panel.
-                         *
-                         * This does NOT create an Intern ID.
+                         * confirmation, show confirmation panel.
                          */
 
                         if (loginForm) {
@@ -1237,7 +1613,9 @@ document.addEventListener(
                         );
 
 
-                    } catch (error) {
+                    } catch (
+                        error
+                    ) {
 
                         console.error(
                             "NITRIXA unexpected registration error:",
@@ -1269,7 +1647,9 @@ document.addEventListener(
            FORGOT PASSWORD
         ===================================================== */
 
-        if (forgotPasswordButton) {
+        if (
+            forgotPasswordButton
+        ) {
 
             forgotPasswordButton.addEventListener(
                 "click",
@@ -1284,8 +1664,12 @@ document.addEventListener(
                         );
 
 
-                    if (!emailInput) {
+                    if (
+                        !emailInput
+                    ) {
+
                         return;
+
                     }
 
 
@@ -1339,7 +1723,9 @@ document.addEventListener(
                                 );
 
 
-                        if (error) {
+                        if (
+                            error
+                        ) {
 
                             console.error(
                                 "NITRIXA password reset error:",
@@ -1362,7 +1748,9 @@ document.addEventListener(
                         );
 
 
-                    } catch (error) {
+                    } catch (
+                        error
+                    ) {
 
                         console.error(
                             "NITRIXA unexpected password reset error:",
@@ -1391,7 +1779,9 @@ document.addEventListener(
            TAB EVENTS
         ===================================================== */
 
-        if (loginTab) {
+        if (
+            loginTab
+        ) {
 
             loginTab.addEventListener(
                 "click",
@@ -1407,7 +1797,9 @@ document.addEventListener(
         }
 
 
-        if (registerTab) {
+        if (
+            registerTab
+        ) {
 
             registerTab.addEventListener(
                 "click",
@@ -1423,7 +1815,9 @@ document.addEventListener(
         }
 
 
-        if (switchToRegister) {
+        if (
+            switchToRegister
+        ) {
 
             switchToRegister.addEventListener(
                 "click",
@@ -1439,7 +1833,9 @@ document.addEventListener(
         }
 
 
-        if (switchToLogin) {
+        if (
+            switchToLogin
+        ) {
 
             switchToLogin.addEventListener(
                 "click",
@@ -1455,7 +1851,9 @@ document.addEventListener(
         }
 
 
-        if (backToLoginButton) {
+        if (
+            backToLoginButton
+        ) {
 
             backToLoginButton.addEventListener(
                 "click",
@@ -1496,8 +1894,12 @@ document.addEventListener(
                                 );
 
 
-                            if (!input) {
+                            if (
+                                !input
+                            ) {
+
                                 return;
+
                             }
 
 
@@ -1580,15 +1982,75 @@ document.addEventListener(
                 );
 
 
+                /* =================================================
+                   EXISTING SESSION — CHECK ADMIN FIRST
+                ================================================= */
+
+                const {
+                    isAdmin,
+                    error: adminError
+                } =
+                    await isCurrentUserAdmin();
+
+
                 /*
-                 * NEW LOCKED FLOW:
-                 *
-                 * Any authenticated user can access
-                 * the Intern Dashboard.
-                 *
-                 * No interns-table lookup.
-                 * No Intern ID requirement.
+                 * Do not redirect anywhere if the
+                 * admin verification itself failed.
                  */
+
+                if (
+                    adminError
+                ) {
+
+                    console.error(
+                        "NITRIXA: Existing-session admin verification failed."
+                    );
+
+                    showMessage(
+                        "We could not verify your account access. Please refresh and try again.",
+                        "error"
+                    );
+
+                    return;
+
+                }
+
+
+                /*
+                 * EXISTING ADMIN SESSION
+                 */
+
+                if (
+                    isAdmin
+                ) {
+
+                    console.log(
+                        "NITRIXA: Existing admin session detected."
+                    );
+
+
+                    redirectToAdminDashboard(
+                        "You are already signed in. Opening your Admin Dashboard..."
+                    );
+
+                    return;
+
+                }
+
+
+                /*
+                 * EXISTING NORMAL USER SESSION
+                 *
+                 * Existing locked flow:
+                 *
+                 * Any authenticated normal user
+                 * can access the Intern Dashboard.
+                 */
+
+                console.log(
+                    "NITRIXA: Existing normal-user session detected."
+                );
+
 
                 redirectToDashboard(
                     "You are already signed in. Opening your Intern Dashboard..."
@@ -1596,12 +2058,15 @@ document.addEventListener(
 
             }
 
-        } catch (error) {
+        } catch (
+            error
+        ) {
 
             console.error(
                 "NITRIXA session check failed:",
                 error
             );
+
 
             /*
              * Do not force logout because of a

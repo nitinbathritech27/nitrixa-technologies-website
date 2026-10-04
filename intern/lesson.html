@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="NITRIXA Technologies - Learning Lesson"
+    >
+
+    <title>Lesson | NITRIXA Technologies</title>
+
+    <!-- Main Website Styles -->
+    <link
+        rel="stylesheet"
+        href="../css/global.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="../css/components.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="../css/animations.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="../css/responsive.css"
+    >
+
+    <!-- Intern Dashboard Styles -->
+    <link
+        rel="stylesheet"
+        href="../css/intern-dashboard.css"
+    >
+
+    <style>
+        /*
+         * =====================================================
+         * NITRIXA INTERN LESSON PAGE
+         * Page-specific styles only
+         * =====================================================
+         */
+
+        .lesson-page {
+            min-height: 100vh;
+        }
+
+        .lesson-main {
+            padding: 32px;
+        }
+
+        .lesson-header {
+            margin-bottom: 24px;
+        }
+
+        .lesson-back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            margin-bottom: 18px;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 650;
+            color: inherit;
+            opacity: 0.68;
+            transition: opacity 0.2s ease;
+        }
+
+        .lesson-back-link:hover {
+            opacity: 1;
+        }
+
+        .lesson-breadcrumb {
+            margin-bottom: 10px;
+            font-size: 12px;
+            font-weight: 650;
+            opacity: 0.58;
+        }
+
+        .lesson-title {
+            margin: 0;
+            font-size: 32px;
+            line-height: 1.25;
+        }
+
+        .lesson-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            margin-top: 14px;
+            padding: 7px 11px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .lesson-status.completed {
+            background: rgba(
+                22,
+                163,
+                74,
+                0.09
+            );
+            color: #15803d;
+        }
+
+        .lesson-status.pending {
+            background: rgba(
+                37,
+                99,
+                235,
+                0.08
+            );
+            color: #2563eb;
+        }
+
+        .lesson-content-card {
+            padding: 30px;
+            border-radius: 18px;
+            margin-bottom: 24px;
+        }
+
+        .lesson-content {
+            font-size: 15px;
+            line-height: 1.85;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+        }
+
+        .lesson-content:empty {
+            display: none;
+        }
+
+        .lesson-loading {
+            padding: 45px 20px;
+            text-align: center;
+            font-size: 14px;
+            opacity: 0.65;
+        }
+
+        .lesson-error {
+            padding: 18px 20px;
+            border-radius: 12px;
+            font-size: 13px;
+            line-height: 1.55;
+            background: rgba(
+                220,
+                38,
+                38,
+                0.07
+            );
+            color: #b91c1c;
+        }
+
+        .lesson-actions {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .lesson-complete-button {
+            min-width: 190px;
+            min-height: 46px;
+            padding: 11px 20px;
+            border: 0;
+            border-radius: 10px;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            font-weight: 750;
+            color: #ffffff;
+            background: linear-gradient(
+                135deg,
+                #2563eb,
+                #4f46e5
+            );
+            transition:
+                transform 0.2s ease,
+                opacity 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+        .lesson-complete-button:hover {
+            transform: translateY(-1px);
+        }
+
+        .lesson-complete-button:disabled {
+            cursor: not-allowed;
+            opacity: 0.58;
+            transform: none;
+        }
+
+        .lesson-complete-button.completed {
+            background: #15803d;
+        }
+
+        .lesson-navigation {
+            display: grid;
+            grid-template-columns:
+                minmax(0, 1fr)
+                minmax(0, 1fr);
+            gap: 16px;
+        }
+
+        .lesson-nav-button {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-height: 72px;
+            padding: 15px 18px;
+            border-radius: 14px;
+            text-decoration: none;
+            color: inherit;
+            transition:
+                background 0.2s ease,
+                transform 0.2s ease;
+        }
+
+        .lesson-nav-button:hover {
+            transform: translateY(-1px);
+        }
+
+        .lesson-nav-button.previous {
+            justify-content: flex-start;
+        }
+
+        .lesson-nav-button.next {
+            justify-content: flex-end;
+            text-align: right;
+        }
+
+        .lesson-nav-label {
+            display: block;
+            margin-bottom: 4px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            opacity: 0.52;
+        }
+
+        .lesson-nav-title {
+            display: block;
+            font-size: 13px;
+            font-weight: 700;
+            line-height: 1.4;
+        }
+
+        .lesson-nav-arrow {
+            flex: 0 0 auto;
+            font-size: 18px;
+            opacity: 0.65;
+        }
+
+        .lesson-empty-navigation {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 72px;
+            padding: 15px;
+            border-radius: 14px;
+            font-size: 13px;
+            opacity: 0.55;
+        }
+
+        @media (max-width: 768px) {
+            .lesson-main {
+                padding: 22px 16px;
+            }
+
+            .lesson-title {
+                font-size: 27px;
+            }
+
+            .lesson-content-card {
+                padding: 22px;
+            }
+
+            .lesson-content {
+                font-size: 14px;
+                line-height: 1.75;
+            }
+
+            .lesson-navigation {
+                grid-template-columns: 1fr;
+            }
+
+            .lesson-nav-button.next {
+                justify-content: flex-start;
+                text-align: left;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .lesson-main {
+                padding: 18px 12px;
+            }
+
+            .lesson-content-card {
+                padding: 18px;
+                border-radius: 15px;
+            }
+
+            .lesson-title {
+                font-size: 23px;
+            }
+
+            .lesson-actions {
+                width: 100%;
+            }
+
+            .lesson-complete-button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body class="intern-dashboard-page lesson-page">
+
+    <!-- =====================================================
+         SIDEBAR
+         ===================================================== -->
+
+    <aside
+        class="intern-sidebar"
+        id="internSidebar"
+    >
+        <div class="intern-sidebar-brand">
+            <a
+                href="../index.html"
+                class="intern-brand-link"
+                aria-label="NITRIXA Technologies Home"
+            >
+                <span class="intern-brand-mark">
+                    N
+                </span>
+
+                <span class="intern-brand-text">
+                    NITRIXA
+                </span>
+            </a>
+        </div>
+
+        <nav
+            class="intern-sidebar-nav"
+            aria-label="Intern navigation"
+        >
+            <a
+                href="../intern-dashboard.html"
+                class="intern-nav-link"
+            >
+                Dashboard
+            </a>
+
+            <a
+                href="profile.html"
+                class="intern-nav-link"
+            >
+                Profile
+            </a>
+
+            <div class="intern-nav-section">
+                <span class="intern-nav-section-title">
+                    LEARNING
+                </span>
+
+                <a
+                    href="learning.html"
+                    class="intern-nav-link active"
+                >
+                    Learning
+                </a>
+
+                <a
+                    href="live-classes.html"
+                    class="intern-nav-link"
+                >
+                    Live Classes
+                </a>
+
+                <a
+                    href="recorded-classes.html"
+                    class="intern-nav-link"
+                >
+                    Recorded Classes
+                </a>
+
+                <a
+                    href="tasks.html"
+                    class="intern-nav-link"
+                >
+                    Tasks
+                </a>
+            </div>
+
+            <div class="intern-nav-section">
+                <span class="intern-nav-section-title">
+                    DEVELOPMENT
+                </span>
+
+                <a
+                    href="projects.html"
+                    class="intern-nav-link"
+                >
+                    Projects
+                </a>
+
+                <a
+                    href="milestones.html"
+                    class="intern-nav-link"
+                >
+                    Milestones
+                </a>
+
+                <a
+                    href="evaluation.html"
+                    class="intern-nav-link"
+                >
+                    Evaluation
+                </a>
+            </div>
+
+            <div class="intern-nav-section">
+                <span class="intern-nav-section-title">
+                    COMPLETION
+                </span>
+
+                <a
+                    href="certificate.html"
+                    class="intern-nav-link"
+                >
+                    Certificate
+                </a>
+            </div>
+
+            <a
+                href="../index.html"
+                class="intern-nav-link"
+            >
+                Visit Website
+            </a>
+        </nav>
+
+        <div class="intern-sidebar-footer">
+            <button
+                type="button"
+                id="logoutButton"
+                class="intern-logout-button"
+            >
+                Logout
+            </button>
+        </div>
+    </aside>
+
+
+    <!-- =====================================================
+         MAIN
+         ===================================================== -->
+
+    <main class="intern-main">
+
+        <!-- Mobile Header -->
+        <header class="intern-mobile-header">
+
+            <button
+                type="button"
+                class="intern-mobile-menu"
+                id="internMobileMenuButton"
+                aria-label="Open navigation"
+                aria-controls="internSidebar"
+                aria-expanded="false"
+            >
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <a
+                href="../index.html"
+                class="intern-mobile-brand"
+            >
+                NITRIXA
+            </a>
+
+        </header>
+
+
+        <!-- =================================================
+             LESSON CONTENT
+             ================================================= -->
+
+        <section class="lesson-main">
+
+            <div class="lesson-header">
+
+                <a
+                    href="learning.html"
+                    class="lesson-back-link"
+                >
+                    <span aria-hidden="true">
+                        &larr;
+                    </span>
+
+                    Back to Learning
+                </a>
+
+                <div
+                    class="lesson-breadcrumb"
+                    id="lessonBreadcrumb"
+                >
+                    Loading lesson...
+                </div>
+
+                <h1
+                    class="lesson-title"
+                    id="lessonTitle"
+                >
+                    Loading...
+                </h1>
+
+                <div
+                    class="lesson-status pending"
+                    id="lessonStatus"
+                >
+                    Lesson loading
+                </div>
+
+            </div>
+
+
+            <!-- Lesson Content -->
+
+            <article
+                class="lesson-content-card nx-card"
+            >
+
+                <div
+                    class="lesson-loading"
+                    id="lessonLoading"
+                >
+                    Loading lesson content...
+                </div>
+
+                <div
+                    class="lesson-error"
+                    id="lessonError"
+                    hidden
+                ></div>
+
+                <div
+                    class="lesson-content"
+                    id="lessonContent"
+                ></div>
+
+            </article>
+
+
+            <!-- Complete Action -->
+
+            <div
+                class="lesson-actions"
+            >
+                <button
+                    type="button"
+                    class="lesson-complete-button"
+                    id="markCompleteButton"
+                    disabled
+                >
+                    Mark as Complete
+                </button>
+            </div>
+
+
+            <!-- Previous / Next -->
+
+            <nav
+                class="lesson-navigation"
+                id="lessonNavigation"
+                aria-label="Lesson navigation"
+            >
+
+                <a
+                    href="#"
+                    class="lesson-nav-button previous nx-card"
+                    id="previousLesson"
+                    hidden
+                >
+                    <span
+                        class="lesson-nav-arrow"
+                        aria-hidden="true"
+                    >
+                        &larr;
+                    </span>
+
+                    <span>
+                        <span
+                            class="lesson-nav-label"
+                        >
+                            Previous
+                        </span>
+
+                        <span
+                            class="lesson-nav-title"
+                            id="previousLessonTitle"
+                        ></span>
+                    </span>
+                </a>
+
+
+                <a
+                    href="#"
+                    class="lesson-nav-button next nx-card"
+                    id="nextLesson"
+                    hidden
+                >
+                    <span>
+                        <span
+                            class="lesson-nav-label"
+                        >
+                            Next
+                        </span>
+
+                        <span
+                            class="lesson-nav-title"
+                            id="nextLessonTitle"
+                        ></span>
+                    </span>
+
+                    <span
+                        class="lesson-nav-arrow"
+                        aria-hidden="true"
+                    >
+                        &rarr;
+                    </span>
+                </a>
+
+            </nav>
+
+        </section>
+
+    </main>
+
+
+    <!-- =====================================================
+         SUPABASE
+         ===================================================== -->
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+    ></script>
+
+    <script
+        src="../js/supabase.js"
+    ></script>
+
+    <script
+        src="../js/main.js"
+    ></script>
+
+    <script
+        src="../js/intern-lesson.js"
+    ></script>
+
+</body>
+</html>
