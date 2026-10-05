@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 
     <meta charset="UTF-8">
@@ -28,7 +29,120 @@
         href="css/login.css"
     >
 
+    <style>
+
+        /* =====================================================
+           NITRIXA OTP VERIFICATION
+        ===================================================== */
+
+        .otp-verification-content {
+            text-align: center;
+        }
+
+        .otp-icon {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 20px;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            font-weight: 700;
+            color: #2563eb;
+            background: rgba(37, 99, 235, 0.08);
+            border: 1px solid rgba(37, 99, 235, 0.14);
+        }
+
+        .otp-verification-content h3 {
+            margin: 0 0 10px;
+        }
+
+        .otp-verification-content p {
+            margin: 0 auto 22px;
+            max-width: 420px;
+            line-height: 1.65;
+        }
+
+        .otp-email-display {
+            display: inline-block;
+            margin-bottom: 20px;
+            padding: 9px 14px;
+            border-radius: 10px;
+            background: rgba(15, 23, 42, 0.05);
+            font-size: 14px;
+            font-weight: 600;
+            color: #334155;
+            word-break: break-word;
+        }
+
+        .otp-input {
+            width: 100%;
+            box-sizing: border-box;
+            text-align: center;
+            letter-spacing: 0.42em;
+            font-size: 24px;
+            font-weight: 700;
+            padding: 14px 16px;
+        }
+
+        .otp-help {
+            display: block;
+            margin-top: 9px;
+            font-size: 12px;
+            line-height: 1.5;
+            color: #64748b;
+        }
+
+        .otp-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 18px;
+        }
+
+        .otp-secondary-button {
+            width: 100%;
+            border: 0;
+            background: transparent;
+            color: #2563eb;
+            font-weight: 600;
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        .otp-secondary-button:hover {
+            text-decoration: underline;
+        }
+
+        .otp-secondary-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .otp-back-button {
+            margin-top: 6px;
+        }
+
+        .otp-status {
+            margin-top: 14px;
+            font-size: 13px;
+            color: #64748b;
+        }
+
+        @media (max-width: 640px) {
+
+            .otp-input {
+                font-size: 21px;
+                letter-spacing: 0.30em;
+            }
+
+        }
+
+    </style>
+
 </head>
+
 
 <body class="auth-page">
 
@@ -120,7 +234,10 @@
                 <h1>
 
                     Start your
-                    <span>technology journey.</span>
+
+                    <span>
+                        technology journey.
+                    </span>
 
                 </h1>
 
@@ -135,6 +252,7 @@
 
 
                 <div class="auth-benefits">
+
 
                     <div class="auth-benefit">
 
@@ -197,6 +315,7 @@
                         </div>
 
                     </div>
+
 
                 </div>
 
@@ -331,6 +450,7 @@
 
                     </div>
 
+
                     <div class="password-wrapper">
 
                         <input
@@ -341,6 +461,7 @@
                             autocomplete="current-password"
                             required
                         >
+
 
                         <button
                             type="button"
@@ -387,6 +508,7 @@
                     </button>
 
                 </p>
+
 
             </form>
 
@@ -532,6 +654,7 @@
 
                     </div>
 
+
                 </div>
 
 
@@ -602,11 +725,12 @@
 
                 </p>
 
+
             </form>
 
 
             <!-- =================================================
-                 EMAIL CONFIRMATION
+                 EMAIL OTP VERIFICATION
             ================================================== -->
 
             <div
@@ -614,28 +738,112 @@
                 class="confirmation-panel is-hidden"
             >
 
-                <div class="confirmation-icon">
-                    ✓
+                <div class="otp-verification-content">
+
+                    <div
+                        class="otp-icon"
+                        aria-hidden="true"
+                    >
+                        @
+                    </div>
+
+
+                    <h3>
+                        Verify your email
+                    </h3>
+
+
+                    <p>
+                        We have sent a 6-digit verification code
+                        to your email address.
+                    </p>
+
+
+                    <div
+                        id="otpEmailDisplay"
+                        class="otp-email-display"
+                    >
+                        your@email.com
+                    </div>
+
+
+                    <div class="auth-field">
+
+                        <label for="otpInput">
+                            Verification Code
+                        </label>
+
+                        <input
+                            type="text"
+                            id="otpInput"
+                            class="otp-input"
+                            inputmode="numeric"
+                            autocomplete="one-time-code"
+                            pattern="[0-9]{6}"
+                            maxlength="6"
+                            minlength="6"
+                            placeholder="000000"
+                            aria-describedby="otpHelp"
+                        >
+
+                        <small
+                            id="otpHelp"
+                            class="otp-help"
+                        >
+                            Enter the 6-digit code sent by
+                            NITRIXA Technologies.
+                        </small>
+
+                    </div>
+
+
+                    <button
+                        type="button"
+                        class="auth-submit"
+                        id="verifyOtpButton"
+                    >
+
+                        <span class="auth-button-text">
+                            Verify Email
+                        </span>
+
+                        <span
+                            class="auth-spinner"
+                            aria-hidden="true"
+                        ></span>
+
+                    </button>
+
+
+                    <div class="otp-actions">
+
+                        <button
+                            type="button"
+                            class="otp-secondary-button"
+                            id="resendOtpButton"
+                        >
+                            Resend OTP
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="otp-secondary-button otp-back-button"
+                            id="backToLoginButton"
+                        >
+                            Back to Login
+                        </button>
+
+                    </div>
+
+
+                    <div
+                        id="otpStatus"
+                        class="otp-status"
+                        aria-live="polite"
+                    ></div>
+
                 </div>
-
-                <h3>
-                    Check your email
-                </h3>
-
-                <p>
-                    Your account has been created.
-                    Please open the confirmation email sent
-                    to your registered email address before
-                    continuing.
-                </p>
-
-                <button
-                    type="button"
-                    class="auth-submit secondary"
-                    id="backToLoginButton"
-                >
-                    Back to Login
-                </button>
 
             </div>
 
@@ -658,6 +866,7 @@
 
             </div>
 
+
         </section>
 
     </section>
@@ -674,16 +883,19 @@
     defer
 ></script>
 
+
 <script
     src="js/supabase.js"
     defer
 ></script>
 
+
 <script
-    src="js/login.js?v=3"
+    src="js/login.js?v=4"
     defer
 ></script>
 
 
 </body>
+
 </html>

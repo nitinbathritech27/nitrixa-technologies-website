@@ -1,35 +1,45 @@
-/* =========================================================
-   NITRIXA TECHNOLOGIES
-   PUBLIC LOGIN / REGISTRATION
+/*
+=========================================================
+NITRIXA TECHNOLOGIES
+PUBLIC LOGIN / REGISTRATION
 
-   LOCKED AUTHENTICATION FLOW
+AUTHENTICATION FLOW
 
-   PUBLIC WEBSITE
-        ↓
-   LOGIN / REGISTER
-        ↓
-   AUTHENTICATION SUCCESS
-        ↓
-   CHECK ADMIN
-        ↓
-   ┌───────────────┬────────────────┐
-   │               │                │
-   ADMIN          USER             USER
-   │               │                │
-   ↓               ↓                ↓
-   ADMIN        INTERN           DASHBOARD
-   DASHBOARD    DASHBOARD        FLOW
+REGISTER
+    ↓
+Supabase signUp()
+    ↓
+NITRIXA branded OTP email
+    ↓
+6-digit OTP
+    ↓
+supabase.auth.verifyOtp()
+    ↓
+Email verified
+    ↓
+Intern Dashboard / Admin Dashboard
 
-   IMPORTANT:
-   - Registration creates a user account.
-   - Admin users go to Admin Dashboard.
-   - Normal users go to Intern Dashboard.
-   - Intern ID is NOT required to enter dashboard.
-   - Enrollment happens from the dashboard.
-   - Payment / Intern ID generation is handled separately.
-   - No program/path dependency exists here.
-   ========================================================= */
+LOGIN
+    ↓
+Email + Password
+    ↓
+Supabase signInWithPassword()
+    ↓
+Check Admin
+    ↓
+Admin Dashboard / Intern Dashboard
 
+IMPORTANT
+
+- Registration creates account only.
+- Registration does NOT create enrollment.
+- Registration does NOT create payment.
+- Registration does NOT create Intern ID.
+- OTP is required only for registration email verification.
+- Login does NOT require OTP.
+- Intern ID is created only after verified payment.
+=========================================================
+*/
 
 document.addEventListener(
     "DOMContentLoaded",
@@ -102,6 +112,31 @@ document.addEventListener(
                 "authSubtitle"
             );
 
+        const otpInput =
+            document.getElementById(
+                "otpInput"
+            );
+
+        const otpEmailDisplay =
+            document.getElementById(
+                "otpEmailDisplay"
+            );
+
+        const verifyOtpButton =
+            document.getElementById(
+                "verifyOtpButton"
+            );
+
+        const resendOtpButton =
+            document.getElementById(
+                "resendOtpButton"
+            );
+
+        const otpStatus =
+            document.getElementById(
+                "otpStatus"
+            );
+
 
         /* =====================================================
            SUPABASE CHECK
@@ -116,13 +151,19 @@ document.addEventListener(
                 "NITRIXA: Supabase client is unavailable."
             );
 
-            showMessage(
-                "Authentication service is currently unavailable. Please refresh the page and try again.",
-                "error"
-            );
+            if (authMessage) {
+
+                authMessage.textContent =
+                    "Authentication service is currently unavailable. Please refresh the page and try again.";
+
+                authMessage.className =
+                    "auth-message error";
+
+                authMessage.hidden =
+                    false;
+            }
 
             return;
-
         }
 
 
@@ -131,202 +172,18 @@ document.addEventListener(
 
 
         /* =====================================================
-           URL PARAMETERS
+           STATE
         ===================================================== */
 
-        const params =
-            new URLSearchParams(
-                window.location.search
-            );
+        let pendingOtpEmail =
+            "";
 
+        let pendingOtpPassword =
+            "";
 
-        /*
-         * Selected program.
-         */
+        let resendTimer = null;
 
-        const program =
-            (
-                params.get(
-                    "program"
-                ) || ""
-            )
-                .trim();
-
-
-        /*
-         * Enrollment path.
-         *
-         * internship
-         * training-internship
-         */
-
-        const path =
-            (
-                params.get(
-                    "path"
-                ) || ""
-            )
-                .trim()
-                .toLowerCase();
-
-
-        /*
-         * Redirect parameter.
-         */
-
-        let redirectPage =
-            params.get(
-                "redirect"
-            );
-
-
-        /*
-         * Legacy parameter.
-         */
-
-        const returnTarget =
-            (
-                params.get(
-                    "return"
-                ) || ""
-            )
-                .trim()
-                .toLowerCase();
-
-
-        /* =====================================================
-           SAFE REDIRECT
-        ===================================================== */
-
-        function getSafeRedirect(
-            redirect
-        ) {
-
-            if (!redirect) {
-
-                return "login.html";
-
-            }
-
-
-            const value =
-                String(
-                    redirect
-                ).trim();
-
-
-            /*
-             * Never allow external URLs.
-             */
-
-            if (
-                value.startsWith("/") ||
-                value.startsWith("\\") ||
-                value.includes("://") ||
-                value.includes("\\")
-            ) {
-
-                return "login.html";
-
-            }
-
-
-            /*
-             * Only local HTML pages are allowed.
-             */
-
-            if (
-                !value.endsWith(".html")
-            ) {
-
-                return "login.html";
-
-            }
-
-
-            /*
-             * Admin pages must never be
-             * accepted as public login redirects.
-             */
-
-            if (
-                value.startsWith("admin/")
-            ) {
-
-                return "login.html";
-
-            }
-
-
-            return value;
-
-        }
-
-
-        /* =====================================================
-           BUILD REDIRECT URL
-        ===================================================== */
-
-        function buildRedirectUrl() {
-
-            const safeRedirect =
-                getSafeRedirect(
-                    redirectPage
-                );
-
-
-            if (
-                safeRedirect !==
-                "login.html"
-            ) {
-
-                const redirectParams =
-                    new URLSearchParams();
-
-
-                if (
-                    program
-                ) {
-
-                    redirectParams.set(
-                        "program",
-                        program
-                    );
-
-                }
-
-
-                if (
-                    path
-                ) {
-
-                    redirectParams.set(
-                        "path",
-                        path
-                    );
-
-                }
-
-
-                const query =
-                    redirectParams.toString();
-
-
-                return (
-                    safeRedirect +
-                    (
-                        query
-                            ? "?" + query
-                            : ""
-                    )
-                );
-
-            }
-
-
-            return "login.html";
-
-        }
+        let resendSeconds = 0;
 
 
         /* =====================================================
@@ -350,7 +207,6 @@ document.addEventListener(
 
             authMessage.hidden =
                 false;
-
         }
 
 
@@ -368,7 +224,6 @@ document.addEventListener(
 
             authMessage.hidden =
                 true;
-
         }
 
 
@@ -391,7 +246,6 @@ document.addEventListener(
                     ".auth-button-text"
                 );
 
-
             if (
                 !button.dataset.defaultText
             ) {
@@ -400,9 +254,7 @@ document.addEventListener(
                     textElement
                         ? textElement.textContent
                         : button.textContent.trim();
-
             }
-
 
             button.disabled =
                 loading;
@@ -412,16 +264,13 @@ document.addEventListener(
                 loading
             );
 
-
             if (textElement) {
 
                 textElement.textContent =
                     loading
                         ? loadingText
                         : button.dataset.defaultText;
-
             }
-
         }
 
 
@@ -435,7 +284,6 @@ document.addEventListener(
 
             clearMessage();
 
-
             const isLogin =
                 mode === "login";
 
@@ -446,7 +294,6 @@ document.addEventListener(
                     "is-hidden",
                     !isLogin
                 );
-
             }
 
 
@@ -456,7 +303,6 @@ document.addEventListener(
                     "is-hidden",
                     isLogin
                 );
-
             }
 
 
@@ -465,7 +311,6 @@ document.addEventListener(
                 confirmationPanel.classList.add(
                     "is-hidden"
                 );
-
             }
 
 
@@ -480,7 +325,6 @@ document.addEventListener(
                     "aria-selected",
                     String(isLogin)
                 );
-
             }
 
 
@@ -495,7 +339,6 @@ document.addEventListener(
                     "aria-selected",
                     String(!isLogin)
                 );
-
             }
 
 
@@ -505,14 +348,12 @@ document.addEventListener(
 
                     authTitle.textContent =
                         "Welcome back";
-
                 }
 
                 if (authSubtitle) {
 
                     authSubtitle.textContent =
-                        "Sign in to continue with your NITRIXA journey.";
-
+                        "Sign in to continue with your enrollment.";
                 }
 
             } else {
@@ -521,23 +362,278 @@ document.addEventListener(
 
                     authTitle.textContent =
                         "Create your account";
-
                 }
 
                 if (authSubtitle) {
 
                     authSubtitle.textContent =
                         "Register once and access your NITRIXA Intern Dashboard.";
-
                 }
-
             }
-
         }
 
 
         /* =====================================================
-           EMAIL NORMALIZATION
+           OTP PANEL
+        ===================================================== */
+
+        function showOtpPanel(
+            email
+        ) {
+
+            pendingOtpEmail =
+                String(
+                    email || ""
+                )
+                    .trim()
+                    .toLowerCase();
+
+
+            if (loginForm) {
+
+                loginForm.classList.add(
+                    "is-hidden"
+                );
+            }
+
+
+            if (registerForm) {
+
+                registerForm.classList.add(
+                    "is-hidden"
+                );
+            }
+
+
+            if (confirmationPanel) {
+
+                confirmationPanel.classList.remove(
+                    "is-hidden"
+                );
+            }
+
+
+            if (loginTab) {
+
+                loginTab.classList.remove(
+                    "active"
+                );
+
+                loginTab.setAttribute(
+                    "aria-selected",
+                    "false"
+                );
+            }
+
+
+            if (registerTab) {
+
+                registerTab.classList.remove(
+                    "active"
+                );
+
+                registerTab.setAttribute(
+                    "aria-selected",
+                    "false"
+                );
+            }
+
+
+            if (authTitle) {
+
+                authTitle.textContent =
+                    "Verify your email";
+            }
+
+
+            if (authSubtitle) {
+
+                authSubtitle.textContent =
+                    "Enter the verification code sent to your email.";
+            }
+
+
+            if (otpEmailDisplay) {
+
+                otpEmailDisplay.textContent =
+                    pendingOtpEmail;
+            }
+
+
+            if (otpInput) {
+
+                otpInput.value =
+                    "";
+
+                otpInput.focus();
+            }
+
+
+            if (otpStatus) {
+
+                otpStatus.textContent =
+                    "A 6-digit verification code has been sent to your email.";
+            }
+
+
+            clearMessage();
+
+            startResendTimer();
+        }
+
+
+        function hideOtpPanel() {
+
+            if (confirmationPanel) {
+
+                confirmationPanel.classList.add(
+                    "is-hidden"
+                );
+            }
+
+            pendingOtpEmail =
+                "";
+
+            pendingOtpPassword =
+                "";
+
+            stopResendTimer();
+
+            setMode(
+                "login"
+            );
+        }
+
+
+        /* =====================================================
+           OTP INPUT
+        ===================================================== */
+
+        if (otpInput) {
+
+            otpInput.addEventListener(
+                "input",
+                () => {
+
+                    otpInput.value =
+                        otpInput.value
+                            .replace(
+                                /\D/g,
+                                ""
+                            )
+                            .slice(
+                                0,
+                                6
+                            );
+                }
+            );
+
+
+            otpInput.addEventListener(
+                "keydown",
+                event => {
+
+                    if (
+                        event.key === "Enter"
+                    ) {
+
+                        event.preventDefault();
+
+                        if (
+                            verifyOtpButton &&
+                            !verifyOtpButton.disabled
+                        ) {
+
+                            verifyOtpButton.click();
+                        }
+                    }
+                }
+            );
+        }
+
+
+        /* =====================================================
+           RESEND TIMER
+        ===================================================== */
+
+        function startResendTimer() {
+
+            stopResendTimer();
+
+            resendSeconds =
+                60;
+
+            updateResendButton();
+
+            resendTimer =
+                window.setInterval(
+                    () => {
+
+                        resendSeconds--;
+
+                        updateResendButton();
+
+                        if (
+                            resendSeconds <= 0
+                        ) {
+
+                            stopResendTimer();
+                        }
+
+                    },
+                    1000
+                );
+        }
+
+
+        function stopResendTimer() {
+
+            if (resendTimer) {
+
+                window.clearInterval(
+                    resendTimer
+                );
+
+                resendTimer =
+                    null;
+            }
+
+            resendSeconds =
+                0;
+
+            updateResendButton();
+        }
+
+
+        function updateResendButton() {
+
+            if (!resendOtpButton) {
+                return;
+            }
+
+            if (
+                resendSeconds > 0
+            ) {
+
+                resendOtpButton.disabled =
+                    true;
+
+                resendOtpButton.textContent =
+                    `Resend OTP in ${resendSeconds}s`;
+
+            } else {
+
+                resendOtpButton.disabled =
+                    false;
+
+                resendOtpButton.textContent =
+                    "Resend OTP";
+            }
+        }
+
+
+        /* =====================================================
+           VALIDATION HELPERS
         ===================================================== */
 
         function normalizeEmail(
@@ -552,15 +648,9 @@ document.addEventListener(
                     /^['"]+|['"]+$/g,
                     ""
                 )
-                .trim()
                 .toLowerCase();
-
         }
 
-
-        /* =====================================================
-           MOBILE NORMALIZATION
-        ===================================================== */
 
         function normalizeMobile(
             value
@@ -574,13 +664,8 @@ document.addEventListener(
                     /[\s()-]/g,
                     ""
                 );
-
         }
 
-
-        /* =====================================================
-           VALIDATION
-        ===================================================== */
 
         function isValidEmail(
             email
@@ -589,7 +674,6 @@ document.addEventListener(
             return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i.test(
                 email
             );
-
         }
 
 
@@ -597,15 +681,9 @@ document.addEventListener(
             mobile
         ) {
 
-            const normalized =
-                normalizeMobile(
-                    mobile
-                );
-
-            return /^\+?[0-9]{8,15}$/.test(
-                normalized
+            return /^\+?[0-9]{10,15}$/.test(
+                mobile
             );
-
         }
 
 
@@ -627,10 +705,8 @@ document.addEventListener(
                         input.classList.remove(
                             "input-error"
                         );
-
                     }
                 );
-
         }
 
 
@@ -647,12 +723,11 @@ document.addEventListener(
             );
 
             input.focus();
-
         }
 
 
         /* =====================================================
-           REGISTRATION ERROR MESSAGE
+           ERROR MESSAGE HELPERS
         ===================================================== */
 
         function getRegistrationErrorMessage(
@@ -662,7 +737,8 @@ document.addEventListener(
             const errorText =
                 String(
                     error?.message || ""
-                ).toLowerCase();
+                )
+                    .toLowerCase();
 
 
             if (
@@ -670,33 +746,25 @@ document.addEventListener(
                     "already registered"
                 ) ||
                 errorText.includes(
-                    "already exists"
-                ) ||
-                errorText.includes(
-                    "user already"
+                    "user already registered"
                 )
             ) {
 
                 return (
-                    "An account with this email already exists. Please use Login instead."
+                    "An account with this email already exists. Please login instead."
                 );
-
             }
 
 
             if (
                 errorText.includes(
-                    "email address"
-                ) &&
-                errorText.includes(
-                    "invalid"
+                    "invalid email"
                 )
             ) {
 
                 return (
-                    "Please enter a valid email address, for example: name@gmail.com"
+                    "Please enter a valid email address."
                 );
-
             }
 
 
@@ -705,16 +773,21 @@ document.addEventListener(
                     "password"
                 ) &&
                 (
-                    errorText.includes("at least") ||
-                    errorText.includes("short") ||
-                    errorText.includes("weak")
+                    errorText.includes(
+                        "at least"
+                    ) ||
+                    errorText.includes(
+                        "short"
+                    ) ||
+                    errorText.includes(
+                        "weak"
+                    )
                 )
             ) {
 
                 return (
                     "Your password does not meet the required security rules."
                 );
-
             }
 
 
@@ -730,7 +803,6 @@ document.addEventListener(
                 return (
                     "Too many attempts were made. Please wait a few minutes and try again."
                 );
-
             }
 
 
@@ -746,14 +818,71 @@ document.addEventListener(
                 return (
                     "New account registration is currently disabled."
                 );
-
             }
 
 
             return (
                 "We could not create your account. Please check your details and try again."
             );
+        }
 
+
+        function getOtpErrorMessage(
+            error
+        ) {
+
+            const errorText =
+                String(
+                    error?.message || ""
+                )
+                    .toLowerCase();
+
+
+            if (
+                errorText.includes(
+                    "expired"
+                )
+            ) {
+
+                return (
+                    "This OTP has expired. Please request a new OTP."
+                );
+            }
+
+
+            if (
+                errorText.includes(
+                    "invalid"
+                ) ||
+                errorText.includes(
+                    "token"
+                )
+            ) {
+
+                return (
+                    "The verification code is incorrect or invalid. Please check the code and try again."
+                );
+            }
+
+
+            if (
+                errorText.includes(
+                    "rate limit"
+                ) ||
+                errorText.includes(
+                    "too many"
+                )
+            ) {
+
+                return (
+                    "Too many verification attempts were made. Please wait and try again."
+                );
+            }
+
+
+            return (
+                "We could not verify this code. Please check the OTP and try again."
+            );
         }
 
 
@@ -771,6 +900,7 @@ document.addEventListener(
                 "success"
             );
 
+
             window.setTimeout(
                 () => {
 
@@ -778,9 +908,28 @@ document.addEventListener(
                         "intern-dashboard.html";
 
                 },
-                400
+                500
+            );
+        }
+
+
+        function redirectToAdminDashboard() {
+
+            showMessage(
+                "Admin login successful. Opening Admin Dashboard...",
+                "success"
             );
 
+
+            window.setTimeout(
+                () => {
+
+                    window.location.href =
+                        "admin/dashboard.html";
+
+                },
+                500
+            );
         }
 
 
@@ -808,61 +957,25 @@ document.addEventListener(
                         error
                     );
 
-                    return {
-                        isAdmin: false,
-                        error
-                    };
-
+                    return false;
                 }
 
 
-                return {
-                    isAdmin:
-                        data === true,
-                    error: null
-                };
+                return (
+                    data === true
+                );
 
-            } catch (error) {
+            } catch (
+                error
+            ) {
 
                 console.error(
-                    "NITRIXA: Unexpected admin access check error:",
+                    "NITRIXA: Admin access check exception:",
                     error
                 );
 
-                return {
-                    isAdmin: false,
-                    error
-                };
-
+                return false;
             }
-
-        }
-
-
-        /* =====================================================
-           ADMIN DASHBOARD REDIRECT
-        ===================================================== */
-
-        function redirectToAdminDashboard(
-            message
-        ) {
-
-            showMessage(
-                message ||
-                "Login successful. Opening your Admin Dashboard...",
-                "success"
-            );
-
-            window.setTimeout(
-                () => {
-
-                    window.location.href =
-                        "admin/dashboard.html";
-
-                },
-                400
-            );
-
         }
 
 
@@ -870,9 +983,7 @@ document.addEventListener(
            LOGIN
         ===================================================== */
 
-        if (
-            loginForm
-        ) {
+        if (loginForm) {
 
             loginForm.addEventListener(
                 "submit",
@@ -880,9 +991,7 @@ document.addEventListener(
 
                     event.preventDefault();
 
-
                     clearMessage();
-
 
                     clearInputErrors(
                         loginForm
@@ -894,10 +1003,14 @@ document.addEventListener(
                             "loginEmail"
                         );
 
-
                     const passwordInput =
                         document.getElementById(
                             "loginPassword"
+                        );
+
+                    const button =
+                        document.getElementById(
+                            "loginButton"
                         );
 
 
@@ -912,7 +1025,6 @@ document.addEventListener(
                         );
 
                         return;
-
                     }
 
 
@@ -920,7 +1032,6 @@ document.addEventListener(
                         normalizeEmail(
                             emailInput.value
                         );
-
 
                     const password =
                         passwordInput.value;
@@ -946,11 +1057,12 @@ document.addEventListener(
                         );
 
                         return;
-
                     }
 
 
-                    if (!password) {
+                    if (
+                        !password
+                    ) {
 
                         markInputError(
                             passwordInput
@@ -962,14 +1074,7 @@ document.addEventListener(
                         );
 
                         return;
-
                     }
-
-
-                    const button =
-                        document.getElementById(
-                            "loginButton"
-                        );
 
 
                     setButtonLoading(
@@ -980,18 +1085,6 @@ document.addEventListener(
 
 
                     try {
-
-                        console.log(
-                            "NITRIXA: Login attempt:",
-                            email
-                        );
-
-
-                        /*
-                         * STEP 1
-                         *
-                         * Authenticate with Supabase.
-                         */
 
                         const {
                             data,
@@ -1015,23 +1108,8 @@ document.addEventListener(
                             const errorText =
                                 String(
                                     error.message || ""
-                                ).toLowerCase();
-
-
-                            let message =
-                                "Login failed. Please check your email and password.";
-
-
-                            if (
-                                errorText.includes(
-                                    "invalid login credentials"
                                 )
-                            ) {
-
-                                message =
-                                    "Incorrect email or password. Please check your details and try again.";
-
-                            }
+                                    .toLowerCase();
 
 
                             if (
@@ -1040,34 +1118,36 @@ document.addEventListener(
                                 )
                             ) {
 
-                                message =
-                                    "Your email has not been confirmed yet. Please complete the email confirmation before logging in.";
+                                showMessage(
+                                    "Your email is not verified yet. Please complete the OTP verification before logging in.",
+                                    "error"
+                                );
 
+                                return;
                             }
 
 
                             if (
                                 errorText.includes(
-                                    "too many requests"
-                                ) ||
-                                errorText.includes(
-                                    "rate limit"
+                                    "invalid login credentials"
                                 )
                             ) {
 
-                                message =
-                                    "Too many login attempts. Please wait a few minutes and try again.";
+                                showMessage(
+                                    "Incorrect email or password. Please check your details and try again.",
+                                    "error"
+                                );
 
+                                return;
                             }
 
 
                             showMessage(
-                                message,
+                                "Login failed. Please check your email and password and try again.",
                                 "error"
                             );
 
                             return;
-
                         }
 
 
@@ -1083,96 +1163,39 @@ document.addEventListener(
                             );
 
                             return;
-
                         }
 
 
-                        /* =================================================
-                           STEP 2 — CHECK ADMIN FIRST
-                        ================================================= */
+                        /* -------------------------------------
+                           ADMIN CHECK
+                        ------------------------------------- */
 
-                        console.log(
-                            "NITRIXA: Checking account role..."
-                        );
-
-
-                        const {
-                            isAdmin,
-                            error: adminError
-                        } =
+                        const isAdmin =
                             await isCurrentUserAdmin();
 
-
-                        /*
-                         * Do NOT send a user to the
-                         * wrong dashboard if admin
-                         * verification failed.
-                         */
-
-                        if (
-                            adminError
-                        ) {
-
-                            showMessage(
-                                "We could not verify your account access. Please try again.",
-                                "error"
-                            );
-
-                            return;
-
-                        }
-
-
-                        /*
-                         * ADMIN USER
-                         */
 
                         if (
                             isAdmin
                         ) {
 
-                            console.log(
-                                "NITRIXA: Admin user detected."
-                            );
-
-
-                            redirectToAdminDashboard(
-                                "Login successful. Opening your Admin Dashboard..."
-                            );
+                            redirectToAdminDashboard();
 
                             return;
-
                         }
 
 
-                        /* =================================================
-                           STEP 3 — NORMAL USER
-                        ================================================= */
-
-                        /*
-                         * Existing locked flow:
-                         *
-                         * Authentication success is enough
-                         * to enter the Intern Dashboard.
-                         *
-                         * We DO NOT check:
-                         * - interns table
-                         * - Intern ID
-                         * - enrollment
-                         * - program
-                         * - path
-                         */
-
-                        console.log(
-                            "NITRIXA: Normal user detected."
-                        );
-
+                        /* -------------------------------------
+                           NORMAL USER
+                        ------------------------------------- */
 
                         redirectToDashboard(
                             "Login successful. Opening your Intern Dashboard..."
                         );
 
-                    } catch (error) {
+
+                    } catch (
+                        error
+                    ) {
 
                         console.error(
                             "NITRIXA unexpected login error:",
@@ -1191,12 +1214,10 @@ document.addEventListener(
                             false,
                             "Signing In..."
                         );
-
                     }
 
                 }
             );
-
         }
 
 
@@ -1204,9 +1225,7 @@ document.addEventListener(
            REGISTRATION
         ===================================================== */
 
-        if (
-            registerForm
-        ) {
+        if (registerForm) {
 
             registerForm.addEventListener(
                 "submit",
@@ -1214,9 +1233,7 @@ document.addEventListener(
 
                     event.preventDefault();
 
-
                     clearMessage();
-
 
                     clearInputErrors(
                         registerForm
@@ -1228,34 +1245,34 @@ document.addEventListener(
                             "registerName"
                         );
 
-
                     const emailInput =
                         document.getElementById(
                             "registerEmail"
                         );
-
 
                     const mobileInput =
                         document.getElementById(
                             "registerMobile"
                         );
 
-
                     const passwordInput =
                         document.getElementById(
                             "registerPassword"
                         );
-
 
                     const confirmPasswordInput =
                         document.getElementById(
                             "registerConfirmPassword"
                         );
 
-
                     const consentInput =
                         document.getElementById(
                             "registerConsent"
+                        );
+
+                    const button =
+                        document.getElementById(
+                            "registerButton"
                         );
 
 
@@ -1268,39 +1285,30 @@ document.addEventListener(
                         !consentInput
                     ) {
 
-                        console.error(
-                            "NITRIXA: Registration form fields are missing."
-                        );
-
                         showMessage(
                             "Registration form is incomplete. Please refresh the page and try again.",
                             "error"
                         );
 
                         return;
-
                     }
 
 
                     const fullName =
                         nameInput.value.trim();
 
-
                     const email =
                         normalizeEmail(
                             emailInput.value
                         );
-
 
                     const mobile =
                         normalizeMobile(
                             mobileInput.value
                         );
 
-
                     const password =
                         passwordInput.value;
-
 
                     const confirmPassword =
                         confirmPasswordInput.value;
@@ -1308,7 +1316,6 @@ document.addEventListener(
 
                     emailInput.value =
                         email;
-
 
                     mobileInput.value =
                         mobile;
@@ -1332,7 +1339,6 @@ document.addEventListener(
                         );
 
                         return;
-
                     }
 
 
@@ -1356,7 +1362,6 @@ document.addEventListener(
                         );
 
                         return;
-
                     }
 
 
@@ -1380,7 +1385,6 @@ document.addEventListener(
                         );
 
                         return;
-
                     }
 
 
@@ -1402,7 +1406,6 @@ document.addEventListener(
                         );
 
                         return;
-
                     }
 
 
@@ -1425,7 +1428,6 @@ document.addEventListener(
                         );
 
                         return;
-
                     }
 
 
@@ -1443,14 +1445,7 @@ document.addEventListener(
                         );
 
                         return;
-
                     }
-
-
-                    const button =
-                        document.getElementById(
-                            "registerButton"
-                        );
 
 
                     setButtonLoading(
@@ -1477,6 +1472,7 @@ document.addEventListener(
                          * - create Intern ID
                          */
 
+
                         const {
                             data,
                             error
@@ -1497,9 +1493,7 @@ document.addEventListener(
                                                 mobile
 
                                         }
-
                                     }
-
                                 });
 
 
@@ -1518,16 +1512,15 @@ document.addEventListener(
                             );
 
                             return;
-
                         }
 
 
                         /*
-                         * Supabase may return a session
-                         * when email confirmation is disabled.
+                         * If email confirmation is disabled
+                         * Supabase may return an active session.
                          *
-                         * A newly registered user is a
-                         * normal user, not an admin.
+                         * Our intended production configuration
+                         * requires email verification.
                          */
 
                         if (
@@ -1536,79 +1529,47 @@ document.addEventListener(
                             data.user
                         ) {
 
-                            redirectToDashboard(
-                                "Account created successfully. Opening your Intern Dashboard..."
-                            );
+                            const isAdmin =
+                                await isCurrentUserAdmin();
+
+
+                            if (
+                                isAdmin
+                            ) {
+
+                                redirectToAdminDashboard();
+
+                            } else {
+
+                                redirectToDashboard(
+                                    "Account created successfully. Opening your Intern Dashboard..."
+                                );
+                            }
 
                             return;
-
                         }
 
 
                         /*
-                         * If Supabase requires email
-                         * confirmation, show confirmation panel.
+                         * Email verification is required.
+                         *
+                         * Supabase has sent the OTP email.
                          */
 
-                        if (loginForm) {
+                        pendingOtpEmail =
+                            email;
 
-                            loginForm.classList.add(
-                                "is-hidden"
-                            );
-
-                        }
+                        pendingOtpPassword =
+                            password;
 
 
-                        registerForm.classList.add(
-                            "is-hidden"
+                        showOtpPanel(
+                            email
                         );
 
 
-                        if (confirmationPanel) {
-
-                            confirmationPanel.classList.remove(
-                                "is-hidden"
-                            );
-
-                        }
-
-
-                        if (loginTab) {
-
-                            loginTab.classList.remove(
-                                "active"
-                            );
-
-                        }
-
-
-                        if (registerTab) {
-
-                            registerTab.classList.remove(
-                                "active"
-                            );
-
-                        }
-
-
-                        if (authTitle) {
-
-                            authTitle.textContent =
-                                "Check your email";
-
-                        }
-
-
-                        if (authSubtitle) {
-
-                            authSubtitle.textContent =
-                                "Complete account verification before signing in.";
-
-                        }
-
-
                         showMessage(
-                            "Your account was created. Please confirm your email, then return here and login.",
+                            "Your account was created. Enter the 6-digit OTP sent to your email.",
                             "success"
                         );
 
@@ -1634,77 +1595,251 @@ document.addEventListener(
                             false,
                             "Creating Account..."
                         );
-
                     }
 
                 }
             );
-
         }
 
 
         /* =====================================================
-           FORGOT PASSWORD
+           VERIFY OTP
         ===================================================== */
 
-        if (
-            forgotPasswordButton
-        ) {
+        if (verifyOtpButton) {
 
-            forgotPasswordButton.addEventListener(
+            verifyOtpButton.addEventListener(
                 "click",
                 async () => {
 
                     clearMessage();
 
 
-                    const emailInput =
-                        document.getElementById(
-                            "loginEmail"
-                        );
-
-
-                    if (
-                        !emailInput
-                    ) {
-
-                        return;
-
-                    }
-
-
-                    const email =
-                        normalizeEmail(
-                            emailInput.value
-                        );
-
-
-                    emailInput.value =
-                        email;
-
-
-                    if (
-                        !isValidEmail(
-                            email
+                    const otp =
+                        String(
+                            otpInput
+                                ? otpInput.value
+                                : ""
                         )
-                    ) {
+                            .replace(
+                                /\D/g,
+                                ""
+                            )
+                            .slice(
+                                0,
+                                6
+                            );
 
-                        markInputError(
-                            emailInput
-                        );
+
+                    if (
+                        !pendingOtpEmail
+                    ) {
 
                         showMessage(
-                            "Enter your email address first, then click Forgot password.",
+                            "Your verification session has expired. Please register again.",
                             "error"
                         );
 
                         return;
-
                     }
 
 
-                    forgotPasswordButton.disabled =
+                    if (
+                        !/^\d{6}$/.test(
+                            otp
+                        )
+                    ) {
+
+                        if (otpInput) {
+
+                            markInputError(
+                                otpInput
+                            );
+                        }
+
+                        showMessage(
+                            "Please enter the 6-digit verification code sent to your email.",
+                            "error"
+                        );
+
+                        return;
+                    }
+
+
+                    setButtonLoading(
+                        verifyOtpButton,
+                        true,
+                        "Verifying..."
+                    );
+
+
+                    try {
+
+                        console.log(
+                            "NITRIXA: Verifying OTP for:",
+                            pendingOtpEmail
+                        );
+
+
+                        const {
+                            data,
+                            error
+                        } =
+                            await supabase.auth
+                                .verifyOtp({
+                                    email:
+                                        pendingOtpEmail,
+
+                                    token:
+                                        otp,
+
+                                    type:
+                                        "email"
+                                });
+
+
+                        if (error) {
+
+                            console.error(
+                                "NITRIXA OTP verification error:",
+                                error
+                            );
+
+                            showMessage(
+                                getOtpErrorMessage(
+                                    error
+                                ),
+                                "error"
+                            );
+
+                            return;
+                        }
+
+
+                        if (
+                            !data ||
+                            !data.session ||
+                            !data.user
+                        ) {
+
+                            showMessage(
+                                "Email verification completed, but no active session was created. Please login with your email and password.",
+                                "success"
+                            );
+
+                            window.setTimeout(
+                                () => {
+
+                                    hideOtpPanel();
+
+                                },
+                                1000
+                            );
+
+                            return;
+                        }
+
+
+                        /*
+                         * OTP verified.
+                         *
+                         * The user now has a valid
+                         * authenticated session.
+                         */
+
+                        if (otpStatus) {
+
+                            otpStatus.textContent =
+                                "Email verified successfully.";
+                        }
+
+
+                        const isAdmin =
+                            await isCurrentUserAdmin();
+
+
+                        if (
+                            isAdmin
+                        ) {
+
+                            redirectToAdminDashboard();
+
+                        } else {
+
+                            redirectToDashboard(
+                                "Email verified successfully. Opening your Intern Dashboard..."
+                            );
+                        }
+
+
+                    } catch (
+                        error
+                    ) {
+
+                        console.error(
+                            "NITRIXA unexpected OTP error:",
+                            error
+                        );
+
+                        showMessage(
+                            "Something went wrong while verifying your email. Please try again.",
+                            "error"
+                        );
+
+                    } finally {
+
+                        setButtonLoading(
+                            verifyOtpButton,
+                            false,
+                            "Verifying..."
+                        );
+                    }
+
+                }
+            );
+        }
+
+
+        /* =====================================================
+           RESEND OTP
+        ===================================================== */
+
+        if (resendOtpButton) {
+
+            resendOtpButton.addEventListener(
+                "click",
+                async () => {
+
+                    clearMessage();
+
+
+                    if (
+                        !pendingOtpEmail ||
+                        !pendingOtpPassword
+                    ) {
+
+                        showMessage(
+                            "Your registration session has expired. Please register again.",
+                            "error"
+                        );
+
+                        return;
+                    }
+
+
+                    if (
+                        resendSeconds > 0
+                    ) {
+
+                        return;
+                    }
+
+
+                    resendOtpButton.disabled =
                         true;
+
+                    resendOtpButton.textContent =
+                        "Sending OTP...";
 
 
                     try {
@@ -1713,39 +1848,58 @@ document.addEventListener(
                             error
                         } =
                             await supabase.auth
-                                .resetPasswordForEmail(
-                                    email,
-                                    {
-                                        redirectTo:
-                                            window.location.origin +
-                                            "/login.html"
-                                    }
-                                );
+                                .resend({
+                                    type:
+                                        "signup",
+
+                                    email:
+                                        pendingOtpEmail
+                                });
 
 
-                        if (
-                            error
-                        ) {
+                        if (error) {
 
                             console.error(
-                                "NITRIXA password reset error:",
+                                "NITRIXA resend OTP error:",
                                 error
                             );
 
                             showMessage(
-                                "We could not send the password reset email. Please try again.",
+                                getOtpErrorMessage(
+                                    error
+                                ),
                                 "error"
                             );
 
-                            return;
+                            updateResendButton();
 
+                            return;
+                        }
+
+
+                        if (otpStatus) {
+
+                            otpStatus.textContent =
+                                "A new 6-digit verification code has been sent to your email.";
                         }
 
 
                         showMessage(
-                            "If an account exists for this email, a password reset email has been sent.",
+                            "A new verification code has been sent.",
                             "success"
                         );
+
+
+                        if (otpInput) {
+
+                            otpInput.value =
+                                "";
+
+                            otpInput.focus();
+                        }
+
+
+                        startResendTimer();
 
 
                     } catch (
@@ -1753,25 +1907,37 @@ document.addEventListener(
                     ) {
 
                         console.error(
-                            "NITRIXA unexpected password reset error:",
+                            "NITRIXA unexpected resend error:",
                             error
                         );
 
                         showMessage(
-                            "Unable to process the password reset request right now.",
+                            "Unable to resend the OTP right now. Please try again.",
                             "error"
                         );
 
-                    } finally {
-
-                        forgotPasswordButton.disabled =
-                            false;
-
+                        updateResendButton();
                     }
 
                 }
             );
+        }
 
+
+        /* =====================================================
+           BACK TO LOGIN
+        ===================================================== */
+
+        if (backToLoginButton) {
+
+            backToLoginButton.addEventListener(
+                "click",
+                () => {
+
+                    hideOtpPanel();
+
+                }
+            );
         }
 
 
@@ -1779,9 +1945,7 @@ document.addEventListener(
            TAB EVENTS
         ===================================================== */
 
-        if (
-            loginTab
-        ) {
+        if (loginTab) {
 
             loginTab.addEventListener(
                 "click",
@@ -1793,13 +1957,10 @@ document.addEventListener(
 
                 }
             );
-
         }
 
 
-        if (
-            registerTab
-        ) {
+        if (registerTab) {
 
             registerTab.addEventListener(
                 "click",
@@ -1811,13 +1972,10 @@ document.addEventListener(
 
                 }
             );
-
         }
 
 
-        if (
-            switchToRegister
-        ) {
+        if (switchToRegister) {
 
             switchToRegister.addEventListener(
                 "click",
@@ -1829,13 +1987,10 @@ document.addEventListener(
 
                 }
             );
-
         }
 
 
-        if (
-            switchToLogin
-        ) {
+        if (switchToLogin) {
 
             switchToLogin.addEventListener(
                 "click",
@@ -1847,30 +2002,11 @@ document.addEventListener(
 
                 }
             );
-
-        }
-
-
-        if (
-            backToLoginButton
-        ) {
-
-            backToLoginButton.addEventListener(
-                "click",
-                () => {
-
-                    setMode(
-                        "login"
-                    );
-
-                }
-            );
-
         }
 
 
         /* =====================================================
-           PASSWORD VISIBILITY
+           PASSWORD TOGGLE
         ===================================================== */
 
         document
@@ -1887,44 +2023,45 @@ document.addEventListener(
                             const targetId =
                                 toggle.dataset.target;
 
-
                             const input =
                                 document.getElementById(
                                     targetId
                                 );
 
-
-                            if (
-                                !input
-                            ) {
-
+                            if (!input) {
                                 return;
-
                             }
 
 
-                            const showing =
-                                input.type === "text";
+                            if (
+                                input.type ===
+                                "password"
+                            ) {
 
+                                input.type =
+                                    "text";
 
-                            input.type =
-                                showing
-                                    ? "password"
-                                    : "text";
+                                toggle.textContent =
+                                    "Hide";
 
+                                toggle.setAttribute(
+                                    "aria-label",
+                                    "Hide password"
+                                );
 
-                            toggle.textContent =
-                                showing
-                                    ? "Show"
-                                    : "Hide";
+                            } else {
 
+                                input.type =
+                                    "password";
 
-                            toggle.setAttribute(
-                                "aria-label",
-                                showing
-                                    ? "Show password"
-                                    : "Hide password"
-                            );
+                                toggle.textContent =
+                                    "Show";
+
+                                toggle.setAttribute(
+                                    "aria-label",
+                                    "Show password"
+                                );
+                            }
 
                         }
                     );
@@ -1934,33 +2071,127 @@ document.addEventListener(
 
 
         /* =====================================================
-           REMOVE INPUT ERRORS
+           FORGOT PASSWORD
         ===================================================== */
 
-        document
-            .querySelectorAll(
-                ".auth-field input"
-            )
-            .forEach(
-                input => {
+        if (forgotPasswordButton) {
 
-                    input.addEventListener(
-                        "input",
-                        () => {
+            forgotPasswordButton.addEventListener(
+                "click",
+                async () => {
 
-                            input.classList.remove(
-                                "input-error"
+                    clearMessage();
+
+
+                    const emailInput =
+                        document.getElementById(
+                            "loginEmail"
+                        );
+
+                    const email =
+                        normalizeEmail(
+                            emailInput
+                                ? emailInput.value
+                                : ""
+                        );
+
+
+                    if (
+                        !isValidEmail(
+                            email
+                        )
+                    ) {
+
+                        if (emailInput) {
+
+                            markInputError(
+                                emailInput
+                            );
+                        }
+
+                        showMessage(
+                            "Enter your registered email address first.",
+                            "error"
+                        );
+
+                        return;
+                    }
+
+
+                    forgotPasswordButton.disabled =
+                        true;
+
+                    forgotPasswordButton.textContent =
+                        "Sending...";
+
+
+                    try {
+
+                        const {
+                            error
+                        } =
+                            await supabase.auth
+                                .resetPasswordForEmail(
+                                    email,
+                                    {
+                                        redirectTo:
+                                            `${window.location.origin}/login.html`
+                                    }
+                                );
+
+
+                        if (error) {
+
+                            console.error(
+                                "NITRIXA password reset error:",
+                                error
                             );
 
+                            showMessage(
+                                "Unable to send the password reset email. Please try again.",
+                                "error"
+                            );
+
+                            return;
                         }
-                    );
+
+
+                        showMessage(
+                            "Password reset instructions have been sent to your email.",
+                            "success"
+                        );
+
+
+                    } catch (
+                        error
+                    ) {
+
+                        console.error(
+                            "NITRIXA unexpected password reset error:",
+                            error
+                        );
+
+                        showMessage(
+                            "Unable to send the password reset email. Please try again.",
+                            "error"
+                        );
+
+                    } finally {
+
+                        forgotPasswordButton.disabled =
+                            false;
+
+                        forgotPasswordButton.textContent =
+                            "Forgot password?";
+                    }
 
                 }
             );
+        }
 
 
         /* =====================================================
-           CHECK EXISTING SESSION
+           EXISTING SESSION CHECK
         ===================================================== */
 
         try {
@@ -1977,85 +2208,22 @@ document.addEventListener(
                 data.session.user
             ) {
 
-                console.log(
-                    "NITRIXA: Existing authenticated session detected."
-                );
-
-
-                /* =================================================
-                   EXISTING SESSION — CHECK ADMIN FIRST
-                ================================================= */
-
-                const {
-                    isAdmin,
-                    error: adminError
-                } =
+                const isAdmin =
                     await isCurrentUserAdmin();
 
-
-                /*
-                 * Do not redirect anywhere if the
-                 * admin verification itself failed.
-                 */
-
-                if (
-                    adminError
-                ) {
-
-                    console.error(
-                        "NITRIXA: Existing-session admin verification failed."
-                    );
-
-                    showMessage(
-                        "We could not verify your account access. Please refresh and try again.",
-                        "error"
-                    );
-
-                    return;
-
-                }
-
-
-                /*
-                 * EXISTING ADMIN SESSION
-                 */
 
                 if (
                     isAdmin
                 ) {
 
-                    console.log(
-                        "NITRIXA: Existing admin session detected."
-                    );
+                    window.location.href =
+                        "admin/dashboard.html";
 
+                } else {
 
-                    redirectToAdminDashboard(
-                        "You are already signed in. Opening your Admin Dashboard..."
-                    );
-
-                    return;
-
+                    window.location.href =
+                        "intern-dashboard.html";
                 }
-
-
-                /*
-                 * EXISTING NORMAL USER SESSION
-                 *
-                 * Existing locked flow:
-                 *
-                 * Any authenticated normal user
-                 * can access the Intern Dashboard.
-                 */
-
-                console.log(
-                    "NITRIXA: Existing normal-user session detected."
-                );
-
-
-                redirectToDashboard(
-                    "You are already signed in. Opening your Intern Dashboard..."
-                );
-
             }
 
         } catch (
@@ -2063,17 +2231,19 @@ document.addEventListener(
         ) {
 
             console.error(
-                "NITRIXA session check failed:",
+                "NITRIXA: Existing session check failed:",
                 error
             );
-
-
-            /*
-             * Do not force logout because of a
-             * temporary session-check failure.
-             */
-
         }
+
+
+        /* =====================================================
+           DEFAULT MODE
+        ===================================================== */
+
+        setMode(
+            "login"
+        );
 
     }
 );
