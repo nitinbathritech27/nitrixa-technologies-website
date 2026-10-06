@@ -545,91 +545,154 @@
          HEADER
          ===================================================== -->
 
-    <header class="site-header">
+    <!-- =====================================================
+     HEADER
+===================================================== -->
 
-        <div class="container">
+<header class="site-header nx-header">
 
-            <div class="header-inner">
-
-                <a
-                    href="index.html"
-                    class="brand"
-                    aria-label="NITRIXA TECHNOLOGIES Home"
-                >
-
-                    <span class="brand-mark">
-                        N
-                    </span>
-
-                    <span class="brand-text">
-
-                        <strong>
-                            NITRIXA
-                        </strong>
-
-                        <small>
-                            TECHNOLOGIES
-                        </small>
-
-                    </span>
-
-                </a>
+    <div class="container navbar">
 
 
-                <nav
-                    class="main-nav"
-                    aria-label="Main navigation"
-                >
+        <!-- BRAND -->
 
-                    <a href="index.html">
-                        Home
-                    </a>
+        <a
+            href="index.html"
+            class="brand"
+            aria-label="NITRIXA Technologies Home"
+        >
 
-                    <a href="programs.html">
-                        Programs
-                    </a>
+            <img
+                src="assets/images/nitrixa-name-logo.png"
+                class="brand-logo"
+                alt="NITRIXA Technologies"
+            >
 
-                    <a href="about.html">
-                        About
-                    </a>
-
-                    <a href="contact.html">
-                        Contact
-                    </a>
-
-                    <a
-                        href="login.html"
-                        class="btn btn-primary"
-                        data-auth-link
-                        id="headerAuthButton"
-                    >
-                        Login / Register
-                        <span aria-hidden="true">
-                            →
-                        </span>
-                    </a>
-
-                </nav>
+        </a>
 
 
-                <button
-                    type="button"
-                    class="mobile-menu-toggle"
-                    aria-label="Open menu"
-                    aria-expanded="false"
-                    aria-controls="mainNavigation"
-                >
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </button>
+        <!-- MAIN NAVIGATION -->
 
-            </div>
+        <nav
+            class="nav-menu"
+            id="mainNavigation"
+            aria-label="Main navigation"
+        >
 
-        </div>
+            <a
+                href="index.html"
+                class="nav-link"
+            >
+                Home
+            </a>
 
-    </header>
 
+            <a
+                href="about.html"
+                class="nav-link"
+            >
+                About
+            </a>
+
+
+            <a
+                href="internship.html"
+                class="nav-link"
+            >
+                Internship
+            </a>
+
+
+            <a
+                href="training.html"
+                class="nav-link"
+            >
+                Training
+            </a>
+
+
+            <a
+                href="programs.html"
+                class="nav-link"
+            >
+                Programs
+            </a>
+
+
+            <a
+                href="projects.html"
+                class="nav-link"
+            >
+                Projects
+            </a>
+
+
+            <a
+                href="career.html"
+                class="nav-link"
+            >
+                Career
+            </a>
+
+
+            <a
+                href="how-it-works.html"
+                class="nav-link"
+            >
+                How It Works
+            </a>
+
+
+            <!-- CONTACT -->
+
+            <a
+                href="contact.html"
+                class="nav-link nx-nav-contact"
+            >
+                Contact
+            </a>
+
+
+            <!-- AUTH ACTION -->
+
+            <a
+                href="login.html"
+                class="nav-link nx-nav-apply"
+                id="headerAuthButton"
+                data-auth-link
+                aria-label="Login or Register"
+            >
+                Login / Register
+
+                <span aria-hidden="true">
+                    &rarr;
+                </span>
+
+            </a>
+
+        </nav>
+
+
+        <!-- MOBILE MENU -->
+
+        <button
+            class="menu-toggle"
+            type="button"
+            aria-controls="mainNavigation"
+            aria-expanded="false"
+            aria-label="Open navigation menu"
+        >
+
+            <span></span>
+            <span></span>
+            <span></span>
+
+        </button>
+
+
+    </div>
+
+</header>
 
     <!-- =====================================================
          MAIN
