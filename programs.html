@@ -10,13 +10,11 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>
-        Software Development Programs | NITRIXA TECHNOLOGIES
-    </title>
+    <title>Programs | NITRIXA TECHNOLOGIES</title>
 
     <meta
         name="description"
-        content="Explore software development training and internship programs at NITRIXA TECHNOLOGIES. Discover technology-focused learning paths with practical development and project-based learning."
+        content="Explore NITRIXA TECHNOLOGIES internship and training programs with practical learning, projects and structured development experience."
     >
 
     <meta
@@ -24,8 +22,9 @@
         content="#ffffff"
     >
 
+
     <!-- =====================================================
-         STYLES
+         GLOBAL STYLES
     ====================================================== -->
 
     <link
@@ -48,6 +47,2328 @@
         href="css/responsive.css"
     >
 
+
+    <!-- =====================================================
+         PROGRAMS PAGE UI
+    ====================================================== -->
+
+    <style>
+
+        /* =====================================================
+           PAGE FOUNDATION
+        ====================================================== */
+
+        #program-list {
+            overflow: hidden;
+        }
+
+        .program-category-section {
+            margin-top: 54px;
+        }
+
+        .program-category-section:first-of-type {
+            margin-top: 18px;
+        }
+
+
+        /* =====================================================
+           CATEGORY HEADER
+        ====================================================== */
+
+        .program-category-heading {
+            position: relative;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 28px;
+
+            margin-bottom: 22px;
+            padding: 20px 22px;
+
+            border: 1px solid #e5eaf2;
+            border-radius: 18px;
+
+            background: #ffffff;
+
+            box-shadow:
+                0 6px 24px rgba(15, 23, 42, 0.045);
+        }
+
+        .program-category-heading::before {
+            content: "";
+
+            position: absolute;
+
+            left: 0;
+            top: 16px;
+            bottom: 16px;
+
+            width: 3px;
+
+            border-radius: 0 5px 5px 0;
+
+            background:
+                linear-gradient(
+                    180deg,
+                    #2563eb,
+                    #6366f1
+                );
+        }
+
+        .program-category-heading-content {
+            min-width: 0;
+            max-width: 760px;
+
+            padding-left: 7px;
+        }
+
+        .program-category-heading .section-kicker {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+
+            margin-bottom: 7px;
+
+            color: #2563eb;
+
+            font-size: 0.62rem;
+            font-weight: 850;
+
+            letter-spacing: 0.12em;
+        }
+
+        .program-category-heading .section-kicker::before {
+            content: "";
+
+            width: 6px;
+            height: 6px;
+
+            border-radius: 50%;
+
+            background: #2563eb;
+        }
+
+        .program-category-heading h3 {
+            margin: 0 0 6px;
+
+            color: #111827;
+
+            font-size: clamp(
+                1.35rem,
+                2.1vw,
+                1.8rem
+            );
+
+            font-weight: 850;
+
+            line-height: 1.2;
+
+            letter-spacing: -0.025em;
+        }
+
+        .program-category-heading p {
+            max-width: 690px;
+
+            margin: 0;
+
+            color: #64748b;
+
+            font-size: 0.83rem;
+
+            line-height: 1.6;
+        }
+
+
+        /* =====================================================
+           PROGRAM COUNT
+        ====================================================== */
+
+        .program-category-count {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            flex-direction: column;
+
+            flex-shrink: 0;
+
+            min-width: 76px;
+            min-height: 62px;
+
+            padding: 9px 12px;
+
+            border: 1px solid #e1e7f0;
+            border-radius: 13px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #f8fbff,
+                    #f8f7ff
+                );
+        }
+
+        .program-category-count strong {
+            display: block;
+
+            color: #1d4ed8;
+
+            font-size: 1.25rem;
+            font-weight: 900;
+
+            line-height: 1;
+        }
+
+        .program-category-count span {
+            display: block;
+
+            margin-top: 5px;
+
+            color: #64748b;
+
+            font-size: 0.57rem;
+            font-weight: 800;
+
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+
+        /* =====================================================
+           PROGRAM GRID
+        ====================================================== */
+
+        .program-category-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(
+                    3,
+                    minmax(0, 1fr)
+                );
+
+            gap: 18px;
+
+            align-items: stretch;
+        }
+
+
+        /* =====================================================
+           PROGRAM CARD
+        ====================================================== */
+
+        .program-card {
+            position: relative;
+
+            display: flex;
+            flex-direction: column;
+
+            min-width: 0;
+            height: 100%;
+
+            padding: 18px;
+
+            overflow: hidden;
+
+            border: 1px solid #e4e9f1;
+            border-radius: 19px;
+
+            background: #ffffff;
+
+            box-shadow:
+                0 7px 25px rgba(15, 23, 42, 0.055);
+
+            transition:
+                transform 0.22s ease,
+                border-color 0.22s ease,
+                box-shadow 0.22s ease;
+        }
+
+        .program-card::before {
+            content: "";
+
+            position: absolute;
+
+            left: 0;
+            right: 0;
+            top: 0;
+
+            height: 3px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #2563eb,
+                    #4f46e5
+                );
+        }
+
+        .program-card::after {
+            content: "";
+
+            position: absolute;
+
+            width: 150px;
+            height: 150px;
+
+            top: -100px;
+            right: -90px;
+
+            border-radius: 50%;
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(37, 99, 235, 0.075),
+                    transparent 68%
+                );
+
+            pointer-events: none;
+        }
+
+        .program-card:hover {
+            transform: translateY(-4px);
+
+            border-color:
+                rgba(37, 99, 235, 0.20);
+
+            box-shadow:
+                0 17px 38px rgba(15, 23, 42, 0.085);
+        }
+
+        .program-card-featured {
+            background:
+                linear-gradient(
+                    180deg,
+                    #ffffff 0%,
+                    #fcfdff 100%
+                );
+        }
+
+
+        /* =====================================================
+           CARD TOP
+        ====================================================== */
+
+        .program-card-top {
+            position: relative;
+            z-index: 2;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            margin-bottom: 12px;
+        }
+
+        .program-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            width: 36px;
+            height: 36px;
+
+            border: 1px solid #dce5f5;
+            border-radius: 10px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #eff6ff,
+                    #eef2ff
+                );
+
+            color: #2563eb;
+
+            font-size: 0.82rem;
+            font-weight: 900;
+
+            box-shadow:
+                0 3px 10px rgba(37, 99, 235, 0.08);
+        }
+
+        .program-card-number {
+            color: #a0aabe;
+
+            font-size: 0.59rem;
+            font-weight: 850;
+
+            letter-spacing: 0.12em;
+        }
+
+
+        /* =====================================================
+           CATEGORY / TYPE
+        ====================================================== */
+
+        .program-card-category {
+            position: relative;
+            z-index: 2;
+
+            display: block;
+
+            margin-bottom: 6px;
+
+            color: #6366f1;
+
+            font-size: 0.59rem;
+            font-weight: 850;
+
+            letter-spacing: 0.10em;
+
+            text-transform: uppercase;
+        }
+
+        .program-card-type {
+            position: relative;
+            z-index: 2;
+
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+
+            width: fit-content;
+
+            margin-bottom: 10px;
+
+            padding: 5px 9px;
+
+            border: 1px solid #e7e8fb;
+            border-radius: 999px;
+
+            background: #f7f7ff;
+
+            color: #4f46e5;
+
+            font-size: 0.58rem;
+            font-weight: 800;
+
+            letter-spacing: 0.025em;
+        }
+
+        .program-card-type::before {
+            content: "";
+
+            width: 5px;
+            height: 5px;
+
+            border-radius: 50%;
+
+            background: #6366f1;
+        }
+
+
+        /* =====================================================
+           TITLE
+        ====================================================== */
+
+        .program-card-title {
+            position: relative;
+            z-index: 2;
+
+            margin: 0 0 7px;
+
+            color: #111827;
+
+            font-size: clamp(
+                1.08rem,
+                1.5vw,
+                1.28rem
+            );
+
+            font-weight: 850;
+
+            line-height: 1.25;
+
+            letter-spacing: -0.018em;
+        }
+
+        .program-summary {
+            position: relative;
+            z-index: 2;
+
+            min-height: 38px;
+
+            margin: 0;
+
+            color: #64748b;
+
+            font-size: 0.74rem;
+
+            line-height: 1.55;
+
+            display: -webkit-box;
+
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+
+            overflow: hidden;
+        }
+
+
+        /* =====================================================
+           TRAINING JOURNEY
+        ====================================================== */
+
+        .program-journey {
+            display: grid;
+
+            grid-template-columns:
+                minmax(0, 1fr)
+                16px
+                minmax(0, 1fr);
+
+            align-items: center;
+
+            gap: 6px;
+
+            margin-top: 13px;
+            padding: 7px;
+
+            border: 1px solid #e8eaf8;
+            border-radius: 11px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #f8fbff,
+                    #faf9ff
+                );
+        }
+
+        .program-journey-step {
+            min-width: 0;
+
+            padding: 6px 5px;
+
+            border: 1px solid #edf0f5;
+            border-radius: 7px;
+
+            background: #ffffff;
+
+            color: #334155;
+
+            font-size: 0.56rem;
+            font-weight: 800;
+
+            text-align: center;
+        }
+
+        .program-journey-line {
+            position: relative;
+
+            height: 1px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #93c5fd,
+                    #a78bfa
+                );
+        }
+
+        .program-journey-line::after {
+            content: "";
+
+            position: absolute;
+
+            right: -1px;
+            top: -3px;
+
+            width: 6px;
+            height: 6px;
+
+            border-top: 1px solid #6366f1;
+            border-right: 1px solid #6366f1;
+
+            transform: rotate(45deg);
+        }
+
+        .program-journey-single {
+            margin-top: 13px;
+
+            padding: 8px 10px;
+
+            border: 1px solid #e7edf7;
+            border-radius: 10px;
+
+            background: #f8fbff;
+
+            color: #475569;
+
+            font-size: 0.61rem;
+            font-weight: 750;
+        }
+
+
+        /* =====================================================
+           QUICK INFO
+        ====================================================== */
+
+        .program-quick-info {
+            display: grid;
+
+            grid-template-columns:
+                minmax(0, 1fr)
+                minmax(0, 1fr);
+
+            gap: 7px;
+
+            margin-top: 11px;
+        }
+
+        .program-info-item {
+            min-width: 0;
+
+            padding: 9px 10px;
+
+            border: 1px solid #e6eaf0;
+            border-radius: 10px;
+
+            background: #ffffff;
+        }
+
+        .program-info-item strong {
+            display: block;
+
+            margin-bottom: 4px;
+
+            color: #9aa6b8;
+
+            font-size: 0.55rem;
+            font-weight: 850;
+
+            letter-spacing: 0.07em;
+
+            text-transform: uppercase;
+        }
+
+        .program-info-item span {
+            display: block;
+
+            color: #1e293b;
+
+            font-size: 0.64rem;
+            font-weight: 800;
+
+            line-height: 1.35;
+
+            word-break: break-word;
+        }
+
+
+        /* =====================================================
+           FEE
+        ====================================================== */
+
+        .program-fee-box {
+            position: relative;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 12px;
+
+            margin-top: 10px;
+
+            padding: 12px 13px;
+
+            border: 1px solid #dce7fa;
+            border-radius: 12px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #f5f9ff,
+                    #f8f6ff
+                );
+        }
+
+        .program-fee-box::before {
+            content: "";
+
+            flex: 0 0 3px;
+
+            height: 31px;
+
+            border-radius: 5px;
+
+            background:
+                linear-gradient(
+                    180deg,
+                    #2563eb,
+                    #6366f1
+                );
+        }
+
+        .program-fee-box > div:first-child {
+            min-width: 0;
+        }
+
+        .program-fee-box .program-fee-label {
+            display: block;
+
+            color: #7b8798;
+
+            font-size: 0.55rem;
+            font-weight: 850;
+
+            letter-spacing: 0.08em;
+
+            text-transform: uppercase;
+        }
+
+        .program-fee-box .program-fee {
+            display: block;
+
+            margin-top: 3px;
+
+            color: #172554;
+
+            font-size: 1.25rem;
+            font-weight: 950;
+
+            line-height: 1;
+        }
+
+        .program-fee-box .program-fee-note {
+            max-width: 125px;
+
+            color: #64748b;
+
+            font-size: 0.54rem;
+
+            line-height: 1.4;
+
+            text-align: right;
+        }
+
+
+        /* =====================================================
+           TECHNOLOGIES
+        ====================================================== */
+
+        .program-technologies {
+            margin-top: 13px;
+        }
+
+        .program-section-label {
+            display: block;
+
+            margin-bottom: 7px;
+
+            color: #6b7789;
+
+            font-size: 0.57rem;
+            font-weight: 850;
+
+            letter-spacing: 0.09em;
+
+            text-transform: uppercase;
+        }
+
+        .program-tags {
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 5px;
+        }
+
+        .program-tech-pill {
+            display: inline-flex;
+            align-items: center;
+
+            padding: 4px 7px;
+
+            border: 1px solid #e1e7ef;
+            border-radius: 6px;
+
+            background: #ffffff;
+
+            color: #475569;
+
+            font-size: 0.57rem;
+            font-weight: 750;
+        }
+
+
+        /* =====================================================
+           STRUCTURE
+        ====================================================== */
+
+        .program-structure {
+            margin-top: 13px;
+            padding-top: 11px;
+
+            border-top: 1px solid #edf0f4;
+        }
+
+        .program-structure ul {
+            display: grid;
+
+            gap: 4px;
+
+            margin: 0;
+            padding: 0;
+
+            list-style: none;
+        }
+
+        .program-structure li {
+            position: relative;
+
+            padding-left: 15px;
+
+            color: #64748b;
+
+            font-size: 0.62rem;
+
+            line-height: 1.4;
+        }
+
+        .program-structure li::before {
+            content: "✓";
+
+            position: absolute;
+
+            left: 0;
+            top: 0;
+
+            color: #2563eb;
+
+            font-size: 0.61rem;
+            font-weight: 900;
+        }
+
+
+        /* =====================================================
+           CARD CTA
+        ====================================================== */
+
+        .program-cta {
+            position: relative;
+            z-index: 3;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            gap: 7px;
+
+            width: 100%;
+
+            margin-top: auto;
+            padding-top: 14px;
+
+            text-decoration: none;
+        }
+
+        .program-cta::before {
+            content: "";
+
+            position: absolute;
+
+            left: 0;
+            right: 0;
+            top: 14px;
+
+            height: 42px;
+
+            border-radius: 10px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #2563eb,
+                    #4f46e5
+                );
+
+            box-shadow:
+                0 7px 18px rgba(37, 99, 235, 0.17);
+
+            transition:
+                transform 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+        .program-cta:hover::before {
+            transform: translateY(-1px);
+
+            box-shadow:
+                0 10px 23px rgba(37, 99, 235, 0.24);
+        }
+
+        .program-cta {
+            min-height: 56px;
+
+            color: #ffffff !important;
+
+            font-size: 0.73rem;
+            font-weight: 850;
+        }
+
+        .program-cta > * {
+            position: relative;
+            z-index: 2;
+        }
+
+        .program-cta-arrow {
+            font-size: 0.9rem;
+
+            transition:
+                transform 0.2s ease;
+        }
+
+        .program-cta:hover .program-cta-arrow {
+            transform: translateX(3px);
+        }
+
+
+        /* =====================================================
+           LOADING / EMPTY
+        ====================================================== */
+
+        .nitrixa-program-empty,
+        .public-program-state {
+            grid-column: 1 / -1;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            min-height: 110px;
+
+            padding: 24px;
+
+            border: 1px dashed #cbd5e1;
+            border-radius: 16px;
+
+            background: #ffffff;
+
+            color: #64748b;
+
+            font-size: 0.8rem;
+
+            text-align: center;
+        }
+
+
+        /* =====================================================
+           APPROACH
+        ====================================================== */
+
+        .program-approach-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, minmax(0, 1fr));
+
+            gap: 14px;
+
+            margin-top: 30px;
+        }
+
+        .program-approach-card {
+            padding: 20px;
+
+            border: 1px solid #e5eaf1;
+            border-radius: 17px;
+
+            background: #ffffff;
+
+            box-shadow:
+                0 6px 22px rgba(15, 23, 42, 0.04);
+
+            transition:
+                transform 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+        .program-approach-card:hover {
+            transform: translateY(-3px);
+
+            box-shadow:
+                0 12px 28px rgba(15, 23, 42, 0.07);
+        }
+
+        .program-approach-card > span {
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            width: 30px;
+            height: 30px;
+
+            margin-bottom: 13px;
+
+            border-radius: 8px;
+
+            background: #eff6ff;
+
+            color: #2563eb;
+
+            font-size: 0.61rem;
+            font-weight: 900;
+        }
+
+        .program-approach-card h3 {
+            margin: 0 0 6px;
+
+            color: #111827;
+
+            font-size: 1rem;
+            font-weight: 800;
+        }
+
+        .program-approach-card p {
+            margin: 0;
+
+            color: #64748b;
+
+            font-size: 0.72rem;
+
+            line-height: 1.55;
+        }
+
+
+        /* =====================================================
+           CHOICE SECTION
+        ====================================================== */
+
+        .program-choice-box {
+            display: grid;
+
+            grid-template-columns:
+                minmax(0, 1fr)
+                minmax(280px, 0.82fr);
+
+            align-items: center;
+
+            gap: 35px;
+
+            padding: 30px;
+
+            border: 1px solid #e2e8f0;
+            border-radius: 21px;
+
+            background: #ffffff;
+
+            box-shadow:
+                0 9px 30px rgba(15, 23, 42, 0.05);
+        }
+
+        .program-choice-box h2 {
+            margin: 7px 0 9px;
+
+            color: #111827;
+
+            font-size: clamp(
+                1.4rem,
+                2.4vw,
+                1.9rem
+            );
+
+            line-height: 1.2;
+        }
+
+        .program-choice-box p {
+            max-width: 570px;
+
+            margin: 0;
+
+            color: #64748b;
+
+            font-size: 0.8rem;
+
+            line-height: 1.65;
+        }
+
+        .program-choice-options {
+            display: grid;
+
+            gap: 8px;
+        }
+
+        .choice-option {
+            display: grid;
+
+            grid-template-columns: 1fr auto;
+
+            align-items: center;
+
+            padding: 13px 14px;
+
+            border: 1px solid #e5eaf1;
+            border-radius: 12px;
+
+            background: #ffffff;
+
+            text-decoration: none;
+
+            transition:
+                transform 0.2s ease,
+                border-color 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+        .choice-option:hover {
+            transform: translateX(3px);
+
+            border-color:
+                rgba(37, 99, 235, 0.22);
+
+            box-shadow:
+                0 7px 18px rgba(37, 99, 235, 0.07);
+        }
+
+        .choice-option strong {
+            color: #1e293b;
+
+            font-size: 0.72rem;
+            font-weight: 800;
+        }
+
+        .choice-option span {
+            grid-column: 1;
+
+            margin-top: 3px;
+
+            color: #94a3b8;
+
+            font-size: 0.6rem;
+        }
+
+        .choice-option b {
+            grid-column: 2;
+            grid-row: 1 / span 2;
+
+            color: #2563eb;
+
+            font-size: 1rem;
+        }
+
+
+        /* =====================================================
+           FINAL CTA
+        ====================================================== */
+
+        .programs-cta-box {
+            display: flex;
+
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 28px;
+
+            padding: 30px;
+
+            border: 1px solid #dfe7f4;
+            border-radius: 21px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #f8fbff,
+                    #faf9ff
+                );
+
+            box-shadow:
+                0 10px 32px rgba(37, 99, 235, 0.06);
+        }
+
+        .programs-cta-box h2 {
+            margin: 7px 0 8px;
+
+            color: #111827;
+
+            font-size: clamp(
+                1.4rem,
+                2.4vw,
+                1.9rem
+            );
+
+            line-height: 1.2;
+        }
+
+        .programs-cta-box p {
+            max-width: 560px;
+
+            margin: 0;
+
+            color: #64748b;
+
+            font-size: 0.78rem;
+
+            line-height: 1.6;
+        }
+
+
+        /* =====================================================
+           TABLET
+        ====================================================== */
+
+        @media (max-width: 1100px) {
+
+            .program-category-grid {
+                grid-template-columns:
+                    repeat(
+                        2,
+                        minmax(0, 1fr)
+                    );
+            }
+
+            .program-approach-grid {
+                grid-template-columns:
+                    repeat(
+                        2,
+                        minmax(0, 1fr)
+                    );
+            }
+
+            .program-choice-box {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ====================================================== */
+
+        @media (max-width: 720px) {
+
+            .program-category-section {
+                margin-top: 42px;
+            }
+
+            .program-category-heading {
+                align-items: flex-start;
+
+                flex-direction: column;
+
+                gap: 14px;
+
+                padding: 18px;
+            }
+
+            .program-category-count {
+                min-width: 72px;
+                min-height: 57px;
+            }
+
+            .program-category-grid {
+                grid-template-columns: 1fr;
+
+                gap: 15px;
+            }
+
+            .program-card {
+                padding: 17px;
+
+                border-radius: 17px;
+            }
+
+            .programs-cta-box {
+                align-items: flex-start;
+
+                flex-direction: column;
+
+                padding: 24px;
+            }
+
+        }
+
+
+        /* =====================================================
+           SMALL MOBILE
+        ====================================================== */
+
+        @media (max-width: 480px) {
+
+            .program-category-heading {
+                padding: 16px;
+            }
+
+            .program-card {
+                padding: 16px;
+            }
+
+            .program-quick-info {
+                grid-template-columns: 1fr;
+            }
+
+            .program-fee-box {
+                align-items: flex-start;
+
+                flex-wrap: wrap;
+            }
+
+            .program-fee-box .program-fee-note {
+                max-width: 160px;
+
+                text-align: left;
+            }
+
+            .program-journey {
+                grid-template-columns: 1fr;
+
+                gap: 5px;
+            }
+
+            .program-journey-line {
+                width: 1px;
+                height: 9px;
+
+                justify-self: center;
+            }
+
+            .program-journey-line::after {
+                display: none;
+            }
+
+            .program-approach-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .program-choice-box {
+                padding: 21px;
+            }
+
+            .programs-cta-box {
+                padding: 21px;
+            }
+
+        }
+
+
+        /* =====================================================
+           REDUCED MOTION
+        ====================================================== */
+
+        @media (prefers-reduced-motion: reduce) {
+
+            .program-card,
+            .program-approach-card,
+            .choice-option,
+            .program-cta::before {
+                transition: none;
+            }
+
+            .program-card:hover,
+            .program-approach-card:hover,
+            .choice-option:hover {
+                transform: none;
+            }
+
+        }
+
+
+        /* =========================================================
+   NITRIXA 2030 — FUTURE PROGRAM CARD INTERACTION
+   Premium / Interactive / Professional
+   No JS required
+========================================================= */
+
+
+/* =========================================================
+   01 — CARD BASE
+========================================================= */
+
+.program-card {
+    position: relative;
+    isolation: isolate;
+
+    overflow: hidden;
+
+    transform:
+        translate3d(0, 0, 0);
+
+    border-color: #e4e9f1;
+
+    transition:
+        transform 0.55s cubic-bezier(0.16, 1, 0.3, 1),
+        border-color 0.4s ease,
+        box-shadow 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+
+/* =========================================================
+   02 — MOVING LIGHT BORDER
+========================================================= */
+
+.program-card::before {
+    content: "";
+
+    position: absolute;
+
+    inset: -1px;
+
+    z-index: -1;
+
+    padding: 1px;
+
+    border-radius: inherit;
+
+    background:
+        conic-gradient(
+            from 180deg,
+            transparent 0deg,
+            transparent 70deg,
+            rgba(37, 99, 235, 0.05) 100deg,
+            rgba(99, 102, 241, 0.95) 145deg,
+            rgba(6, 182, 212, 0.65) 175deg,
+            transparent 215deg,
+            transparent 360deg
+        );
+
+    opacity: 0;
+
+    -webkit-mask:
+        linear-gradient(#000 0 0) content-box,
+        linear-gradient(#000 0 0);
+
+    -webkit-mask-composite: xor;
+
+    mask-composite: exclude;
+
+    transition:
+        opacity 0.35s ease;
+}
+
+
+/* =========================================================
+   03 — FUTURE LIGHT ORBIT
+========================================================= */
+
+.program-card::after {
+    content: "";
+
+    position: absolute;
+
+    z-index: -1;
+
+    width: 230px;
+    height: 230px;
+
+    top: -115px;
+    right: -115px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(37, 99, 235, 0.16) 0%,
+            rgba(99, 102, 241, 0.08) 28%,
+            rgba(6, 182, 212, 0.035) 48%,
+            transparent 70%
+        );
+
+    opacity: 0;
+
+    transform:
+        scale(0.55)
+        rotate(0deg);
+
+    transition:
+        opacity 0.45s ease,
+        transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+
+/* =========================================================
+   04 — MAIN CARD HOVER
+========================================================= */
+
+.program-card:hover {
+
+    transform:
+        translate3d(0, -10px, 0)
+        scale(1.012);
+
+    border-color:
+        rgba(99, 102, 241, 0.28);
+
+    box-shadow:
+
+        0 30px 70px
+        rgba(15, 23, 42, 0.11),
+
+        0 10px 28px
+        rgba(37, 99, 235, 0.09),
+
+        0 0 0 1px
+        rgba(99, 102, 241, 0.04);
+}
+
+
+.program-card:hover::before {
+    opacity: 1;
+
+    animation:
+        programBorderOrbit
+        2.8s linear
+        infinite;
+}
+
+
+.program-card:hover::after {
+    opacity: 1;
+
+    transform:
+        scale(1.15)
+        rotate(25deg);
+}
+
+
+/* =========================================================
+   05 — BORDER ORBIT
+========================================================= */
+
+@keyframes programBorderOrbit {
+
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+
+}
+
+
+/* =========================================================
+   06 — TOP PROGRAM ICON
+========================================================= */
+
+.program-icon {
+
+    position: relative;
+
+    transition:
+        transform 0.55s cubic-bezier(0.16, 1, 0.3, 1),
+        box-shadow 0.4s ease,
+        border-color 0.4s ease,
+        background 0.4s ease;
+}
+
+
+.program-icon::after {
+
+    content: "";
+
+    position: absolute;
+
+    inset: -5px;
+
+    border-radius: 13px;
+
+    border: 1px solid
+        rgba(37, 99, 235, 0.18);
+
+    opacity: 0;
+
+    transform: scale(0.75);
+
+    transition:
+        opacity 0.35s ease,
+        transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+
+.program-card:hover .program-icon {
+
+    transform:
+        translateY(-3px)
+        rotate(-5deg)
+        scale(1.1);
+
+    border-color:
+        rgba(37, 99, 235, 0.28);
+
+    background:
+        linear-gradient(
+            145deg,
+            #eaf3ff,
+            #f0edff
+        );
+
+    box-shadow:
+        0 12px 25px
+        rgba(37, 99, 235, 0.15);
+}
+
+
+.program-card:hover .program-icon::after {
+
+    opacity: 1;
+
+    transform: scale(1);
+}
+
+
+/* =========================================================
+   07 — PROGRAM TITLE
+========================================================= */
+
+.program-card-title {
+
+    transition:
+        color 0.35s ease,
+        transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+
+.program-card:hover .program-card-title {
+
+    color: #1d4ed8;
+
+    transform:
+        translateX(3px);
+}
+
+
+/* =========================================================
+   08 — PROGRAM TYPE PILL
+========================================================= */
+
+.program-card-type {
+
+    transition:
+        transform 0.35s ease,
+        border-color 0.35s ease,
+        background 0.35s ease,
+        box-shadow 0.35s ease;
+}
+
+
+.program-card:hover .program-card-type {
+
+    transform:
+        translateX(3px);
+
+    border-color:
+        rgba(99, 102, 241, 0.22);
+
+    background:
+        linear-gradient(
+            135deg,
+            #f1f6ff,
+            #f5f1ff
+        );
+
+    box-shadow:
+        0 5px 14px
+        rgba(99, 102, 241, 0.08);
+}
+
+
+/* =========================================================
+   09 — PROGRAM DESCRIPTION
+========================================================= */
+
+.program-summary {
+
+    transition:
+        color 0.35s ease;
+}
+
+
+.program-card:hover .program-summary {
+
+    color: #526174;
+}
+
+
+/* =========================================================
+   10 — QUICK INFO / DATA MODULES
+========================================================= */
+
+.program-info-item {
+
+    position: relative;
+
+    overflow: hidden;
+
+    transition:
+        transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+        border-color 0.35s ease,
+        box-shadow 0.35s ease;
+}
+
+
+.program-info-item::after {
+
+    content: "";
+
+    position: absolute;
+
+    left: -80%;
+
+    top: 0;
+
+    width: 50%;
+    height: 100%;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(255,255,255,0.85),
+            transparent
+        );
+
+    transform: skewX(-20deg);
+
+    transition:
+        left 0.65s ease;
+}
+
+
+.program-card:hover .program-info-item {
+
+    transform:
+        translateY(-2px);
+
+    border-color:
+        rgba(37, 99, 235, 0.16);
+
+    box-shadow:
+        0 7px 17px
+        rgba(15, 23, 42, 0.045);
+}
+
+
+.program-card:hover .program-info-item::after {
+
+    left: 130%;
+}
+
+
+/* =========================================================
+   11 — FEE MODULE
+========================================================= */
+
+.program-fee-box {
+
+    position: relative;
+
+    overflow: hidden;
+
+    transition:
+        transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+        border-color 0.35s ease,
+        box-shadow 0.35s ease;
+}
+
+
+.program-fee-box::after {
+
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    bottom: 0;
+
+    left: -100%;
+
+    width: 55%;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(255,255,255,0.65),
+            transparent
+        );
+
+    transform: skewX(-20deg);
+
+    transition:
+        left 0.7s ease;
+}
+
+
+.program-card:hover .program-fee-box {
+
+    transform:
+        translateY(-3px);
+
+    border-color:
+        rgba(37, 99, 235, 0.22);
+
+    box-shadow:
+        0 10px 24px
+        rgba(37, 99, 235, 0.08);
+}
+
+
+.program-card:hover .program-fee-box::after {
+
+    left: 140%;
+}
+
+
+/* =========================================================
+   12 — FEE NUMBER
+========================================================= */
+
+.program-fee-box .program-fee {
+
+    transition:
+        transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+        color 0.35s ease;
+}
+
+
+.program-card:hover .program-fee-box .program-fee {
+
+    color: #1d4ed8;
+
+    transform:
+        scale(1.045);
+}
+
+
+/* =========================================================
+   13 — TECHNOLOGY CHIPS
+========================================================= */
+
+.program-tech-pill {
+
+    transition:
+        transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+        border-color 0.3s ease,
+        background 0.3s ease,
+        color 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+
+.program-tech-pill:hover {
+
+    transform:
+        translateY(-4px)
+        scale(1.04);
+
+    border-color:
+        rgba(37, 99, 235, 0.25);
+
+    background:
+        #f3f7ff;
+
+    color:
+        #1d4ed8;
+
+    box-shadow:
+        0 6px 14px
+        rgba(37, 99, 235, 0.10);
+}
+
+
+/* =========================================================
+   14 — TRAINING JOURNEY
+========================================================= */
+
+.program-journey {
+
+    transition:
+        border-color 0.35s ease,
+        box-shadow 0.35s ease,
+        background 0.35s ease;
+}
+
+
+.program-card:hover .program-journey {
+
+    border-color:
+        rgba(99, 102, 241, 0.20);
+
+    background:
+        linear-gradient(
+            135deg,
+            #f5f9ff,
+            #f8f5ff
+        );
+
+    box-shadow:
+        0 7px 18px
+        rgba(99, 102, 241, 0.055);
+}
+
+
+.program-journey-step {
+
+    transition:
+        transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+        border-color 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+
+.program-card:hover .program-journey-step:first-child {
+
+    transform:
+        translateX(-2px);
+}
+
+
+.program-card:hover .program-journey-step:last-child {
+
+    transform:
+        translateX(2px);
+}
+
+
+.program-card:hover .program-journey-step {
+
+    border-color:
+        rgba(99, 102, 241, 0.18);
+
+    box-shadow:
+        0 4px 11px
+        rgba(99, 102, 241, 0.07);
+}
+
+
+/* =========================================================
+   15 — JOURNEY ARROW
+========================================================= */
+
+.program-journey-line {
+
+    transition:
+        transform 0.45s ease,
+        background 0.45s ease;
+}
+
+
+.program-card:hover .program-journey-line {
+
+    background:
+        linear-gradient(
+            90deg,
+            #60a5fa,
+            #8b5cf6
+        );
+
+    transform:
+        scaleX(1.15);
+}
+
+
+/* =========================================================
+   16 — STRUCTURE CHECKMARKS
+========================================================= */
+
+.program-structure li {
+
+    transition:
+        transform 0.3s ease,
+        color 0.3s ease;
+}
+
+
+.program-structure li::before {
+
+    display: inline-block;
+
+    transition:
+        transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+
+.program-card:hover .program-structure li {
+
+    color: #526174;
+
+    transform:
+        translateX(2px);
+}
+
+
+.program-card:hover .program-structure li::before {
+
+    transform:
+        scale(1.18);
+}
+
+
+/* =========================================================
+   17 — CTA
+========================================================= */
+
+.program-cta {
+
+    position: relative;
+
+    overflow: hidden;
+
+    transition:
+        transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+
+.program-cta::before {
+
+    transition:
+        transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+        box-shadow 0.4s ease,
+        filter 0.4s ease;
+}
+
+
+.program-cta::after {
+
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    bottom: 0;
+
+    left: -100%;
+
+    width: 55%;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(255,255,255,0.30),
+            transparent
+        );
+
+    transform: skewX(-22deg);
+
+    transition:
+        left 0.7s ease;
+}
+
+
+.program-cta:hover::before {
+
+    transform:
+        scale(1.015);
+
+    filter:
+        brightness(1.07);
+
+    box-shadow:
+        0 12px 28px
+        rgba(37, 99, 235, 0.30);
+}
+
+
+.program-cta:hover::after {
+
+    left: 145%;
+}
+
+
+.program-cta-arrow {
+
+    transition:
+        transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+
+.program-cta:hover .program-cta-arrow {
+
+    transform:
+        translateX(6px)
+        scale(1.08);
+}
+
+
+/* =========================================================
+   18 — CARD NUMBER MICRO ANIMATION
+========================================================= */
+
+.program-card-number {
+
+    transition:
+        color 0.3s ease,
+        letter-spacing 0.35s ease;
+}
+
+
+.program-card:hover .program-card-number {
+
+    color: #6366f1;
+
+    letter-spacing: 0.16em;
+}
+
+
+/* =========================================================
+   19 — PREMIUM CARD CONTENT PARALLAX FEEL
+========================================================= */
+
+.program-card-top,
+.program-card-category,
+.program-card-type,
+.program-card-title,
+.program-summary,
+.program-journey,
+.program-quick-info,
+.program-fee-box,
+.program-technologies,
+.program-structure,
+.program-cta {
+
+    transition-property:
+        transform,
+        opacity;
+}
+
+
+/* =========================================================
+   20 — HOVER CONTENT DEPTH
+========================================================= */
+
+.program-card:hover .program-card-top {
+
+    transform:
+        translateY(-1px);
+}
+
+.program-card:hover .program-technologies {
+
+    transform:
+        translateY(-1px);
+}
+
+.program-card:hover .program-structure {
+
+    transform:
+        translateY(-1px);
+}
+
+
+/* =========================================================
+   21 — CATEGORY HEADER FUTURE EFFECT
+========================================================= */
+
+.program-category-heading {
+
+    position: relative;
+
+    overflow: hidden;
+
+    transition:
+        border-color 0.35s ease,
+        box-shadow 0.35s ease,
+        transform 0.35s ease;
+}
+
+
+.program-category-heading::after {
+
+    content: "";
+
+    position: absolute;
+
+    width: 180px;
+    height: 180px;
+
+    top: -120px;
+    right: -90px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(37, 99, 235, 0.08),
+            transparent 70%
+        );
+
+    opacity: 0;
+
+    transform:
+        scale(0.7);
+
+    transition:
+        opacity 0.4s ease,
+        transform 0.6s ease;
+}
+
+
+.program-category-heading:hover {
+
+    border-color:
+        rgba(37, 99, 235, 0.17);
+
+    box-shadow:
+        0 12px 32px
+        rgba(37, 99, 235, 0.065);
+}
+
+
+.program-category-heading:hover::after {
+
+    opacity: 1;
+
+    transform:
+        scale(1.15);
+}
+
+
+/* =========================================================
+   22 — APPROACH CARDS
+========================================================= */
+
+.program-approach-card {
+
+    position: relative;
+
+    overflow: hidden;
+
+    transition:
+        transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+        border-color 0.35s ease,
+        box-shadow 0.4s ease;
+}
+
+
+.program-approach-card::after {
+
+    content: "";
+
+    position: absolute;
+
+    width: 120px;
+    height: 120px;
+
+    right: -70px;
+    bottom: -70px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(37, 99, 235, 0.10),
+            transparent 70%
+        );
+
+    opacity: 0;
+
+    transition:
+        opacity 0.4s ease,
+        transform 0.5s ease;
+}
+
+
+.program-approach-card:hover {
+
+    transform:
+        translateY(-7px);
+
+    border-color:
+        rgba(37, 99, 235, 0.18);
+
+    box-shadow:
+        0 18px 40px
+        rgba(15, 23, 42, 0.075);
+}
+
+
+.program-approach-card:hover::after {
+
+    opacity: 1;
+
+    transform:
+        scale(1.25);
+}
+
+
+.program-approach-card > span {
+
+    transition:
+        transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+        box-shadow 0.35s ease;
+}
+
+
+.program-approach-card:hover > span {
+
+    transform:
+        rotate(-6deg)
+        scale(1.1);
+
+    box-shadow:
+        0 7px 16px
+        rgba(37, 99, 235, 0.12);
+}
+
+
+/* =========================================================
+   23 — TOUCH DEVICES
+========================================================= */
+
+@media (hover: none) {
+
+    .program-card:hover {
+
+        transform:
+            none;
+
+        box-shadow:
+            0 7px 25px
+            rgba(15, 23, 42, 0.055);
+    }
+
+    .program-card:hover::before {
+
+        opacity: 0;
+    }
+
+    .program-card:hover::after {
+
+        opacity: 0;
+    }
+
+}
+
+
+/* =========================================================
+   24 — REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .program-card,
+    .program-card::before,
+    .program-card::after,
+    .program-icon,
+    .program-fee-box,
+    .program-tech-pill,
+    .program-cta,
+    .program-cta::after {
+
+        animation: none !important;
+
+        transition: none !important;
+    }
+
+}
+
+    </style>
+
+
     <!-- =====================================================
          FAVICON
     ====================================================== -->
@@ -57,6 +2378,7 @@
         type="image/png"
         href="assets/images/nitrixa-logo.png"
     >
+    
 
 </head>
 
@@ -157,7 +2479,6 @@
                 Contact
             </a>
 
-            <!-- DIRECT ENROLLMENT -->
             <a
                 href="enroll.html"
                 class="btn btn-primary nav-cta"
@@ -173,534 +2494,614 @@
 
 
 
+<!-- =====================================================
+     MAIN
+====================================================== -->
+
 <main>
 
 
-<!-- =====================================================
-     PROGRAMS HERO
-====================================================== -->
+    <!-- =====================================================
+         PROGRAMS HERO
+    ====================================================== -->
 
-<section
-    class="programs-hero page-hero"
-    aria-labelledby="programs-hero-title"
->
+    <section
+        class="programs-hero page-hero"
+        aria-labelledby="programs-hero-title"
+    >
 
-    <div class="container">
+        <div class="container">
 
-        <div class="programs-hero-content reveal">
+            <div class="programs-hero-content reveal">
 
-            <span class="section-kicker">
-                LEARNING PROGRAMS
-            </span>
-
-            <h1 id="programs-hero-title">
-
-                Choose a path.
-
-                <span class="text-gradient">
-                    Build your skills.
+                <span class="section-kicker">
+                    LEARNING PROGRAMS
                 </span>
 
-            </h1>
+                <h1 id="programs-hero-title">
 
-            <p>
-                Explore technology-focused learning paths designed
-                around programming, software development, practical
-                tasks and project-based learning.
-            </p>
+                    Choose a path.
 
-            <div class="hero-actions">
+                    <span class="text-gradient">
+                        Build your skills.
+                    </span>
 
-                <a
-                    href="#program-list"
-                    class="btn btn-primary"
-                >
-                    Explore Programs
-                </a>
+                </h1>
 
-                <a
-                    href="enroll.html"
-                    class="btn btn-secondary"
-                >
-                    Enroll Now
-                </a>
+                <p>
+                    Explore technology-focused internship and
+                    training programs designed around practical
+                    development, structured learning and
+                    project-based experience.
+                </p>
+
+                <div class="hero-actions">
+
+                    <a
+                        href="#program-list"
+                        class="btn btn-primary"
+                    >
+                        Explore Programs
+                    </a>
+
+                    <a
+                        href="enroll.html"
+                        class="btn btn-secondary"
+                    >
+                        Enroll Now
+                    </a>
+
+                </div>
 
             </div>
 
         </div>
 
-    </div>
-
-</section>
+    </section>
 
 
 
-<!-- =====================================================
-     PROGRAM INTRO
-====================================================== -->
+    <!-- =====================================================
+         PROGRAM INTRO
+    ====================================================== -->
 
-<section
-    class="section"
-    aria-labelledby="program-intro-title"
->
+    <section
+        class="section"
+        aria-labelledby="program-intro-title"
+    >
 
-    <div class="container">
+        <div class="container">
 
-        <div class="section-heading centered reveal">
+            <div class="section-heading centered reveal">
 
-            <span class="section-kicker">
-                FIND YOUR PATH
-            </span>
-
-            <h2 id="program-intro-title">
-
-                Learning built around
-
-                <span class="text-gradient">
-                    practical development.
+                <span class="section-kicker">
+                    FIND YOUR PATH
                 </span>
 
-            </h2>
+                <h2 id="program-intro-title">
 
-            <p>
-                Each program can be structured around a specific
-                technology area, skill level and practical learning
-                objective.
-            </p>
+                    Choose the learning format
 
-        </div>
+                    <span class="text-gradient">
+                        that fits your goal.
+                    </span>
 
+                </h2>
 
-        <div
-            class="program-category-strip reveal"
-            aria-label="Program categories"
-        >
-
-            <div class="program-category active">
-
-                <span>
-                    01
-                </span>
-
-                <strong>
-                    Software Development
-                </strong>
-
-            </div>
-
-
-            <div class="program-category">
-
-                <span>
-                    02
-                </span>
-
-                <strong>
-                    Web Development
-                </strong>
-
-            </div>
-
-
-            <div class="program-category">
-
-                <span>
-                    03
-                </span>
-
-                <strong>
-                    Backend Development
-                </strong>
-
-            </div>
-
-
-            <div class="program-category">
-
-                <span>
-                    04
-                </span>
-
-                <strong>
-                    Programming
-                </strong>
+                <p>
+                    NITRIXA programs are organized into two clear
+                    paths — practical internships and combined
+                    training with internship.
+                </p>
 
             </div>
 
         </div>
 
-    </div>
-
-</section>
+    </section>
 
 
 
-<!-- =====================================================
-     PROGRAM LIST
-====================================================== -->
+    <!-- =====================================================
+         PROGRAM LIST
+    ====================================================== -->
 
-<section
-    class="section section-soft"
-    id="program-list"
-    aria-labelledby="program-list-title"
->
+    <section
+        class="section section-soft"
+        id="program-list"
+        aria-labelledby="program-list-title"
+    >
 
-    <div class="container">
+        <div class="container">
 
-        <div class="section-heading reveal">
+            <div class="section-heading reveal">
 
-            <span class="section-kicker">
-                AVAILABLE PATHS
-            </span>
-
-            <h2 id="program-list-title">
-
-                Explore the
-
-                <span class="text-gradient">
-                    programs.
+                <span class="section-kicker">
+                    AVAILABLE PROGRAMS
                 </span>
 
-            </h2>
+                <h2 id="program-list-title">
 
-            <p>
-                Explore the currently active NITRIXA Technologies
-                training and internship programs.
-            </p>
+                    Explore our
 
-        </div>
+                    <span class="text-gradient">
+                        active programs.
+                    </span>
+
+                </h2>
+
+                <p>
+                    Select a program to view its duration, fee,
+                    technology focus and learning structure.
+                </p>
+
+            </div>
 
 
-        <!-- =================================================
-             DYNAMIC PROGRAM GRID
+            <!-- =================================================
+                 INTERNSHIP PROGRAMS
+            ================================================== -->
 
-             Programs are loaded from Supabase by
-             js/programs.js.
-
-             Only ACTIVE programs are displayed.
-
-             Each program's Enroll Now button will use:
-
-             enroll.html?program=PROGRAM_SLUG
-        ================================================== -->
-
-        <div
-            class="program-grid"
-            id="publicProgramGrid"
-        >
-
-            <div
-                class="public-program-state"
-                style="
-                    grid-column: 1 / -1;
-                    text-align: center;
-                    padding: 60px 20px;
-                "
+            <section
+                class="program-category-section reveal"
+                aria-labelledby="internship-programs-title"
             >
 
-                <p>
-                    Loading available programs...
-                </p>
+                <div class="program-category-heading">
 
-            </div>
+                    <div class="program-category-heading-content">
+
+                        <span class="section-kicker">
+                            CATEGORY 01
+                        </span>
+
+                        <h3 id="internship-programs-title">
+                            Internship Programs
+                        </h3>
+
+                        <p>
+                            Practical internship paths focused on
+                            hands-on development, project work and
+                            structured internship experience.
+                        </p>
+
+                    </div>
+
+
+                    <div
+                        class="program-category-count"
+                        id="internshipProgramCount"
+                        aria-label="Internship program count"
+                    >
+
+                        <strong>0</strong>
+
+                        <span>
+                            Programs
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="program-category-grid"
+                    id="internshipProgramGrid"
+                >
+
+                    <div class="nitrixa-program-empty">
+                        Loading internship programs...
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 TRAINING + INTERNSHIP PROGRAMS
+            ================================================== -->
+
+            <section
+                class="program-category-section reveal"
+                aria-labelledby="training-internship-programs-title"
+            >
+
+                <div class="program-category-heading">
+
+                    <div class="program-category-heading-content">
+
+                        <span class="section-kicker">
+                            CATEGORY 02
+                        </span>
+
+                        <h3 id="training-internship-programs-title">
+                            Training + Internship Programs
+                        </h3>
+
+                        <p>
+                            Learn through structured training first,
+                            then unlock the internship stage after
+                            successful training completion and
+                            Master Admin approval.
+                        </p>
+
+                    </div>
+
+
+                    <div
+                        class="program-category-count"
+                        id="trainingInternshipProgramCount"
+                        aria-label="Training and internship program count"
+                    >
+
+                        <strong>0</strong>
+
+                        <span>
+                            Programs
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="program-category-grid"
+                    id="trainingInternshipProgramGrid"
+                >
+
+                    <div class="nitrixa-program-empty">
+                        Loading training programs...
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 LEGACY COMPATIBILITY
+            ================================================== -->
+
+            <section
+                class="program-category-section"
+                id="otherProgramSection"
+                aria-labelledby="other-programs-title"
+                style="display: none;"
+            >
+
+                <div class="program-category-heading">
+
+                    <div class="program-category-heading-content">
+
+                        <span class="section-kicker">
+                            ADDITIONAL
+                        </span>
+
+                        <h3 id="other-programs-title">
+                            Other Programs
+                        </h3>
+
+                        <p>
+                            Additional active programs currently
+                            available in the system.
+                        </p>
+
+                    </div>
+
+
+                    <div
+                        class="program-category-count"
+                        id="otherProgramCount"
+                    >
+
+                        <strong>0</strong>
+
+                        <span>
+                            Programs
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="program-category-grid"
+                    id="otherProgramGrid"
+                ></div>
+
+            </section>
 
         </div>
 
-    </div>
-
-</section>
+    </section>
 
 
 
-<!-- =====================================================
-     PROGRAM APPROACH
-====================================================== -->
+    <!-- =====================================================
+         PROGRAM APPROACH
+    ====================================================== -->
 
-<section
-    class="section"
-    aria-labelledby="program-approach-title"
->
+    <section
+        class="section"
+        aria-labelledby="program-approach-title"
+    >
 
-    <div class="container">
+        <div class="container">
 
-        <div class="section-heading centered reveal">
-
-            <span class="section-kicker">
-                PROGRAM APPROACH
-            </span>
-
-            <h2 id="program-approach-title">
-
-                Every learning path
-
-                <span class="text-gradient">
-                    connects the dots.
-                </span>
-
-            </h2>
-
-            <p>
-                The exact content can vary by program, but the
-                overall approach focuses on understanding,
-                application and practical development.
-            </p>
-
-        </div>
-
-
-        <div class="program-approach-grid">
-
-
-            <div class="program-approach-card reveal">
-
-                <span>
-                    01
-                </span>
-
-                <h3>
-                    Learn
-                </h3>
-
-                <p>
-                    Understand the core concepts and technologies
-                    behind the selected learning path.
-                </p>
-
-            </div>
-
-
-            <div class="program-approach-card reveal">
-
-                <span>
-                    02
-                </span>
-
-                <h3>
-                    Practice
-                </h3>
-
-                <p>
-                    Apply concepts through exercises and
-                    focused technical activities.
-                </p>
-
-            </div>
-
-
-            <div class="program-approach-card reveal">
-
-                <span>
-                    03
-                </span>
-
-                <h3>
-                    Build
-                </h3>
-
-                <p>
-                    Combine skills while working on practical
-                    development projects.
-                </p>
-
-            </div>
-
-
-            <div class="program-approach-card reveal">
-
-                <span>
-                    04
-                </span>
-
-                <h3>
-                    Improve
-                </h3>
-
-                <p>
-                    Review your work, solve issues and improve
-                    your development approach.
-                </p>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-
-<!-- =====================================================
-     CHOOSE PATH
-====================================================== -->
-
-<section
-    class="section section-soft"
-    aria-labelledby="program-choice-title"
->
-
-    <div class="container">
-
-        <div class="program-choice-box reveal">
-
-            <div>
+            <div class="section-heading centered reveal">
 
                 <span class="section-kicker">
-                    NOT SURE WHERE TO START?
+                    PROGRAM APPROACH
                 </span>
 
-                <h2 id="program-choice-title">
+                <h2 id="program-approach-title">
 
-                    Start with your
+                    Every learning path
 
                     <span class="text-gradient">
-                        current goal.
+                        connects the dots.
                     </span>
 
                 </h2>
 
                 <p>
-                    Whether you are starting programming,
-                    strengthening existing skills or looking
-                    for practical project experience, explore
-                    the available learning options.
+                    The exact content can vary by program, but the
+                    overall approach focuses on understanding,
+                    application and practical development.
                 </p>
 
             </div>
 
 
-            <div class="program-choice-options">
+            <div class="program-approach-grid">
 
-                <a
-                    href="training.html"
-                    class="choice-option"
-                >
+                <div class="program-approach-card reveal">
 
-                    <strong>
-                        Learn Technology
-                    </strong>
+                    <span>01</span>
 
-                    <span>
-                        Explore training
-                    </span>
+                    <h3>
+                        Learn
+                    </h3>
 
-                    <b aria-hidden="true">
-                        →
-                    </b>
+                    <p>
+                        Understand the core concepts and technologies
+                        behind the selected learning path.
+                    </p>
 
-                </a>
+                </div>
 
 
-                <a
-                    href="internship.html"
-                    class="choice-option"
-                >
+                <div class="program-approach-card reveal">
 
-                    <strong>
-                        Gain Practical Experience
-                    </strong>
+                    <span>02</span>
 
-                    <span>
-                        Explore internship
-                    </span>
+                    <h3>
+                        Practice
+                    </h3>
 
-                    <b aria-hidden="true">
-                        →
-                    </b>
+                    <p>
+                        Apply concepts through exercises and
+                        focused technical activities.
+                    </p>
 
-                </a>
+                </div>
 
 
-                <a
-                    href="projects.html"
-                    class="choice-option"
-                >
+                <div class="program-approach-card reveal">
 
-                    <strong>
-                        Build Projects
-                    </strong>
+                    <span>03</span>
 
-                    <span>
-                        See our project approach
-                    </span>
+                    <h3>
+                        Build
+                    </h3>
 
-                    <b aria-hidden="true">
-                        →
-                    </b>
+                    <p>
+                        Combine skills while working on practical
+                        development projects.
+                    </p>
 
-                </a>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
+                </div>
 
 
+                <div class="program-approach-card reveal">
 
-<!-- =====================================================
-     FINAL CTA
-====================================================== -->
+                    <span>04</span>
 
-<section
-    class="section programs-final-cta"
-    aria-labelledby="program-final-cta-title"
->
+                    <h3>
+                        Improve
+                    </h3>
 
-    <div class="container">
+                    <p>
+                        Review your work, solve issues and improve
+                        your development approach.
+                    </p>
 
-        <div class="programs-cta-box reveal">
-
-            <div>
-
-                <span class="section-kicker">
-                    READY TO BEGIN?
-                </span>
-
-                <h2 id="program-final-cta-title">
-
-                    Choose a program and
-
-                    <span class="text-gradient">
-                        start building.
-                    </span>
-
-                </h2>
-
-                <p>
-                    Choose your program and continue directly
-                    to the NITRIXA enrollment process.
-                </p>
-
-            </div>
-
-
-            <div class="hero-actions">
-
-                <a
-                    href="enroll.html"
-                    class="btn btn-primary"
-                >
-                    Enroll Now
-                </a>
-
-                <a
-                    href="contact.html"
-                    class="btn btn-secondary"
-                >
-                    Contact Us
-                </a>
+                </div>
 
             </div>
 
         </div>
 
-    </div>
+    </section>
 
-</section>
 
+
+    <!-- =====================================================
+         CHOOSE PATH
+    ====================================================== -->
+
+    <section
+        class="section section-soft"
+        aria-labelledby="program-choice-title"
+    >
+
+        <div class="container">
+
+            <div class="program-choice-box reveal">
+
+                <div>
+
+                    <span class="section-kicker">
+                        NOT SURE WHERE TO START?
+                    </span>
+
+                    <h2 id="program-choice-title">
+
+                        Start with your
+
+                        <span class="text-gradient">
+                            current goal.
+                        </span>
+
+                    </h2>
+
+                    <p>
+                        Whether you are starting programming,
+                        strengthening existing skills or looking
+                        for practical project experience, explore
+                        the available learning options.
+                    </p>
+
+                </div>
+
+
+                <div class="program-choice-options">
+
+                    <a
+                        href="training.html"
+                        class="choice-option"
+                    >
+
+                        <strong>
+                            Learn Technology
+                        </strong>
+
+                        <span>
+                            Explore training
+                        </span>
+
+                        <b aria-hidden="true">
+                            →
+                        </b>
+
+                    </a>
+
+
+                    <a
+                        href="internship.html"
+                        class="choice-option"
+                    >
+
+                        <strong>
+                            Gain Practical Experience
+                        </strong>
+
+                        <span>
+                            Explore internship
+                        </span>
+
+                        <b aria-hidden="true">
+                            →
+                        </b>
+
+                    </a>
+
+
+                    <a
+                        href="projects.html"
+                        class="choice-option"
+                    >
+
+                        <strong>
+                            Build Projects
+                        </strong>
+
+                        <span>
+                            See our project approach
+                        </span>
+
+                        <b aria-hidden="true">
+                            →
+                        </b>
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         FINAL CTA
+    ====================================================== -->
+
+    <section
+        class="section programs-final-cta"
+        aria-labelledby="program-final-cta-title"
+    >
+
+        <div class="container">
+
+            <div class="programs-cta-box reveal">
+
+                <div>
+
+                    <span class="section-kicker">
+                        READY TO BEGIN?
+                    </span>
+
+                    <h2 id="program-final-cta-title">
+
+                        Choose a program and
+
+                        <span class="text-gradient">
+                            start building.
+                        </span>
+
+                    </h2>
+
+                    <p>
+                        Choose your program and continue directly
+                        to the NITRIXA enrollment process.
+                    </p>
+
+                </div>
+
+
+                <div class="hero-actions">
+
+                    <a
+                        href="enroll.html"
+                        class="btn btn-primary"
+                    >
+                        Enroll Now
+                    </a>
+
+                    <a
+                        href="contact.html"
+                        class="btn btn-secondary"
+                    >
+                        Contact Us
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
 
 </main>
 
@@ -744,7 +3145,6 @@
             </div>
 
 
-
             <div class="footer-column">
 
                 <h4>
@@ -770,7 +3170,6 @@
             </div>
 
 
-
             <div class="footer-column">
 
                 <h4>
@@ -790,7 +3189,6 @@
                 </a>
 
             </div>
-
 
 
             <div class="footer-column">
@@ -829,6 +3227,7 @@
                 <span id="currentYear"></span>
 
                 NITRIXA TECHNOLOGIES.
+
                 All rights reserved.
 
             </p>
@@ -847,19 +3246,6 @@
 
 <!-- =====================================================
      SCRIPTS
-
-     IMPORTANT:
-     Supabase CDN MUST load first.
-
-     Then:
-     1. supabase.js initializes the client
-     2. main.js handles common website functionality
-     3. programs.js loads ACTIVE programs
-
-     programs.js should generate the dynamic
-     Enroll Now link as:
-
-     enroll.html?program=PROGRAM_SLUG
 ====================================================== -->
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -872,10 +3258,11 @@
 ></script>
 
 <script
-    src="js/programs.js?v=4"
+    src="js/programs.js?v=6"
     defer
 ></script>
 
 
 </body>
+
 </html>
