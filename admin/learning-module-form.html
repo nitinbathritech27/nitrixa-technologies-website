@@ -1,0 +1,1832 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="Learning Lesson Management | NITRIXA TECHNOLOGIES"
+    >
+
+    <meta
+        name="robots"
+        content="noindex, nofollow"
+    >
+
+    <meta
+        name="theme-color"
+        content="#ffffff"
+    >
+
+    <title>
+        Create Learning Lesson | NITRIXA TECHNOLOGIES
+    </title>
+
+
+    <!-- =====================================================
+         FAVICON
+    ====================================================== -->
+
+    <link
+        rel="icon"
+        type="image/png"
+        href="../assets/images/nitrixa-logo.png"
+    >
+
+
+    <!-- =====================================================
+         EXISTING ADMIN STYLES
+    ====================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="../css/admin.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="../css/admin-responsive.css"
+    >
+
+
+    <!-- =====================================================
+         PAGE STYLES
+    ====================================================== -->
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+
+        body {
+            margin: 0;
+
+            background:
+                #f6f8fc;
+
+            color:
+                #172033;
+
+            font-family:
+                Inter,
+                ui-sans-serif,
+                system-ui,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                sans-serif;
+        }
+
+
+        button,
+        input,
+        textarea,
+        select {
+            font: inherit;
+        }
+
+
+        a {
+            color: inherit;
+        }
+
+
+        /* =================================================
+           HEADER
+        ================================================= */
+
+        .learning-form-header {
+
+            min-height:
+                72px;
+
+            background:
+                #ffffff;
+
+            border-bottom:
+                1px solid #e5eaf2;
+
+            display:
+                flex;
+
+            align-items:
+                center;
+        }
+
+
+        .learning-form-header-inner {
+
+            width:
+                min(
+                    1440px,
+                    calc(100% - 40px)
+                );
+
+            margin:
+                0 auto;
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                space-between;
+
+            gap:
+                20px;
+        }
+
+
+        .learning-form-brand {
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            text-decoration:
+                none;
+        }
+
+
+        .learning-form-brand img {
+
+            width:
+                145px;
+
+            height:
+                auto;
+
+            display:
+                block;
+        }
+
+
+        .learning-form-header-actions {
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            gap:
+                10px;
+        }
+
+
+        .learning-form-header-link {
+
+            display:
+                inline-flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                center;
+
+            min-height:
+                38px;
+
+            padding:
+                8px 14px;
+
+            border:
+                1px solid #dbe2ee;
+
+            border-radius:
+                8px;
+
+            background:
+                #ffffff;
+
+            color:
+                #334155;
+
+            text-decoration:
+                none;
+
+            font-size:
+                13px;
+
+            font-weight:
+                700;
+
+            cursor:
+                pointer;
+
+            transition:
+                border-color .2s ease,
+                color .2s ease,
+                background .2s ease;
+        }
+
+
+        .learning-form-header-link:hover {
+
+            border-color:
+                #2454ff;
+
+            color:
+                #2454ff;
+
+            background:
+                #f7f9ff;
+        }
+
+
+        /* =================================================
+           PAGE
+        ================================================= */
+
+        .learning-form-page {
+
+            width:
+                min(
+                    1100px,
+                    calc(100% - 40px)
+                );
+
+            margin:
+                0 auto;
+
+            padding:
+                42px 0 60px;
+        }
+
+
+        /* =================================================
+           BREADCRUMB
+        ================================================= */
+
+        .learning-form-breadcrumb {
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            flex-wrap:
+                wrap;
+
+            gap:
+                7px;
+
+            margin-bottom:
+                18px;
+
+            color:
+                #64748b;
+
+            font-size:
+                12px;
+        }
+
+
+        .learning-form-breadcrumb a {
+
+            color:
+                #2454ff;
+
+            text-decoration:
+                none;
+
+            font-weight:
+                700;
+        }
+
+
+        .learning-form-breadcrumb a:hover {
+
+            text-decoration:
+                underline;
+        }
+
+
+        .learning-form-breadcrumb-separator {
+
+            color:
+                #94a3b8;
+        }
+
+
+        /* =================================================
+           INTRO
+        ================================================= */
+
+        .learning-form-intro {
+
+            margin-bottom:
+                26px;
+        }
+
+
+        .learning-form-eyebrow {
+
+            margin-bottom:
+                8px;
+
+            color:
+                #2454ff;
+
+            font-size:
+                11px;
+
+            font-weight:
+                900;
+
+            letter-spacing:
+                .14em;
+
+            text-transform:
+                uppercase;
+        }
+
+
+        .learning-form-intro h1 {
+
+            margin:
+                0;
+
+            color:
+                #172033;
+
+            font-size:
+                clamp(
+                    28px,
+                    4vw,
+                    38px
+                );
+
+            line-height:
+                1.15;
+
+            font-weight:
+                850;
+        }
+
+
+        .learning-form-intro p {
+
+            max-width:
+                760px;
+
+            margin:
+                9px 0 0;
+
+            color:
+                #64748b;
+
+            font-size:
+                14px;
+
+            line-height:
+                1.7;
+        }
+
+
+        /* =================================================
+           FORM CARD
+        ================================================= */
+
+        .learning-form-card {
+
+            background:
+                #ffffff;
+
+            border:
+                1px solid #e2e8f0;
+
+            border-radius:
+                16px;
+
+            box-shadow:
+                0 10px 35px
+                rgba(
+                    15,
+                    23,
+                    42,
+                    .05
+                );
+
+            overflow:
+                hidden;
+        }
+
+
+        /* =================================================
+           CARD HEADER
+        ================================================= */
+
+        .learning-form-card-header {
+
+            padding:
+                24px 28px;
+
+            border-bottom:
+                1px solid #edf1f6;
+
+            background:
+                #ffffff;
+        }
+
+
+        .learning-form-card-header h2 {
+
+            margin:
+                0;
+
+            color:
+                #172033;
+
+            font-size:
+                18px;
+
+            font-weight:
+                800;
+        }
+
+
+        .learning-form-card-header p {
+
+            margin:
+                5px 0 0;
+
+            color:
+                #64748b;
+
+            font-size:
+                12px;
+
+            line-height:
+                1.6;
+        }
+
+
+        /* =================================================
+           STATUS
+        ================================================= */
+
+        .learning-form-status {
+
+            display:
+                none;
+
+            margin:
+                20px 28px 0;
+
+            padding:
+                12px 14px;
+
+            border:
+                1px solid #dbe2ee;
+
+            border-radius:
+                9px;
+
+            font-size:
+                12px;
+
+            line-height:
+                1.5;
+        }
+
+
+        .learning-form-status.show {
+            display:
+                block;
+        }
+
+
+        .learning-form-status.error {
+
+            border-color:
+                #f1c1c1;
+
+            background:
+                #fff7f7;
+
+            color:
+                #a12b2b;
+        }
+
+
+        .learning-form-status.success {
+
+            border-color:
+                #b7e4c7;
+
+            background:
+                #f3fcf6;
+
+            color:
+                #176b35;
+        }
+
+
+        .learning-form-status.loading {
+
+            border-color:
+                #dbe5ff;
+
+            background:
+                #f7f9ff;
+
+            color:
+                #2454ff;
+        }
+
+
+        /* =================================================
+           FORM BODY
+        ================================================= */
+
+        .learning-form-body {
+
+            padding:
+                28px;
+        }
+
+
+        .learning-form-grid {
+
+            display:
+                grid;
+
+            grid-template-columns:
+                repeat(
+                    2,
+                    minmax(
+                        0,
+                        1fr
+                    )
+                );
+
+            gap:
+                22px;
+        }
+
+
+        .learning-form-group {
+
+            display:
+                flex;
+
+            flex-direction:
+                column;
+
+            gap:
+                8px;
+        }
+
+
+        .learning-form-group.full {
+
+            grid-column:
+                1 / -1;
+        }
+
+
+        .learning-form-label {
+
+            color:
+                #172033;
+
+            font-size:
+                12px;
+
+            font-weight:
+                800;
+        }
+
+
+        .learning-form-required {
+
+            color:
+                #dc2626;
+        }
+
+
+        .learning-form-help {
+
+            margin:
+                0;
+
+            color:
+                #64748b;
+
+            font-size:
+                11px;
+
+            line-height:
+                1.5;
+        }
+
+
+        /* =================================================
+           INPUTS
+        ================================================= */
+
+        .learning-form-input,
+        .learning-form-textarea,
+        .learning-form-select {
+
+            width:
+                100%;
+
+            border:
+                1px solid #d7deea;
+
+            border-radius:
+                9px;
+
+            background:
+                #ffffff;
+
+            color:
+                #172033;
+
+            outline:
+                none;
+
+            transition:
+                border-color .2s ease,
+                box-shadow .2s ease,
+                background .2s ease;
+        }
+
+
+        .learning-form-input,
+        .learning-form-select {
+
+            min-height:
+                46px;
+
+            padding:
+                10px 13px;
+        }
+
+
+        .learning-form-textarea {
+
+            min-height:
+                230px;
+
+            padding:
+                13px;
+
+            resize:
+                vertical;
+
+            line-height:
+                1.65;
+        }
+
+
+        .learning-form-input:hover,
+        .learning-form-textarea:hover,
+        .learning-form-select:hover {
+
+            border-color:
+                #c5cede;
+        }
+
+
+        .learning-form-input:focus,
+        .learning-form-textarea:focus,
+        .learning-form-select:focus {
+
+            border-color:
+                #2454ff;
+
+            box-shadow:
+                0 0 0 3px
+                rgba(
+                    36,
+                    84,
+                    255,
+                    .10
+                );
+
+            background:
+                #ffffff;
+        }
+
+
+        .learning-form-input::placeholder,
+        .learning-form-textarea::placeholder {
+
+            color:
+                #94a3b8;
+        }
+
+
+        /* =================================================
+           MODULE CONTEXT
+        ================================================= */
+
+        .learning-selected-module {
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            gap:
+                12px;
+
+            min-height:
+                58px;
+
+            padding:
+                10px 13px;
+
+            border:
+                1px solid #dbe2ee;
+
+            border-radius:
+                9px;
+
+            background:
+                #f8faff;
+        }
+
+
+        .learning-selected-module-icon {
+
+            width:
+                34px;
+
+            height:
+                34px;
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                center;
+
+            flex:
+                0 0 34px;
+
+            border-radius:
+                8px;
+
+            background:
+                #edf2ff;
+
+            color:
+                #2454ff;
+
+            font-size:
+                13px;
+
+            font-weight:
+                900;
+        }
+
+
+        .learning-selected-module-info {
+
+            min-width:
+                0;
+        }
+
+
+        .learning-selected-module-name {
+
+            color:
+                #172033;
+
+            font-size:
+                13px;
+
+            font-weight:
+                800;
+
+            overflow:
+                hidden;
+
+            text-overflow:
+                ellipsis;
+
+            white-space:
+                nowrap;
+        }
+
+
+        .learning-selected-module-label {
+
+            margin-top:
+                3px;
+
+            color:
+                #64748b;
+
+            font-size:
+                10px;
+        }
+
+
+        /* =================================================
+           ORDER FIELD
+        ================================================= */
+
+        .learning-order-preview {
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            gap:
+                10px;
+
+            min-height:
+                46px;
+
+            padding:
+                10px 13px;
+
+            border:
+                1px solid #dbe2ee;
+
+            border-radius:
+                9px;
+
+            background:
+                #f8faff;
+
+            color:
+                #475569;
+
+            font-size:
+                11px;
+
+            line-height:
+                1.5;
+        }
+
+
+        .learning-order-preview strong {
+
+            color:
+                #2454ff;
+
+            font-size:
+                13px;
+        }
+
+
+        /* =================================================
+           NOTE
+        ================================================= */
+
+        .learning-form-note {
+
+            display:
+                flex;
+
+            align-items:
+                flex-start;
+
+            gap:
+                10px;
+
+            margin-top:
+                24px;
+
+            padding:
+                13px 14px;
+
+            border:
+                1px solid #dbe5ff;
+
+            border-radius:
+                10px;
+
+            background:
+                #f7f9ff;
+
+            color:
+                #475569;
+
+            font-size:
+                12px;
+
+            line-height:
+                1.6;
+        }
+
+
+        .learning-form-note-icon {
+
+            flex:
+                0 0 auto;
+
+            color:
+                #2454ff;
+
+            font-weight:
+                900;
+        }
+
+
+        /* =================================================
+           FOOTER
+        ================================================= */
+
+        .learning-form-footer {
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                space-between;
+
+            gap:
+                16px;
+
+            padding:
+                20px 28px;
+
+            border-top:
+                1px solid #edf1f6;
+
+            background:
+                #fbfcfe;
+        }
+
+
+        .learning-form-footer-info {
+
+            color:
+                #64748b;
+
+            font-size:
+                11px;
+
+            line-height:
+                1.5;
+        }
+
+
+        .learning-form-actions {
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                flex-end;
+
+            gap:
+                9px;
+        }
+
+
+        .learning-form-button {
+
+            min-height:
+                42px;
+
+            padding:
+                9px 17px;
+
+            border:
+                1px solid transparent;
+
+            border-radius:
+                8px;
+
+            font-size:
+                12px;
+
+            font-weight:
+                800;
+
+            cursor:
+                pointer;
+
+            transition:
+                background .2s ease,
+                border-color .2s ease,
+                color .2s ease,
+                transform .2s ease;
+        }
+
+
+        .learning-form-button:hover {
+
+            transform:
+                translateY(-1px);
+        }
+
+
+        .learning-form-button-secondary {
+
+            border-color:
+                #dbe2ee;
+
+            background:
+                #ffffff;
+
+            color:
+                #334155;
+
+            text-decoration:
+                none;
+
+            display:
+                inline-flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                center;
+        }
+
+
+        .learning-form-button-secondary:hover {
+
+            border-color:
+                #2454ff;
+
+            color:
+                #2454ff;
+
+            background:
+                #f7f9ff;
+        }
+
+
+        .learning-form-button-primary {
+
+            background:
+                #2454ff;
+
+            color:
+                #ffffff;
+        }
+
+
+        .learning-form-button-primary:hover {
+
+            background:
+                #1e46d8;
+        }
+
+
+        .learning-form-button-primary:disabled {
+
+            opacity:
+                .55;
+
+            cursor:
+                not-allowed;
+
+            transform:
+                none;
+        }
+
+
+        /* =================================================
+           CHARACTER COUNTER
+        ================================================= */
+
+        .learning-character-counter {
+
+            display:
+                flex;
+
+            justify-content:
+                flex-end;
+
+            color:
+                #94a3b8;
+
+            font-size:
+                10px;
+        }
+
+
+        /* =================================================
+           MOBILE
+        ================================================= */
+
+        @media (
+            max-width: 760px
+        ) {
+
+            .learning-form-header-inner {
+
+                width:
+                    calc(
+                        100% - 24px
+                    );
+            }
+
+
+            .learning-form-brand img {
+
+                width:
+                    120px;
+            }
+
+
+            .learning-form-header-link {
+
+                padding:
+                    8px 10px;
+
+                font-size:
+                    11px;
+            }
+
+
+            .learning-form-page {
+
+                width:
+                    calc(
+                        100% - 24px
+                    );
+
+                padding:
+                    28px 0 40px;
+            }
+
+
+            .learning-form-grid {
+
+                grid-template-columns:
+                    1fr;
+
+                gap:
+                    18px;
+            }
+
+
+            .learning-form-group.full {
+
+                grid-column:
+                    auto;
+            }
+
+
+            .learning-form-body {
+
+                padding:
+                    20px;
+            }
+
+
+            .learning-form-card-header {
+
+                padding:
+                    20px;
+            }
+
+
+            .learning-form-footer {
+
+                align-items:
+                    stretch;
+
+                flex-direction:
+                    column;
+
+                padding:
+                    18px 20px;
+            }
+
+
+            .learning-form-actions {
+
+                width:
+                    100%;
+
+                flex-direction:
+                    column-reverse;
+            }
+
+
+            .learning-form-button {
+
+                width:
+                    100%;
+            }
+
+
+            .learning-form-status {
+
+                margin:
+                    18px 20px 0;
+            }
+
+
+            .learning-form-textarea {
+
+                min-height:
+                    200px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
+
+    <header class="learning-form-header">
+
+        <div class="learning-form-header-inner">
+
+            <a
+                href="learning.html"
+                class="learning-form-brand"
+                aria-label="NITRIXA Learning Management"
+            >
+
+                <img
+                    src="../assets/images/nitrixa-logo.png"
+                    alt="NITRIXA TECHNOLOGIES"
+                >
+
+            </a>
+
+
+            <div class="learning-form-header-actions">
+
+                <a
+                    href="learning.html"
+                    class="learning-form-header-link"
+                >
+                    ← Learning Management
+                </a>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =====================================================
+         MAIN
+    ====================================================== -->
+
+    <main class="learning-form-page">
+
+
+        <!-- =================================================
+             BREADCRUMB
+        ================================================= -->
+
+        <nav
+            class="learning-form-breadcrumb"
+            aria-label="Breadcrumb"
+        >
+
+            <a
+                href="learning.html"
+            >
+                Learning Management
+            </a>
+
+            <span
+                class="learning-form-breadcrumb-separator"
+            >
+                /
+            </span>
+
+            <span>
+                Create Lesson
+            </span>
+
+        </nav>
+
+
+
+        <!-- =================================================
+             INTRO
+        ================================================= -->
+
+        <section
+            class="learning-form-intro"
+        >
+
+            <div
+                class="learning-form-eyebrow"
+            >
+                Learning Management
+            </div>
+
+
+            <h1>
+                Create Learning Lesson
+            </h1>
+
+
+            <p>
+                Add a structured lesson to the selected
+                learning module. Lessons will appear in
+                the module according to their configured
+                learning order.
+            </p>
+
+        </section>
+
+
+
+        <!-- =================================================
+             FORM CARD
+        ================================================= -->
+
+        <section
+            class="learning-form-card"
+        >
+
+
+            <!-- =============================================
+                 CARD HEADER
+            ============================================== -->
+
+            <div
+                class="learning-form-card-header"
+            >
+
+                <h2>
+                    Lesson Information
+                </h2>
+
+                <p>
+                    Complete the lesson information below.
+                    New lessons are created as drafts and
+                    can be published from Learning Management.
+                </p>
+
+            </div>
+
+
+
+            <!-- =============================================
+                 STATUS
+            ============================================== -->
+
+            <div
+                id="learningLessonFormStatus"
+                class="learning-form-status"
+                role="status"
+                aria-live="polite"
+            ></div>
+
+
+
+            <!-- =============================================
+                 FORM
+            ============================================== -->
+
+            <form
+                id="learningLessonForm"
+                novalidate
+            >
+
+                <div
+                    class="learning-form-body"
+                >
+
+                    <div
+                        class="learning-form-grid"
+                    >
+
+
+                        <!-- =================================
+                             MODULE
+                        ================================== -->
+
+                        <div
+                            class="learning-form-group full"
+                        >
+
+                            <label
+                                class="learning-form-label"
+                            >
+                                Module
+                                <span
+                                    class="learning-form-required"
+                                >
+                                    *
+                                </span>
+                            </label>
+
+
+                            <div
+                                id="selectedModuleContainer"
+                                class="learning-selected-module"
+                            >
+
+                                <div
+                                    class="learning-selected-module-icon"
+                                >
+                                    M
+                                </div>
+
+
+                                <div
+                                    class="learning-selected-module-info"
+                                >
+
+                                    <div
+                                        id="selectedModuleName"
+                                        class="learning-selected-module-name"
+                                    >
+                                        Loading module...
+                                    </div>
+
+
+                                    <div
+                                        class="learning-selected-module-label"
+                                    >
+                                        Selected learning module
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                            <p
+                                class="learning-form-help"
+                            >
+                                This lesson will be permanently
+                                connected to the selected module.
+                            </p>
+
+
+                            <input
+                                type="hidden"
+                                id="lessonModuleId"
+                                name="module_id"
+                            >
+
+                        </div>
+
+
+
+                        <!-- =================================
+                             LESSON TITLE
+                        ================================== -->
+
+                        <div
+                            class="learning-form-group full"
+                        >
+
+                            <label
+                                for="lessonTitle"
+                                class="learning-form-label"
+                            >
+                                Lesson Title
+                                <span
+                                    class="learning-form-required"
+                                >
+                                    *
+                                </span>
+                            </label>
+
+
+                            <input
+                                type="text"
+                                id="lessonTitle"
+                                name="title"
+                                class="learning-form-input"
+                                placeholder="e.g. Variables and Data Types"
+                                maxlength="150"
+                                autocomplete="off"
+                                required
+                            >
+
+
+                            <div
+                                class="learning-character-counter"
+                            >
+
+                                <span
+                                    id="lessonTitleCounter"
+                                >
+                                    0 / 150
+                                </span>
+
+                            </div>
+
+
+                            <p
+                                class="learning-form-help"
+                            >
+                                Use a clear lesson title that
+                                accurately represents the topic.
+                            </p>
+
+                        </div>
+
+
+
+                        <!-- =================================
+                             CONTENT
+                        ================================== -->
+
+                        <div
+                            class="learning-form-group full"
+                        >
+
+                            <label
+                                for="lessonContent"
+                                class="learning-form-label"
+                            >
+                                Lesson Content
+                                <span
+                                    class="learning-form-required"
+                                >
+                                    *
+                                </span>
+                            </label>
+
+
+                            <textarea
+                                id="lessonContent"
+                                name="content"
+                                class="learning-form-textarea"
+                                placeholder="Enter the lesson content, explanation, concepts, examples, notes, or learning material..."
+                                maxlength="20000"
+                                required
+                            ></textarea>
+
+
+                            <div
+                                class="learning-character-counter"
+                            >
+
+                                <span
+                                    id="lessonContentCounter"
+                                >
+                                    0 / 20000
+                                </span>
+
+                            </div>
+
+
+                            <p
+                                class="learning-form-help"
+                            >
+                                Provide the actual learning material
+                                students should study for this lesson.
+                            </p>
+
+                        </div>
+
+
+
+                        <!-- =================================
+                             LESSON ORDER
+                        ================================== -->
+
+                        <div
+                            class="learning-form-group"
+                        >
+
+                            <label
+                                for="lessonOrder"
+                                class="learning-form-label"
+                            >
+                                Lesson Order
+                                <span
+                                    class="learning-form-required"
+                                >
+                                    *
+                                </span>
+                            </label>
+
+
+                            <input
+                                type="number"
+                                id="lessonOrder"
+                                name="lesson_order"
+                                class="learning-form-input"
+                                min="1"
+                                max="9999"
+                                step="1"
+                                value="1"
+                                required
+                            >
+
+
+                            <p
+                                class="learning-form-help"
+                            >
+                                Determines where this lesson
+                                appears inside the module.
+                            </p>
+
+                        </div>
+
+
+
+                        <!-- =================================
+                             STATUS
+                        ================================== -->
+
+                        <div
+                            class="learning-form-group"
+                        >
+
+                            <label
+                                class="learning-form-label"
+                            >
+                                Initial Status
+                            </label>
+
+
+                            <div
+                                class="learning-selected-module"
+                            >
+
+                                <div
+                                    class="learning-selected-module-icon"
+                                >
+                                    D
+                                </div>
+
+
+                                <div
+                                    class="learning-selected-module-info"
+                                >
+
+                                    <div
+                                        class="learning-selected-module-name"
+                                    >
+                                        Draft
+                                    </div>
+
+
+                                    <div
+                                        class="learning-selected-module-label"
+                                    >
+                                        Not visible to interns until published
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- =========================================
+                         NOTE
+                    ========================================== -->
+
+                    <div
+                        class="learning-form-note"
+                    >
+
+                        <div
+                            class="learning-form-note-icon"
+                        >
+                            i
+                        </div>
+
+
+                        <div>
+
+                            The lesson will be created as a
+                            <strong>Draft</strong>.
+                            After creation, you can review,
+                            arrange, and publish the lesson
+                            from Learning Management.
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- =============================================
+                     FOOTER
+                ============================================== -->
+
+                <div
+                    class="learning-form-footer"
+                >
+
+                    <div
+                        class="learning-form-footer-info"
+                    >
+
+                        Fields marked with
+                        <strong>*</strong>
+                        are required.
+
+                    </div>
+
+
+                    <div
+                        class="learning-form-actions"
+                    >
+
+                        <a
+                            href="learning.html"
+                            class="learning-form-button learning-form-button-secondary"
+                        >
+                            Cancel
+                        </a>
+
+
+                        <button
+                            type="submit"
+                            id="createLessonSubmitButton"
+                            class="learning-form-button learning-form-button-primary"
+                        >
+                            Create Lesson
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </form>
+
+        </section>
+
+    </main>
+
+
+
+    <!-- =====================================================
+         SUPABASE
+    ====================================================== -->
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+    ></script>
+
+
+    <script
+        src="../js/supabase.js"
+    ></script>
+
+
+    <!-- =====================================================
+         LESSON FORM JAVASCRIPT
+         Will be connected in the next step.
+    ====================================================== -->
+
+    <script
+        src="../js/admin-learning-lesson-form.js"
+    ></script>
+
+
+</body>
+
+</html>
