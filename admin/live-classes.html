@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="NITRIXA Technologies Live Classes Management">
+    <title>Live Classes | NITRIXA Technologies</title>
+    <link rel="icon" type="image/png" href="../assets/images/nitrixa-logo.png">
+    <link rel="stylesheet" href="../css/admin.css">
+    <link rel="stylesheet" href="../css/admin-responsive.css">
+    <style>
+        .live-meta { color: var(--admin-text-muted); font-size: 12px; margin-top: 5px; }
+        .live-link { color: #315bd6; font-weight: 700; text-decoration: none; }
+        .live-link:hover { text-decoration: underline; }
+        .live-filters { display: flex; gap: 10px; flex-wrap: wrap; }
+        .live-filters > * { min-width: 160px; }
+        .live-modal-card { width: min(720px, calc(100% - 24px)); max-height: 90vh; overflow-y: auto; }
+        .live-form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+        .live-form-grid .full { grid-column: 1 / -1; }
+        .live-hint { color: var(--admin-text-muted); font-size: 12px; margin-top: 5px; }
+        @media (max-width: 600px) {
+            .live-form-grid { grid-template-columns: 1fr; }
+            .live-form-grid .full { grid-column: auto; }
+        }
+    </style>
+</head>
+<body class="admin-page">
+<header class="admin-header">
+    <div class="admin-container admin-header-inner">
+        <a href="dashboard.html" class="admin-brand">
+            <img src="../assets/images/nitrixa-logo.png" alt="NITRIXA Technologies" class="admin-brand-logo">
+            <div class="admin-brand-content">
+                <p class="admin-brand-name">NITRIXA TECHNOLOGIES</p>
+                <p class="admin-brand-label">Admin Panel</p>
+            </div>
+        </a>
+        <div class="admin-header-actions">
+            <a href="dashboard.html" class="admin-btn admin-btn-secondary">Dashboard</a>
+            <a href="batches.html" class="admin-btn admin-btn-secondary">Batches</a>
+            <button type="button" class="admin-btn admin-btn-danger" id="logoutButton">Logout</button>
+        </div>
+    </div>
+</header>
+
+<main class="admin-main">
+    <div class="admin-container">
+        <section class="admin-page-heading">
+            <div class="admin-page-heading-content">
+                <p class="admin-eyebrow">Learning Management</p>
+                <h1 class="admin-page-title">Live Classes</h1>
+                <p class="admin-page-description">Schedule Google Meet classes and publish them to assigned batches.</p>
+            </div>
+            <button type="button" class="admin-btn admin-btn-primary" id="addClassButton">+ Schedule Class</button>
+        </section>
+
+        <section class="admin-stats-grid" aria-label="Live class statistics">
+            <article class="admin-stat-card">
+                <p class="admin-stat-label">Total Classes</p>
+                <p class="admin-stat-value" id="totalClasses">0</p>
+            </article>
+            <article class="admin-stat-card">
+                <p class="admin-stat-label">Published</p>
+                <p class="admin-stat-value" id="publishedClasses">0</p>
+            </article>
+            <article class="admin-stat-card">
+                <p class="admin-stat-label">Upcoming</p>
+                <p class="admin-stat-value" id="upcomingClasses">0</p>
+            </article>
+        </section>
+
+        <section class="admin-toolbar">
+            <div class="admin-toolbar-left live-filters">
+                <input type="search" id="classSearch" class="admin-input" placeholder="Search classes..." aria-label="Search classes">
+                <select id="batchFilter" class="admin-select" aria-label="Filter by batch">
+                    <option value="ALL">All Batches</option>
+                </select>
+                <select id="statusFilter" class="admin-select" aria-label="Filter by status">
+                    <option value="ALL">All Status</option>
+                    <option value="DRAFT">Draft</option>
+                    <option value="PUBLISHED">Published</option>
+                    <option value="CANCELLED">Cancelled</option>
+                </select>
+            </div>
+            <div class="admin-toolbar-right">
+                <button type="button" class="admin-btn admin-btn-secondary" id="refreshButton">Refresh</button>
+            </div>
+        </section>
+
+        <div id="pageMessage" class="admin-form-message" role="status" aria-live="polite"></div>
+
+        <section class="admin-table-card">
+            <div class="admin-table-scroll">
+                <table class="admin-table">
+                    <thead>
+                    <tr>
+                        <th>Class</th>
+                        <th>Batch</th>
+                        <th>Schedule</th>
+                        <th>Status</th>
+                        <th>Meeting</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody id="classesTableBody">
+                    <tr><td colspan="6">Loading classes...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+</main>
+
+<div class="admin-modal" id="classModal" aria-hidden="true">
+    <div class="admin-modal-card live-modal-card" role="dialog" aria-modal="true" aria-labelledby="classModalTitle">
+        <div class="admin-modal-header">
+            <div>
+                <h2 class="admin-modal-title" id="classModalTitle">Schedule Live Class</h2>
+                <p class="admin-modal-description">Complete the class details and select its batch.</p>
+            </div>
+            <button type="button" class="admin-modal-close" id="closeModalButton" aria-label="Close">×</button>
+        </div>
+        <form id="classForm">
+            <div class="admin-modal-body">
+                <div id="modalMessage" class="admin-form-message" role="alert" aria-live="polite"></div>
+                <div class="live-form-grid">
+                    <div class="admin-form-group full">
+                        <label for="classTitle" class="admin-form-label">Class Title *</label>
+                        <input id="classTitle" class="admin-input" type="text" maxlength="150" required placeholder="Java — Spring Boot Introduction">
+                    </div>
+                    <div class="admin-form-group full">
+                        <label for="classBatch" class="admin-form-label">Batch *</label>
+                        <select id="classBatch" class="admin-select" required>
+                            <option value="">Select active batch</option>
+                        </select>
+                    </div>
+                    <div class="admin-form-group">
+                        <label for="classStart" class="admin-form-label">Start Date & Time *</label>
+                        <input id="classStart" class="admin-input" type="datetime-local" required>
+                    </div>
+                    <div class="admin-form-group">
+                        <label for="classEnd" class="admin-form-label">End Date & Time *</label>
+                        <input id="classEnd" class="admin-input" type="datetime-local" required>
+                    </div>
+                    <div class="admin-form-group full">
+                        <label for="meetLink" class="admin-form-label">Google Meet Link *</label>
+                        <input id="meetLink" class="admin-input" type="url" maxlength="1000" required placeholder="https://meet.google.com/xxx-xxxx-xxx">
+                        <p class="live-hint">Use a valid HTTPS meeting URL.</p>
+                    </div>
+                    <div class="admin-form-group full">
+                        <label for="classDescription" class="admin-form-label">Description</label>
+                        <textarea id="classDescription" class="admin-input admin-textarea" maxlength="5000" rows="4" placeholder="Topics, preparation, or instructions"></textarea>
+                    </div>
+                    <div class="admin-form-group">
+                        <label for="recordingUrl" class="admin-form-label">Recording URL</label>
+                        <input id="recordingUrl" class="admin-input" type="url" maxlength="1000" placeholder="Optional recording link">
+                    </div>
+                    <div class="admin-form-group">
+                        <label for="classStatus" class="admin-form-label">Status *</label>
+                        
+<select id="classStatus" name="status" required>
+    <option value="DRAFT">Draft</option>
+    <option value="ACTIVE">Published</option>
+    <option value="COMPLETED">Completed</option>
+    <option value="INACTIVE">Cancelled</option>
+</select>
+
+                    </div>
+                </div>
+            </div>
+            <div class="admin-modal-footer">
+                <button type="button" class="admin-btn admin-btn-secondary" id="cancelModalButton">Cancel</button>
+                <button type="submit" class="admin-btn admin-btn-primary" id="saveClassButton">Save Class</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div id="adminToast" class="admin-toast" role="status" aria-live="polite"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../js/supabase.js"></script>
+<script src="../js/admin-live-classes.js" defer></script>
+</body>
+</html>

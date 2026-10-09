@@ -1,0 +1,1327 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Manage your NITRIXA TECHNOLOGIES intern profile, education and professional information.">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="theme-color" content="#3157d5">
+
+    <title>My Profile | NITRIXA TECHNOLOGIES</title>
+
+    <!-- Existing shared styles: do not replace these files -->
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/animations.css">
+    <link rel="stylesheet" href="../css/responsive.css">
+    <link rel="stylesheet" href="../css/intern-dashboard.css">
+
+    <!-- Profile page styles: intentionally embedded -->
+    <style>
+        /* Respect the hidden attribute even if shared CSS overrides it. */
+        [hidden] {
+            display: none !important;
+        }
+
+        .intern-profile-content {
+            width: 100%;
+            min-width: 0;
+            padding: 30px clamp(16px, 3vw, 42px) 38px;
+            color: #17233f;
+        }
+
+        .intern-profile-container {
+            width: 100%;
+            max-width: 1240px;
+            margin: 0 auto;
+        }
+
+        .intern-profile-container,
+        .intern-profile-container * {
+            box-sizing: border-box;
+        }
+
+        .intern-profile-hero {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 30px;
+            overflow: hidden;
+            margin-bottom: 24px;
+            padding: clamp(26px, 4vw, 42px);
+            color: #fff;
+            background: linear-gradient(125deg, #243fbd 0%, #4358e8 55%, #6573f5 100%);
+            border-radius: 22px;
+            box-shadow: 0 14px 35px rgba(49, 87, 213, 0.17);
+        }
+
+        .intern-profile-hero::after {
+            content: "";
+            position: absolute;
+            width: 260px;
+            height: 260px;
+            right: 90px;
+            top: -160px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 50%;
+            box-shadow:
+                0 0 0 30px rgba(255, 255, 255, 0.04),
+                0 0 0 60px rgba(255, 255, 255, 0.035);
+            pointer-events: none;
+        }
+
+        .intern-profile-hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 730px;
+        }
+
+        .intern-profile-eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 13px;
+            color: #dbe8ff;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+        }
+
+        .intern-profile-hero h2 {
+            margin: 0 0 12px;
+            color: #fff;
+            font-size: clamp(25px, 3vw, 36px);
+            font-weight: 800;
+            line-height: 1.2;
+            letter-spacing: -0.8px;
+        }
+
+        .intern-profile-hero-content > p {
+            max-width: 650px;
+            margin: 0;
+            color: #edf2ff;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+        .intern-profile-hero-meta {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            margin-top: 20px;
+            color: #f0f4ff;
+            font-size: 12px;
+        }
+
+        .intern-profile-verified-dot {
+            width: 8px;
+            height: 8px;
+            flex: 0 0 8px;
+            border-radius: 50%;
+            background: #64edcb;
+            box-shadow: 0 0 0 4px rgba(100, 237, 203, 0.13);
+        }
+
+        .intern-profile-completion {
+            --profile-completion: 0%;
+            position: relative;
+            z-index: 1;
+            display: grid;
+            width: 132px;
+            height: 132px;
+            flex: 0 0 132px;
+            place-items: center;
+            border-radius: 50%;
+            background:
+                radial-gradient(circle closest-side, #344bd0 86%, transparent 88% 100%),
+                conic-gradient(#73f0d0 var(--profile-completion), rgba(255,255,255,.22) 0);
+            box-shadow: 0 10px 28px rgba(15, 25, 95, 0.15);
+        }
+
+        .intern-profile-completion-inner {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            color: #fff;
+        }
+
+        .intern-profile-completion-inner strong {
+            font-size: 28px;
+            font-weight: 800;
+            line-height: 1.1;
+        }
+
+        .intern-profile-completion-inner span {
+            color: #e1e8ff;
+            font-size: 11px;
+        }
+
+        .intern-profile-message {
+            margin: 0 0 20px;
+            padding: 14px 17px;
+            border: 1px solid #d7e3ff;
+            border-radius: 12px;
+            background: #f0f5ff;
+            color: #2444a7;
+            font-size: 13px;
+            line-height: 1.65;
+            overflow-wrap: anywhere;
+        }
+
+        .intern-profile-message.is-success {
+            color: #126b48;
+            background: #ecfbf3;
+            border-color: #c7efd9;
+        }
+
+        .intern-profile-message.is-error {
+            color: #a52835;
+            background: #fff1f2;
+            border-color: #ffd3d8;
+        }
+
+        .intern-profile-message.is-info {
+            color: #2444a7;
+            background: #f0f5ff;
+            border-color: #d7e3ff;
+        }
+
+        .intern-profile-form {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            align-items: start;
+            gap: 22px;
+            margin: 0;
+        }
+
+        .intern-profile-card {
+            min-width: 0;
+            overflow: hidden;
+            border: 1px solid #e6eaf2;
+            border-radius: 17px;
+            background: #fff;
+            box-shadow: 0 5px 20px rgba(31, 49, 91, 0.035);
+        }
+
+        .intern-profile-card-full {
+            grid-column: 1 / -1;
+        }
+
+        .intern-profile-card-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            min-width: 0;
+            padding: 21px 24px;
+            border-bottom: 1px solid #edf0f6;
+        }
+
+        .intern-profile-card-icon {
+            display: grid;
+            width: 43px;
+            height: 43px;
+            flex: 0 0 43px;
+            place-items: center;
+            border-radius: 13px;
+            background: #eef2ff;
+            color: #3d56d9;
+            font-size: 20px;
+        }
+
+        .intern-profile-card-header > div:nth-child(2) {
+            min-width: 0;
+            flex: 1;
+        }
+
+        .intern-profile-card-header h3,
+        .intern-profile-status-copy h3 {
+            margin: 0 0 5px;
+            color: #17233f;
+            font-size: 16px;
+            font-weight: 750;
+            line-height: 1.4;
+        }
+
+        .intern-profile-card-header p,
+        .intern-profile-status-copy p {
+            margin: 0;
+            color: #7b879d;
+            font-size: 12px;
+            line-height: 1.7;
+        }
+
+        .intern-profile-readonly-badge {
+            flex-shrink: 0;
+            padding: 6px 9px;
+            border: 1px solid #dfe6ff;
+            border-radius: 7px;
+            background: #f4f6ff;
+            color: #4659b7;
+            font-size: 9px;
+            font-weight: 800;
+            letter-spacing: 0.7px;
+        }
+
+        .intern-profile-card-body {
+            padding: 24px;
+        }
+
+        .intern-profile-fields {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 20px 18px;
+        }
+
+        .intern-profile-field {
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            min-width: 0;
+            gap: 8px;
+        }
+
+        .intern-profile-field-full {
+            grid-column: 1 / -1;
+        }
+
+        .intern-profile-field label {
+            color: #34415c;
+            font-size: 12px;
+            font-weight: 700;
+            line-height: 1.5;
+        }
+
+        .intern-profile-field input,
+        .intern-profile-field select,
+        .intern-profile-field textarea {
+            display: block;
+            width: 100%;
+            min-width: 0;
+            min-height: 45px;
+            margin: 0;
+            padding: 11px 13px;
+            border: 1px solid #dfe5ef;
+            border-radius: 10px;
+            outline: none;
+            background: #fff;
+            color: #26334d;
+            font-family: inherit;
+            font-size: 13px;
+            line-height: 1.5;
+            transition: border-color .18s ease, box-shadow .18s ease, background .18s ease;
+        }
+
+        .intern-profile-field textarea {
+            min-height: 105px;
+            resize: vertical;
+        }
+
+        .intern-profile-field input::placeholder,
+        .intern-profile-field textarea::placeholder {
+            color: #a0a9ba;
+            opacity: 1;
+        }
+
+        .intern-profile-field input:focus,
+        .intern-profile-field select:focus,
+        .intern-profile-field textarea:focus {
+            border-color: #5870e8;
+            box-shadow: 0 0 0 3px rgba(74, 100, 226, 0.12);
+        }
+
+        .intern-profile-field input[readonly],
+        .intern-profile-field .intern-profile-readonly {
+            border-color: #e5e9f1;
+            background: #f7f8fc;
+            color: #596780;
+            cursor: default;
+        }
+
+        .intern-profile-field small {
+            color: #8791a5;
+            font-size: 11px;
+            line-height: 1.6;
+        }
+
+        .intern-profile-hint {
+            margin: 17px 0 0;
+            padding: 12px 14px;
+            border-radius: 9px;
+            background: #f7f8fc;
+            color: #758198;
+            font-size: 11px;
+            line-height: 1.7;
+        }
+
+        .intern-profile-status-layout {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .intern-profile-status-icon {
+            display: grid;
+            width: 45px;
+            height: 45px;
+            flex: 0 0 45px;
+            place-items: center;
+            border-radius: 50%;
+            background: #e9fbf2;
+            color: #18885d;
+            font-size: 21px;
+            font-weight: 800;
+        }
+
+        .intern-profile-status-copy {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .intern-profile-status-badge {
+            flex-shrink: 0;
+            padding: 7px 11px;
+            border: 1px solid #d4efdf;
+            border-radius: 30px;
+            background: #effbf4;
+            color: #19784e;
+            font-size: 10px;
+            font-weight: 750;
+            overflow-wrap: anywhere;
+        }
+
+        .intern-profile-actions {
+            grid-column: 1 / -1;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            padding: 22px 24px;
+            border: 1px solid #e5e9f3;
+            border-radius: 16px;
+            background: #fff;
+        }
+
+        .intern-profile-actions-copy {
+            min-width: 0;
+        }
+
+        .intern-profile-actions-copy strong {
+            display: block;
+            margin-bottom: 6px;
+            color: #263451;
+            font-size: 13px;
+            font-weight: 750;
+        }
+
+        .intern-profile-actions-copy p {
+            max-width: 650px;
+            margin: 0;
+            color: #7b879c;
+            font-size: 11px;
+            line-height: 1.7;
+        }
+
+        .intern-profile-save-button,
+        .intern-profile-actions .intern-primary-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            min-height: 46px;
+            padding: 12px 21px;
+            border: 0;
+            border-radius: 10px;
+            background: #4058d6;
+            color: #fff;
+            font-family: inherit;
+            font-size: 12px;
+            font-weight: 750;
+            text-decoration: none;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: background .18s ease, transform .18s ease;
+        }
+
+        .intern-profile-save-button:hover,
+        .intern-profile-actions .intern-primary-button:hover {
+            background: #2f45bd;
+            transform: translateY(-1px);
+        }
+
+        .intern-profile-save-button:focus-visible {
+            outline: 3px solid rgba(64, 88, 214, .25);
+            outline-offset: 3px;
+        }
+
+        .intern-profile-save-button:disabled {
+            opacity: .65;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Loading and error states */
+        .intern-profile-content #profileLoadingState,
+        .intern-profile-content #profileErrorState {
+            min-height: 360px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            text-align: center;
+        }
+
+        .intern-profile-content #profileLoadingState h2,
+        .intern-profile-content #profileErrorState h2 {
+            margin: 0;
+            color: #17233f;
+            font-size: 20px;
+        }
+
+        .intern-profile-content #profileLoadingState p,
+        .intern-profile-content #profileErrorState p {
+            max-width: 460px;
+            margin: 0;
+            color: #7b879d;
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        .intern-profile-content .intern-loading-spinner {
+            width: 38px;
+            height: 38px;
+            border: 3px solid #e4e9f7;
+            border-top-color: #4864e8;
+            border-radius: 50%;
+            animation: internProfileSpin .8s linear infinite;
+        }
+
+        @keyframes internProfileSpin {
+            to { transform: rotate(360deg); }
+        }
+
+        .intern-profile-content .intern-state-icon {
+            display: grid;
+            width: 48px;
+            height: 48px;
+            place-items: center;
+            border-radius: 50%;
+            background: #fff0f0;
+            color: #c33945;
+            font-size: 24px;
+            font-weight: 800;
+        }
+
+        .intern-profile-content .intern-state-actions {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 10px;
+        }
+
+        .intern-profile-content .intern-secondary-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 42px;
+            padding: 10px 15px;
+            border: 1px solid #dfe5f0;
+            border-radius: 9px;
+            background: #fff;
+            color: #34415c;
+            font-size: 12px;
+            text-decoration: none;
+        }
+
+        /* Mobile/tablet */
+        @media (max-width: 900px) {
+            .intern-profile-content {
+                padding: 23px 20px 30px;
+            }
+
+            .intern-profile-hero {
+                padding: 27px;
+            }
+
+            .intern-profile-completion {
+                width: 108px;
+                height: 108px;
+                flex-basis: 108px;
+                background:
+                    radial-gradient(circle closest-side, #344bd0 86%, transparent 88% 100%),
+                    conic-gradient(#73f0d0 var(--profile-completion), rgba(255,255,255,.22) 0);
+            }
+
+            .intern-profile-completion-inner strong {
+                font-size: 24px;
+            }
+        }
+
+        @media (max-width: 650px) {
+            .intern-profile-content {
+                padding: 17px 13px 25px;
+            }
+
+            .intern-profile-hero {
+                align-items: flex-start;
+                gap: 17px;
+                padding: 23px 19px;
+                border-radius: 16px;
+            }
+
+            .intern-profile-hero h2 {
+                font-size: 24px;
+            }
+
+            .intern-profile-hero-content > p {
+                font-size: 12px;
+            }
+
+            .intern-profile-hero-meta {
+                align-items: flex-start;
+                font-size: 11px;
+                line-height: 1.6;
+            }
+
+            .intern-profile-completion {
+                width: 78px;
+                height: 78px;
+                flex-basis: 78px;
+                margin-top: 10px;
+                background:
+                    radial-gradient(circle closest-side, #344bd0 86%, transparent 88% 100%),
+                    conic-gradient(#73f0d0 var(--profile-completion), rgba(255,255,255,.22) 0);
+            }
+
+            .intern-profile-completion-inner strong {
+                font-size: 18px;
+            }
+
+            .intern-profile-completion-inner span {
+                font-size: 9px;
+            }
+
+            .intern-profile-form {
+                grid-template-columns: minmax(0, 1fr);
+                gap: 16px;
+            }
+
+            .intern-profile-card-full,
+            .intern-profile-actions {
+                grid-column: auto;
+            }
+
+            .intern-profile-card {
+                border-radius: 13px;
+            }
+
+            .intern-profile-card-header {
+                gap: 11px;
+                padding: 17px;
+            }
+
+            .intern-profile-card-icon {
+                width: 37px;
+                height: 37px;
+                flex-basis: 37px;
+                border-radius: 10px;
+                font-size: 17px;
+            }
+
+            .intern-profile-card-header h3,
+            .intern-profile-status-copy h3 {
+                font-size: 14px;
+            }
+
+            .intern-profile-card-header p,
+            .intern-profile-status-copy p {
+                font-size: 11px;
+            }
+
+            .intern-profile-readonly-badge {
+                padding: 5px 6px;
+                font-size: 8px;
+            }
+
+            .intern-profile-card-body {
+                padding: 18px 16px;
+            }
+
+            .intern-profile-fields {
+                grid-template-columns: minmax(0, 1fr);
+                gap: 16px;
+            }
+
+            .intern-profile-field-full {
+                grid-column: auto;
+            }
+
+            .intern-profile-field input,
+            .intern-profile-field select,
+            .intern-profile-field textarea {
+                font-size: 13px;
+            }
+
+            .intern-profile-status-layout {
+                align-items: flex-start;
+                flex-wrap: wrap;
+            }
+
+            .intern-profile-status-copy {
+                flex-basis: calc(100% - 65px);
+            }
+
+            .intern-profile-status-badge {
+                margin-left: 60px;
+            }
+
+            .intern-profile-actions {
+                align-items: stretch;
+                flex-direction: column;
+                padding: 18px;
+            }
+
+            .intern-profile-save-button,
+            .intern-profile-actions .intern-primary-button {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 390px) {
+            .intern-profile-hero {
+                flex-direction: column-reverse;
+            }
+
+            .intern-profile-completion {
+                align-self: flex-end;
+                margin-top: 0;
+                margin-bottom: -6px;
+            }
+
+            .intern-profile-readonly-badge {
+                display: none;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .intern-profile-content *,
+            .intern-profile-content *::before,
+            .intern-profile-content *::after {
+                animation-duration: .01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: .01ms !important;
+            }
+        }
+    </style>
+</head>
+
+<body class="intern-portal-body">
+
+<div class="intern-portal-shell">
+
+    <!-- Mobile sidebar overlay -->
+    <div
+        id="internSidebarOverlay"
+        class="intern-sidebar-overlay"
+        aria-hidden="true">
+    </div>
+
+    <!-- Sidebar -->
+    <aside id="internSidebar" class="intern-sidebar">
+
+        <div class="intern-sidebar-brand">
+            <a
+                href="../intern-dashboard.html"
+                class="intern-brand-link"
+                aria-label="NITRIXA Intern Dashboard">
+
+                <span class="intern-brand-mark">N</span>
+
+                <span class="intern-brand-text">
+                    <strong>NITRIXA</strong>
+                    <small>INTERN PORTAL</small>
+                </span>
+            </a>
+
+            <button
+                type="button"
+                id="internSidebarClose"
+                class="intern-sidebar-close"
+                aria-label="Close navigation">
+                ×
+            </button>
+        </div>
+
+        <div class="intern-sidebar-profile" id="sidebarProfile">
+            <div class="intern-avatar" id="sidebarAvatar">N</div>
+
+            <div class="intern-sidebar-profile-info">
+                <strong id="sidebarInternName">Loading...</strong>
+                <span id="sidebarInternId">Intern ID</span>
+            </div>
+        </div>
+
+        <nav class="intern-navigation" aria-label="Intern Portal Navigation">
+
+            <a
+                href="../intern-dashboard.html"
+                class="intern-nav-link"
+                data-module="dashboard">
+                <span class="intern-nav-icon">⌂</span>
+                <span>Dashboard</span>
+            </a>
+
+            <a
+                href="profile.html"
+                class="intern-nav-link active"
+                data-module="profile"
+                aria-current="page">
+                <span class="intern-nav-icon">◉</span>
+                <span>My Profile</span>
+            </a>
+
+            <div class="intern-nav-section-label">LEARNING</div>
+
+            <a href="learning.html" class="intern-nav-link" data-module="learning">
+                <span class="intern-nav-icon">▣</span>
+                <span>Learning</span>
+            </a>
+
+            <a href="live-classes.html" class="intern-nav-link" data-module="live-classes">
+                <span class="intern-nav-icon">◉</span>
+                <span>Live Classes</span>
+            </a>
+
+            <a href="recorded-classes.html" class="intern-nav-link" data-module="recorded-classes">
+                <span class="intern-nav-icon">▶</span>
+                <span>Recorded Classes</span>
+            </a>
+
+            <a href="tasks.html" class="intern-nav-link" data-module="tasks">
+                <span class="intern-nav-icon">✓</span>
+                <span>Tasks &amp; Assignments</span>
+            </a>
+
+            <div class="intern-nav-section-label">DEVELOPMENT</div>
+
+            <a href="projects.html" class="intern-nav-link" data-module="projects">
+                <span class="intern-nav-icon">◇</span>
+                <span>Projects</span>
+            </a>
+
+            <a href="milestones.html" class="intern-nav-link" data-module="milestones">
+                <span class="intern-nav-icon">◈</span>
+                <span>Progress &amp; Milestones</span>
+            </a>
+
+            <a href="evaluation.html" class="intern-nav-link" data-module="evaluation">
+                <span class="intern-nav-icon">★</span>
+                <span>Evaluation</span>
+            </a>
+
+            <div class="intern-nav-section-label">COMPLETION</div>
+
+            <a href="certificate.html" class="intern-nav-link" data-module="certificate">
+                <span class="intern-nav-icon">▤</span>
+                <span>Certificate</span>
+            </a>
+        </nav>
+
+        <div class="intern-sidebar-bottom">
+            <a href="../index.html" class="intern-nav-link intern-home-link">
+                <span class="intern-nav-icon">↗</span>
+                <span>Visit Website</span>
+            </a>
+
+            <button
+                type="button"
+                id="internLogoutButton"
+                class="intern-logout-button">
+                <span class="intern-nav-icon">⇥</span>
+                <span>Logout</span>
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main area -->
+    <div class="intern-main-area">
+
+        <header class="intern-topbar">
+
+            <div class="intern-topbar-left">
+                <button
+                    type="button"
+                    id="internSidebarToggle"
+                    class="intern-sidebar-toggle"
+                    aria-label="Open navigation"
+                    aria-expanded="false">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+
+                <div class="intern-page-heading">
+                    <span class="intern-page-kicker">INTERN PORTAL</span>
+                    <h1>My Profile</h1>
+                </div>
+            </div>
+
+            <div class="intern-topbar-right">
+
+                <button
+                    type="button"
+                    class="intern-icon-button"
+                    id="notificationButton"
+                    aria-label="Notifications">
+                    <span>◌</span>
+                    <span id="notificationBadge" class="intern-notification-dot" hidden></span>
+                </button>
+
+                <div class="intern-profile-user-area">
+                    <button
+                        type="button"
+                        class="intern-user-menu"
+                        id="userMenuButton"
+                        aria-expanded="false"
+                        aria-controls="userDropdown">
+
+                        <span class="intern-top-avatar" id="topAvatar">N</span>
+
+                        <span class="intern-user-menu-text">
+                            <strong id="topUserName">Loading...</strong>
+                            <small>Intern</small>
+                        </span>
+
+                        <span class="intern-user-chevron">▾</span>
+                    </button>
+
+                    <div id="userDropdown" class="intern-user-dropdown" hidden>
+                        <a href="profile.html">My Profile</a>
+                        <button type="button" id="dropdownLogoutButton">Logout</button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main class="intern-dashboard-content intern-profile-content">
+
+            <!-- Loading state -->
+            <section id="profileLoadingState" class="intern-dashboard-state">
+                <div class="intern-loading-spinner"></div>
+                <h2>Loading your profile...</h2>
+                <p>Please wait while we securely load your account information.</p>
+            </section>
+
+            <!-- Error state -->
+            <section
+                id="profileErrorState"
+                class="intern-dashboard-state intern-dashboard-error"
+                hidden>
+
+                <div class="intern-state-icon">!</div>
+                <h2>Profile unavailable</h2>
+
+                <p id="profileErrorMessage">
+                    We could not load your profile information.
+                </p>
+
+                <div class="intern-state-actions">
+                    <button
+                        type="button"
+                        id="profileRetryButton"
+                        class="intern-primary-button">
+                        Try Again
+                    </button>
+
+                    <a href="../intern-dashboard.html" class="intern-secondary-button">
+                        Back to Dashboard
+                    </a>
+                </div>
+            </section>
+
+            <!-- Profile page -->
+            <div id="profilePageContent" class="intern-profile-container" hidden>
+
+                <section class="intern-profile-hero">
+
+                    <div class="intern-profile-hero-content">
+                        <span class="intern-profile-eyebrow">
+                            PROFILE &amp; ONBOARDING
+                        </span>
+
+                        <h2>Build your professional profile</h2>
+
+                        <p>
+                            Keep your information updated, showcase your skills
+                            and prepare for your career journey with NITRIXA.
+                        </p>
+
+                        <div class="intern-profile-hero-meta">
+                            <span class="intern-profile-verified-dot"></span>
+                            <span>Manage your personal and professional details</span>
+                        </div>
+                    </div>
+
+                    <div
+                        class="intern-profile-completion"
+                        id="profileCompletionVisual"
+                        role="img"
+                        aria-label="Profile completion">
+
+                        <div class="intern-profile-completion-inner">
+                            <strong id="profileCompletionValue">0%</strong>
+                            <span>Complete</span>
+                        </div>
+                    </div>
+                </section>
+
+                <div
+                    id="profileMessage"
+                    class="intern-profile-message"
+                    role="status"
+                    aria-live="polite"
+                    hidden>
+                </div>
+
+                <form id="internProfileForm" class="intern-profile-form" novalidate>
+
+                    <!-- Account information -->
+                    <section class="intern-profile-card intern-profile-card-full">
+
+                        <div class="intern-profile-card-header">
+                            <div class="intern-profile-card-icon">◎</div>
+
+                            <div>
+                                <h3>Account Information</h3>
+                                <p>These details are associated with your NITRIXA account.</p>
+                            </div>
+
+                            <span class="intern-profile-readonly-badge">READ ONLY</span>
+                        </div>
+
+                        <div class="intern-profile-card-body">
+                            <div class="intern-profile-fields">
+
+                                <div class="intern-profile-field">
+                                    <label for="profileFullName">Full Name</label>
+                                    <input
+                                        type="text"
+                                        id="profileFullName"
+                                        name="fullName"
+                                        autocomplete="name"
+                                        readonly
+                                        class="intern-profile-readonly"
+                                        placeholder="Loading account name">
+                                </div>
+
+                                <div class="intern-profile-field">
+                                    <label for="profileEmail">Email Address</label>
+                                    <input
+                                        type="email"
+                                        id="profileEmail"
+                                        name="email"
+                                        autocomplete="email"
+                                        readonly
+                                        class="intern-profile-readonly"
+                                        placeholder="Loading email">
+                                </div>
+
+                                <div class="intern-profile-field">
+                                    <label for="profileMobile">Mobile Number</label>
+                                    <input
+                                        type="tel"
+                                        id="profileMobile"
+                                        name="mobile"
+                                        autocomplete="tel"
+                                        readonly
+                                        class="intern-profile-readonly"
+                                        placeholder="Not available">
+                                </div>
+
+                                <div class="intern-profile-field">
+                                    <label for="profileInternId">Intern ID</label>
+                                    <input
+                                        type="text"
+                                        id="profileInternId"
+                                        name="internId"
+                                        readonly
+                                        class="intern-profile-readonly"
+                                        placeholder="Not assigned">
+                                </div>
+                            </div>
+
+                            <p class="intern-profile-hint">
+                                For changes to account credentials or verified account details,
+                                contact NITRIXA support.
+                            </p>
+                        </div>
+                    </section>
+
+                    <!-- Personal information -->
+                    <section class="intern-profile-card">
+
+                        <div class="intern-profile-card-header">
+                            <div class="intern-profile-card-icon">♙</div>
+                            <div>
+                                <h3>Personal Information</h3>
+                                <p>Tell us a little more about yourself.</p>
+                            </div>
+                        </div>
+
+                        <div class="intern-profile-card-body">
+                            <div class="intern-profile-fields">
+
+                                <div class="intern-profile-field">
+                                    <label for="profileGender">Gender</label>
+                                    <select id="profileGender" name="gender">
+                                        <option value="">Select gender</option>
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                        <option value="Non-binary">Non-binary</option>
+                                        <option value="Prefer not to say">Prefer not to say</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                </div>
+
+                                <div class="intern-profile-field">
+                                    <label for="profileDateOfBirth">Date of Birth</label>
+                                    <input
+                                        type="date"
+                                        id="profileDateOfBirth"
+                                        name="dateOfBirth"
+                                        autocomplete="bday">
+                                </div>
+
+                                <div class="intern-profile-field">
+                                    <label for="profileCity">City</label>
+                                    <input
+                                        type="text"
+                                        id="profileCity"
+                                        name="city"
+                                        autocomplete="address-level2"
+                                        maxlength="100"
+                                        placeholder="Enter your city">
+                                </div>
+
+                                <div class="intern-profile-field">
+                                    <label for="profileState">State</label>
+                                    <input
+                                        type="text"
+                                        id="profileState"
+                                        name="state"
+                                        autocomplete="address-level1"
+                                        maxlength="100"
+                                        placeholder="Enter your state">
+                                </div>
+
+                                <div class="intern-profile-field intern-profile-field-full">
+                                    <label for="profileCountry">Country</label>
+                                    <input
+                                        type="text"
+                                        id="profileCountry"
+                                        name="country"
+                                        autocomplete="country-name"
+                                        maxlength="100"
+                                        placeholder="Enter your country">
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Education -->
+                    <section class="intern-profile-card">
+
+                        <div class="intern-profile-card-header">
+                            <div class="intern-profile-card-icon">▤</div>
+                            <div>
+                                <h3>Education</h3>
+                                <p>Add your academic background.</p>
+                            </div>
+                        </div>
+
+                        <div class="intern-profile-card-body">
+                            <div class="intern-profile-fields">
+
+                                <div class="intern-profile-field intern-profile-field-full">
+                                    <label for="profileQualification">Highest Qualification</label>
+                                    <input
+                                        type="text"
+                                        id="profileQualification"
+                                        name="highestQualification"
+                                        maxlength="150"
+                                        placeholder="e.g. B.Tech, BCA, MCA">
+                                </div>
+
+                                <div class="intern-profile-field intern-profile-field-full">
+                                    <label for="profileCollege">College / University</label>
+                                    <input
+                                        type="text"
+                                        id="profileCollege"
+                                        name="collegeUniversity"
+                                        maxlength="200"
+                                        placeholder="Enter your institution name">
+                                </div>
+
+                                <div class="intern-profile-field">
+                                    <label for="profileGraduationYear">Graduation Year</label>
+                                    <input
+                                        type="number"
+                                        id="profileGraduationYear"
+                                        name="graduationYear"
+                                        min="1950"
+                                        max="2100"
+                                        inputmode="numeric"
+                                        placeholder="e.g. 2026">
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Professional profile -->
+                    <section class="intern-profile-card intern-profile-card-full">
+
+                        <div class="intern-profile-card-header">
+                            <div class="intern-profile-card-icon">↗</div>
+                            <div>
+                                <h3>Professional Profile</h3>
+                                <p>Showcase your skills, projects and professional presence.</p>
+                            </div>
+                        </div>
+
+                        <div class="intern-profile-card-body">
+                            <div class="intern-profile-fields">
+
+                                <div class="intern-profile-field intern-profile-field-full">
+                                    <label for="profileSkills">Skills</label>
+                                    <textarea
+                                        id="profileSkills"
+                                        name="skills"
+                                        rows="3"
+                                        maxlength="2000"
+                                        placeholder="e.g. Java, SQL, HTML, CSS, JavaScript"></textarea>
+                                    <small>Separate skills with commas.</small>
+                                </div>
+
+                                <div class="intern-profile-field">
+                                    <label for="profileGithub">GitHub Profile</label>
+                                    <input
+                                        type="url"
+                                        id="profileGithub"
+                                        name="githubUrl"
+                                        maxlength="500"
+                                        inputmode="url"
+                                        placeholder="https://github.com/username">
+                                </div>
+
+                                <div class="intern-profile-field">
+                                    <label for="profileLinkedin">LinkedIn Profile</label>
+                                    <input
+                                        type="url"
+                                        id="profileLinkedin"
+                                        name="linkedinUrl"
+                                        maxlength="500"
+                                        inputmode="url"
+                                        placeholder="https://linkedin.com/in/username">
+                                </div>
+
+                                <div class="intern-profile-field intern-profile-field-full">
+                                    <label for="profilePortfolio">Portfolio Website</label>
+                                    <input
+                                        type="url"
+                                        id="profilePortfolio"
+                                        name="portfolioUrl"
+                                        maxlength="500"
+                                        inputmode="url"
+                                        placeholder="https://yourportfolio.com">
+                                </div>
+
+                                <div class="intern-profile-field intern-profile-field-full">
+                                    <label for="profileBio">About You</label>
+                                    <textarea
+                                        id="profileBio"
+                                        name="bio"
+                                        rows="5"
+                                        maxlength="1500"
+                                        placeholder="Introduce yourself, describe your interests and share your career goals."></textarea>
+                                    <small>Write a short professional introduction.</small>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Onboarding status -->
+                    <section class="intern-profile-card intern-profile-card-full">
+
+                        <div class="intern-profile-card-body">
+                            <div class="intern-profile-status-layout">
+
+                                <div class="intern-profile-status-icon">✓</div>
+
+                                <div class="intern-profile-status-copy">
+                                    <h3>Profile &amp; Onboarding Status</h3>
+                                    <p id="profileOnboardingDescription">
+                                        Complete your profile and keep your information up to date.
+                                    </p>
+                                </div>
+
+                                <span
+                                    id="profileOnboardingStatus"
+                                    class="intern-profile-status-badge">
+                                    Checking status
+                                </span>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Save action -->
+                    <section class="intern-profile-actions">
+
+                        <div class="intern-profile-actions-copy">
+                            <strong>Your information, your progress.</strong>
+                            <p>
+                                Review your details before saving. Your account information
+                                and Intern ID cannot be edited here.
+                            </p>
+                        </div>
+
+                        <button
+                            type="submit"
+                            id="saveProfileButton"
+                            class="intern-primary-button intern-profile-save-button">
+                            <span id="saveProfileButtonText">Save Profile</span>
+                            <span aria-hidden="true">→</span>
+                        </button>
+                    </section>
+
+                </form>
+            </div>
+        </main>
+
+        <footer class="intern-footer">
+            <span>
+                © <span id="internCurrentYear">2026</span>
+                NITRIXA TECHNOLOGIES
+            </span>
+
+            <div>
+                <a href="../privacy.html">Privacy</a>
+                <a href="../terms.html">Terms</a>
+                <a href="../contact.html">Support</a>
+            </div>
+        </footer>
+
+    </div>
+</div>
+
+<!-- Load Supabase before the shared client configuration -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+<script src="../js/supabase.js" defer></script>
+<script src="../js/main.js" defer></script>
+<script src="../js/intern-profile.js" defer></script>
+
+</body>
+</html>
