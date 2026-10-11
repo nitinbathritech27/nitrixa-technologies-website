@@ -1,723 +1,611 @@
 /* =========================================================
+
    NITRIXA TECHNOLOGIES
+
    ENROLLMENT FLOW
 
    FLOW:
 
    Programs
+
       ↓
+
    Login / Register
+
       ↓
+
    Dashboard
+
       ↓
+
    Select Program
+
       ↓
+
    Enrollment Path
+
       ↓
+
    create-enrollment Edge Function
+
       ↓
+
    PENDING_PAYMENT
+
       ↓
+
    payment.html?enrollment=ID
 
    IMPORTANT:
+
    - Enrollment requires authenticated user.
    - Intern ID is NOT required.
    - Enrollment is created BEFORE payment.
    - Amount is taken from trusted database data through Edge Function.
    - Browser never creates the enrollment directly in Supabase.
+
    ========================================================= */
 
 document.addEventListener(
     "DOMContentLoaded",
     async () => {
-
         "use strict";
-
 
         /* =====================================================
            SUPABASE
         ===================================================== */
 
-        const supabase =
-            window.supabaseClient;
+        const supabase = window.supabaseClient;
 
-
-        if (
-            !supabase ||
-            !supabase.auth
-        ) {
-
-            console.error(
-                "NITRIXA: Supabase client is unavailable."
-            );
-
+        if (!supabase || !supabase.auth) {
+            console.error("NITRIXA: Supabase client is unavailable.");
             showEnrollmentError(
                 "Authentication service is currently unavailable. Please refresh the page and try again."
             );
-
             return;
-
         }
-
 
         /* =====================================================
            ELEMENTS
         ===================================================== */
 
-        const enrollmentApp =
-            document.getElementById(
-                "enrollmentApp"
-            );
-
-        const loadingState =
-            document.getElementById(
-                "enrollmentLoading"
-            );
-
-        const errorState =
-            document.getElementById(
-                "enrollmentError"
-            );
-
-        const errorMessage =
-            document.getElementById(
-                "enrollmentErrorMessage"
-            );
-
-        const programName =
-            document.getElementById(
-                "programName"
-            );
-
-        const programDescription =
-            document.getElementById(
-                "programDescription"
-            );
-
-        const programTags =
-            document.getElementById(
-                "programTags"
-            );
-
-        const programFee =
-            document.getElementById(
-                "programFee"
-            );
-
-        const programPaymentNote =
-            document.getElementById(
-                "programPaymentNote"
-            );
-
-        const programType =
-            document.getElementById(
-                "programType"
-            );
-
-        const programDuration =
-            document.getElementById(
-                "programDuration"
-            );
-
-        const programLevel =
-            document.getElementById(
-                "programLevel"
-            );
-
-        const programPaymentModel =
-            document.getElementById(
-                "programPaymentModel"
-            );
-
-        const enrollmentAuthGate =
-            document.getElementById(
-                "enrollmentAuthGate"
-            );
-
-        const enrollmentLoginButton =
-            document.getElementById(
-                "enrollmentLoginButton"
-            );
-
-        const enrollmentAccountStatus =
-            document.getElementById(
-                "enrollmentAccountStatus"
-            );
-
-        const enrollmentPathSection =
-            document.getElementById(
-                "enrollmentPathSection"
-            );
-
-        const pathGrid =
-            document.getElementById(
-                "pathGrid"
-            );
-
+        const enrollmentApp = document.getElementById("enrollmentApp");
+        const loadingState = document.getElementById("enrollmentLoading");
+        const errorState = document.getElementById("enrollmentError");
+        const errorMessage = document.getElementById("enrollmentErrorMessage");
+        const programName = document.getElementById("programName");
+        const programDescription = document.getElementById("programDescription");
+        const programTags = document.getElementById("programTags");
+        const programFee = document.getElementById("programFee");
+        const programPaymentNote = document.getElementById("programPaymentNote");
+        const programType = document.getElementById("programType");
+        const programDuration = document.getElementById("programDuration");
+        const programLevel = document.getElementById("programLevel");
+        const programPaymentModel = document.getElementById("programPaymentModel");
+        const enrollmentAuthGate = document.getElementById("enrollmentAuthGate");
+        const enrollmentLoginButton = document.getElementById("enrollmentLoginButton");
+        const enrollmentAccountStatus = document.getElementById("enrollmentAccountStatus");
+        const enrollmentPathSection = document.getElementById("enrollmentPathSection");
+        const pathGrid = document.getElementById("pathGrid");
 
         /* =====================================================
            URL
         ===================================================== */
 
-        const params =
-            new URLSearchParams(
-                window.location.search
-            );
-
-
-        const programSlug =
-            (
-                params.get(
-                    "program"
-                ) || ""
-            )
-                .trim()
-                .toLowerCase();
-
+        const params = new URLSearchParams(window.location.search);
+        const programSlug = (params.get("program") || "").trim().toLowerCase();
 
         /* =====================================================
            STATE
         ===================================================== */
 
         let selectedProgram = null;
-
+        let programDurations = [];
+        let selectedDuration = null;
+        let durationLoadError = null;
+        let durationLoaded = false;
+        let durationContainer = null;
+        let durationSelect = null;
+        let durationDescription = null;
         let currentSession = null;
-
         let enrollmentInProgress = false;
-
 
         /* =====================================================
            BASIC UI HELPERS
         ===================================================== */
 
-        function setHidden(
-            element,
-            hidden
-        ) {
-
+        function setHidden(element, hidden) {
             if (!element) {
                 return;
             }
 
             element.hidden = hidden;
-
         }
-
 
         function showLoading() {
-
-            setHidden(
-                loadingState,
-                false
-            );
-
-            setHidden(
-                errorState,
-                true
-            );
-
-            setHidden(
-                enrollmentApp,
-                true
-            );
-
+            setHidden(loadingState, false);
+            setHidden(errorState, true);
+            setHidden(enrollmentApp, true);
         }
-
 
         function showApplication() {
-
-            setHidden(
-                loadingState,
-                true
-            );
-
-            setHidden(
-                errorState,
-                true
-            );
-
-            setHidden(
-                enrollmentApp,
-                false
-            );
-
+            setHidden(loadingState, true);
+            setHidden(errorState, true);
+            setHidden(enrollmentApp, false);
         }
 
-
-        function showEnrollmentError(
-            message
-        ) {
-
+        function showEnrollmentError(message) {
             if (errorMessage) {
-
-                errorMessage.textContent =
-                    message;
-
+                errorMessage.textContent = message;
             }
 
-            setHidden(
-                loadingState,
-                true
-            );
-
-            setHidden(
-                enrollmentApp,
-                true
-            );
-
-            setHidden(
-                errorState,
-                false
-            );
-
+            setHidden(loadingState, true);
+            setHidden(enrollmentApp, true);
+            setHidden(errorState, false);
         }
-
 
         /* =====================================================
            FORMAT CURRENCY
         ===================================================== */
 
-        function formatCurrency(
-            value
-        ) {
+        function formatCurrency(value) {
+            const amount = Number(value);
 
-            const amount =
-                Number(value);
-
-            if (
-                !Number.isFinite(
-                    amount
-                )
-            ) {
-
+            if (!Number.isFinite(amount)) {
                 return "₹0";
-
             }
 
-            return new Intl.NumberFormat(
-                "en-IN",
-                {
-                    style: "currency",
-                    currency: "INR",
-                    maximumFractionDigits: 0
-                }
-            ).format(
-                amount
-            );
-
+            return new Intl.NumberFormat("en-IN", {
+                style: "currency",
+                currency: "INR",
+                maximumFractionDigits: 0
+            }).format(amount);
         }
-
 
         /* =====================================================
            ESCAPE HTML
         ===================================================== */
 
-        function escapeHtml(
-            value
-        ) {
-
-            return String(
-                value ?? ""
-            )
-                .replace(
-                    /&/g,
-                    "&amp;"
-                )
-                .replace(
-                    /</g,
-                    "&lt;"
-                )
-                .replace(
-                    />/g,
-                    "&gt;"
-                )
-                .replace(
-                    /"/g,
-                    "&quot;"
-                )
-                .replace(
-                    /'/g,
-                    "&#039;"
-                );
-
+        function escapeHtml(value) {
+            return String(value ?? "")
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
         }
-
 
         /* =====================================================
            NORMALIZE PROGRAM TYPE
         ===================================================== */
 
-        function normalizeProgramType(
-            value
-        ) {
-
-            return String(
-                value ?? ""
-            )
+        function normalizeProgramType(value) {
+            return String(value ?? "")
                 .trim()
                 .toUpperCase()
-                .replace(
-                    /[\s-]+/g,
-                    "_"
-                );
-
+                .replace(/[\s-]+/g, "_");
         }
-
 
         /* =====================================================
            VALIDATE PROGRAM
         ===================================================== */
 
-        function validateProgramPath(
-            program,
-            path
-        ) {
+        function validateProgramPath(program, path) {
+            const type = normalizeProgramType(program.program_type);
 
-            const type =
-                normalizeProgramType(
-                    program.program_type
-                );
-
-
-            if (
-                type === "INTERNSHIP"
-            ) {
-
-                return (
-                    path ===
-                    "internship"
-                );
-
+            if (type === "INTERNSHIP") {
+                return path === "internship";
             }
 
-
-            if (
-                type ===
-                "TRAINING_AND_INTERNSHIP"
-            ) {
-
-                return (
-                    path ===
-                    "training-internship"
-                );
-
+            if (type === "TRAINING_AND_INTERNSHIP") {
+                return path === "training-internship";
             }
-
 
             return false;
-
         }
-
 
         /* =====================================================
            PROGRAM PAYMENT NOTE
         ===================================================== */
 
-        function getPaymentNote(
-            program
-        ) {
+        function getPaymentNote(program) {
+            const paymentModel = String(program.payment_model ?? "")
+                .trim()
+                .toUpperCase();
 
-            const paymentModel =
-                String(
-                    program.payment_model ?? ""
-                )
-                    .trim()
-                    .toUpperCase();
-
-
-            if (
-                paymentModel ===
-                "FULL_AND_INSTALLMENT"
-            ) {
-
+            if (paymentModel === "FULL_AND_INSTALLMENT") {
                 return "Full payment or eligible 3-month installment options may be available.";
-
             }
 
-
-            if (
-                paymentModel ===
-                "FULL_ONLY"
-            ) {
-
+            if (paymentModel === "FULL_ONLY") {
                 return "Full payment is required for enrollment.";
-
             }
-
 
             return "Payment is required to activate your enrollment.";
-
         }
-
 
         /* =====================================================
            PROGRAM DURATION
         ===================================================== */
 
-        function getProgramDuration(
-            program
-        ) {
+        function getProgramDuration(program) {
+            const type = normalizeProgramType(program.program_type);
 
-            const type =
-                normalizeProgramType(
-                    program.program_type
-                );
+            if (type === "TRAINING_AND_INTERNSHIP") {
+                const trainingDuration = program.training_duration;
+                const internshipDuration = program.internship_duration;
 
-
-            if (
-                type ===
-                "TRAINING_AND_INTERNSHIP"
-            ) {
-
-                const trainingDuration =
-                    program.training_duration;
-
-                const internshipDuration =
-                    program.internship_duration;
-
-
-                if (
-                    trainingDuration &&
-                    internshipDuration
-                ) {
-
-                    return (
-                        `Training: ${trainingDuration} • Internship: ${internshipDuration}`
-                    );
-
+                if (trainingDuration && internshipDuration) {
+                    return `Training: ${trainingDuration} • Internship: ${internshipDuration}`;
                 }
 
-
-                if (
-                    trainingDuration
-                ) {
-
-                    return (
-                        `Training: ${trainingDuration}`
-                    );
-
+                if (trainingDuration) {
+                    return `Training: ${trainingDuration}`;
                 }
 
-
-                if (
-                    internshipDuration
-                ) {
-
-                    return (
-                        `Internship: ${internshipDuration}`
-                    );
-
+                if (internshipDuration) {
+                    return `Internship: ${internshipDuration}`;
                 }
-
             }
 
-
-            return (
-                program.duration ||
-                "Program duration"
-            );
-
+            return program.duration || "Program duration";
         }
 
+        /* =====================================================
+           PROGRAM DURATION OPTIONS
+        ===================================================== */
+
+        function ensureDurationStyles() {
+            if (document.getElementById("nitrixa-duration-styles")) {
+                return;
+            }
+
+            const style = document.createElement("style");
+            style.id = "nitrixa-duration-styles";
+            style.textContent = `
+                .nitrixa-duration-selector {
+                    margin: 0 0 24px;
+                    padding: 20px;
+                    border: 1px solid rgba(37, 99, 235, 0.16);
+                    border-radius: 16px;
+                    background: #fff;
+                    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.045);
+                }
+                .nitrixa-duration-selector label {
+                    display: block;
+                    margin-bottom: 8px;
+                    color: #172554;
+                    font-weight: 700;
+                    font-size: 14px;
+                }
+                .nitrixa-duration-selector select {
+                    display: block;
+                    width: 100%;
+                    min-height: 48px;
+                    padding: 10px 42px 10px 13px;
+                    border: 1px solid #cbd5e1;
+                    border-radius: 10px;
+                    background: #fff;
+                    color: #0f172a;
+                    font: inherit;
+                    outline: none;
+                }
+                .nitrixa-duration-selector select:focus {
+                    border-color: #2563eb;
+                    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.13);
+                }
+                .nitrixa-duration-description {
+                    margin: 10px 0 0;
+                    color: #64748b;
+                    font-size: 13px;
+                    line-height: 1.6;
+                }
+                .nitrixa-duration-price {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    gap: 12px;
+                    margin-top: 14px;
+                    padding-top: 13px;
+                    border-top: 1px solid #e2e8f0;
+                }
+                .nitrixa-duration-price span {
+                    color: #475569;
+                    font-size: 13px;
+                }
+                .nitrixa-duration-price strong {
+                    color: #1d4ed8;
+                    font-size: 20px;
+                }
+                .nitrixa-duration-error {
+                    margin: 10px 0 0;
+                    color: #b91c1c;
+                    font-size: 13px;
+                    line-height: 1.5;
+                }
+            `;
+
+            document.head.appendChild(style);
+        }
+
+        function ensureDurationSelector() {
+            if (durationContainer || !pathGrid) {
+                return;
+            }
+
+            ensureDurationStyles();
+
+            durationContainer = document.createElement("section");
+            durationContainer.className = "nitrixa-duration-selector";
+            durationContainer.id = "programDurationSelector";
+            durationContainer.hidden = true;
+
+            const label = document.createElement("label");
+            label.htmlFor = "enrollmentDurationSelect";
+            label.textContent = "Select Program Duration";
+
+            durationSelect = document.createElement("select");
+            durationSelect.id = "enrollmentDurationSelect";
+            durationSelect.name = "durationId";
+            durationSelect.setAttribute(
+                "aria-describedby",
+                "enrollmentDurationDescription"
+            );
+
+            const placeholder = document.createElement("option");
+            placeholder.value = "";
+            placeholder.textContent = "Choose a duration";
+            placeholder.selected = true;
+            placeholder.disabled = true;
+            durationSelect.appendChild(placeholder);
+
+            durationDescription = document.createElement("p");
+            durationDescription.className = "nitrixa-duration-description";
+            durationDescription.id = "enrollmentDurationDescription";
+            durationDescription.textContent = "Choose a duration to view its fee and inclusions.";
+
+            const priceRow = document.createElement("div");
+            priceRow.className = "nitrixa-duration-price";
+
+            const priceLabel = document.createElement("span");
+            priceLabel.textContent = "Selected duration fee";
+
+            const priceValue = document.createElement("strong");
+            priceValue.id = "selectedDurationFee";
+            priceValue.textContent = "—";
+
+            priceRow.append(priceLabel, priceValue);
+            durationContainer.append(label, durationSelect, durationDescription, priceRow);
+
+            const anchor = pathGrid.parentElement || enrollmentPathSection;
+
+            if (anchor) {
+                anchor.insertBefore(durationContainer, pathGrid);
+            }
+
+            durationSelect.addEventListener("change", () => {
+                const durationId = durationSelect.value;
+
+                selectedDuration =
+                    programDurations.find(item => item.id === durationId) || null;
+
+                updateSelectedDurationUI();
+                renderEnrollmentPaths();
+            });
+        }
+
+        async function loadProgramDurations() {
+            if (!selectedProgram || !currentSession) {
+                programDurations = [];
+                selectedDuration = null;
+                durationLoadError = null;
+                durationLoaded = false;
+                updateSelectedDurationUI();
+                return;
+            }
+
+            if (durationLoaded) {
+                updateSelectedDurationUI();
+                return;
+            }
+
+            durationLoadError = null;
+
+            const { data, error } = await supabase
+                .from("program_durations")
+                .select("id, program_id, duration_label, fee, description, status, sort_order")
+                .eq("program_id", selectedProgram.id)
+                .eq("status", "ACTIVE")
+                .order("sort_order", { ascending: true })
+                .order("created_at", { ascending: true });
+
+            if (error) {
+                console.error("NITRIXA: Program durations loading failed:", error);
+                programDurations = [];
+                selectedDuration = null;
+                durationLoadError =
+                    "Duration options could not be loaded. Please refresh the page or contact support.";
+                durationLoaded = false;
+                updateSelectedDurationUI();
+                return;
+            }
+
+            programDurations = Array.isArray(data)
+                ? data.filter(item =>
+                    item &&
+                    typeof item.id === "string" &&
+                    String(item.duration_label || "").trim() &&
+                    Number.isFinite(Number(item.fee)) &&
+                    Number(item.fee) > 0
+                )
+                : [];
+
+            selectedDuration = programDurations[0] || null;
+            durationLoaded = true;
+
+            ensureDurationSelector();
+            updateSelectedDurationUI();
+        }
+
+        function updateSelectedDurationUI() {
+            ensureDurationSelector();
+
+            if (!durationContainer) {
+                return;
+            }
+
+            const hasOptions = programDurations.length > 0;
+            durationContainer.hidden = !hasOptions && !durationLoadError;
+
+            if (durationSelect) {
+                const currentValue = selectedDuration?.id || "";
+
+                durationSelect.innerHTML = "";
+
+                const placeholder = document.createElement("option");
+                placeholder.value = "";
+                placeholder.textContent = hasOptions
+                    ? "Choose a duration"
+                    : "No duration options available";
+                placeholder.disabled = true;
+                placeholder.selected = !currentValue;
+                durationSelect.appendChild(placeholder);
+
+                programDurations.forEach(item => {
+                    const option = document.createElement("option");
+                    option.value = item.id;
+                    option.textContent =
+                        `${item.duration_label} — ${formatCurrency(item.fee)}`;
+                    option.selected = item.id === currentValue;
+                    durationSelect.appendChild(option);
+                });
+
+                durationSelect.disabled = !hasOptions || Boolean(durationLoadError);
+            }
+
+            if (durationDescription) {
+                durationDescription.textContent = durationLoadError
+                    ? durationLoadError
+                    : selectedDuration?.description?.trim()
+                        || (hasOptions
+                            ? "Duration includes the program access and support described by NITRIXA TECHNOLOGIES."
+                            : "This program uses its standard configured fee.");
+
+                durationDescription.classList.toggle(
+                    "nitrixa-duration-error",
+                    Boolean(durationLoadError)
+                );
+            }
+
+            const priceValue = document.getElementById("selectedDurationFee");
+
+            if (priceValue) {
+                priceValue.textContent = selectedDuration
+                    ? formatCurrency(selectedDuration.fee)
+                    : "—";
+            }
+
+            if (programFee) {
+                programFee.textContent = formatCurrency(
+                    selectedDuration ? selectedDuration.fee : selectedProgram?.fee
+                );
+            }
+
+            if (programDuration && selectedDuration) {
+                programDuration.textContent = selectedDuration.duration_label;
+            }
+        }
 
         /* =====================================================
            RENDER PROGRAM
         ===================================================== */
 
-        function renderProgram(
-            program
-        ) {
-
-            selectedProgram =
-                program;
-
+        function renderProgram(program) {
+            selectedProgram = program;
 
             if (programName) {
-
-                programName.textContent =
-                    program.name ||
-                    "NITRIXA Program";
-
+                programName.textContent = program.name || "NITRIXA Program";
             }
 
-
             if (programDescription) {
-
                 programDescription.textContent =
                     program.description ||
                     "Explore this NITRIXA TECHNOLOGIES program and continue your enrollment from your account.";
-
             }
-
 
             if (programFee) {
-
-                programFee.textContent =
-                    formatCurrency(
-                        program.fee
-                    );
-
+                programFee.textContent = formatCurrency(program.fee);
             }
-
 
             if (programPaymentNote) {
-
-                programPaymentNote.textContent =
-                    getPaymentNote(
-                        program
-                    );
-
+                programPaymentNote.textContent = getPaymentNote(program);
             }
-
 
             if (programType) {
-
-                programType.textContent =
-                    normalizeProgramType(
-                        program.program_type
-                    )
-                        .replace(
-                            /_/g,
-                            " "
-                        );
-
+                programType.textContent = normalizeProgramType(program.program_type)
+                    .replace(/_/g, " ");
             }
-
 
             if (programDuration) {
-
-                programDuration.textContent =
-                    getProgramDuration(
-                        program
-                    );
-
+                programDuration.textContent = getProgramDuration(program);
             }
-
 
             if (programLevel) {
-
-                programLevel.textContent =
-                    program.level ||
-                    "All levels";
-
+                programLevel.textContent = program.level || "All levels";
             }
-
 
             if (programPaymentModel) {
-
                 programPaymentModel.textContent =
-                    program.payment_model ||
-                    "Standard payment";
-
+                    program.payment_model || "Standard payment";
             }
 
-
-            renderProgramTags(
-                program
-            );
-
+            renderProgramTags(program);
         }
-
 
         /* =====================================================
            PROGRAM TAGS
         ===================================================== */
 
-        function renderProgramTags(
-            program
-        ) {
-
+        function renderProgramTags(program) {
             if (!programTags) {
                 return;
             }
 
-
             const tags = [];
-
-
-            const type =
-                normalizeProgramType(
-                    program.program_type
-                );
-
+            const type = normalizeProgramType(program.program_type);
 
             if (type) {
-
-                tags.push(
-                    type
-                        .replace(
-                            /_/g,
-                            " "
-                        )
-                );
-
+                tags.push(type.replace(/_/g, " "));
             }
 
-
-            if (
-                program.duration
-            ) {
-
-                tags.push(
-                    program.duration
-                );
-
+            if (program.duration) {
+                tags.push(program.duration);
             }
 
-
-            if (
-                program.payment_model
-            ) {
-
-                tags.push(
-                    program.payment_model
-                        .replace(
-                            /_/g,
-                            " "
-                        )
-                );
-
+            if (program.payment_model) {
+                tags.push(program.payment_model.replace(/_/g, " "));
             }
 
-
-            programTags.innerHTML =
-                tags
-                    .map(
-                        tag =>
-                            `<span class="program-tag">${escapeHtml(tag)}</span>`
-                    )
-                    .join("");
-
+            programTags.innerHTML = tags
+                .map(tag => `<span class="program-tag">${escapeHtml(tag)}</span>`)
+                .join("");
         }
-
 
         /* =====================================================
            LOAD PROGRAM
         ===================================================== */
 
         async function loadProgram() {
-
             if (!programSlug) {
-
                 showEnrollmentError(
                     "No program was selected. Please return to the Programs page and choose a program."
                 );
-
                 return false;
-
             }
 
-
-            const {
-                data,
-                error
-            } = await supabase
-                .from(
-                    "programs"
-                )
-                .select(
-                    `
+            const { data, error } = await supabase
+                .from("programs")
+                .select(`
                     id,
                     name,
                     slug,
@@ -730,356 +618,178 @@ document.addEventListener(
                     fee,
                     level,
                     status
-                    `
-                )
-                .eq(
-                    "slug",
-                    programSlug
-                )
-                .eq(
-                    "status",
-                    "ACTIVE"
-                )
+                `)
+                .eq("slug", programSlug)
+                .eq("status", "ACTIVE")
                 .maybeSingle();
 
-
             if (error) {
-
-                console.error(
-                    "NITRIXA: Program loading failed:",
-                    error
-                );
-
+                console.error("NITRIXA: Program loading failed:", error);
                 showEnrollmentError(
                     "We could not load this program. Please try again."
                 );
-
                 return false;
-
             }
 
-
             if (!data) {
-
                 showEnrollmentError(
                     "This program is not available or is no longer active."
                 );
-
                 return false;
-
             }
 
-
-            renderProgram(
-                data
-            );
-
-
+            renderProgram(data);
             return true;
-
         }
-
 
         /* =====================================================
            GET SESSION
         ===================================================== */
 
         async function getCurrentSession() {
-
-            const {
-                data,
-                error
-            } = await supabase.auth.getSession();
-
+            const { data, error } = await supabase.auth.getSession();
 
             if (error) {
-
-                console.error(
-                    "NITRIXA: Session lookup failed:",
-                    error
-                );
-
+                console.error("NITRIXA: Session lookup failed:", error);
                 return null;
-
             }
 
-
-            return (
-                data?.session ||
-                null
-            );
-
+            return data?.session || null;
         }
-
 
         /* =====================================================
            AUTH GATE
         ===================================================== */
 
-        function renderAuthenticationState(
-            session
-        ) {
-
-            currentSession =
-                session;
-
+        function renderAuthenticationState(session) {
+            currentSession = session;
 
             if (!session) {
-
                 /*
                  * User is not logged in.
-                 *
-                 * Enrollment cannot be created
-                 * without authentication.
+                 * Enrollment cannot be created without authentication.
                  */
 
-                setHidden(
-                    enrollmentAuthGate,
-                    false
-                );
+                setHidden(enrollmentAuthGate, false);
+                setHidden(enrollmentAccountStatus, true);
+                setHidden(enrollmentPathSection, true);
 
-                setHidden(
-                    enrollmentAccountStatus,
-                    true
-                );
-
-                setHidden(
-                    enrollmentPathSection,
-                    true
-                );
-
-
-                if (
-                    enrollmentLoginButton
-                ) {
-
-                    enrollmentLoginButton.href =
-                        "login.html";
-
+                if (enrollmentLoginButton) {
+                    enrollmentLoginButton.href = "login.html";
                 }
 
-
                 return;
-
             }
 
+            setHidden(enrollmentAuthGate, true);
+            setHidden(enrollmentAccountStatus, false);
+            setHidden(enrollmentPathSection, false);
 
-            /*
-             * User is authenticated.
-             */
-
-            setHidden(
-                enrollmentAuthGate,
-                true
-            );
-
-            setHidden(
-                enrollmentAccountStatus,
-                false
-            );
-
-            setHidden(
-                enrollmentPathSection,
-                false
-            );
-
-
-            if (
-                enrollmentAccountStatus
-            ) {
-
+            if (enrollmentAccountStatus) {
                 enrollmentAccountStatus.textContent =
                     "You are signed in. Select your enrollment path to continue.";
-
             }
 
-
             renderEnrollmentPaths();
-
         }
-
 
         /* =====================================================
            RENDER ENROLLMENT PATHS
         ===================================================== */
 
         function renderEnrollmentPaths() {
-
-            if (!pathGrid) {
+            if (!pathGrid || !selectedProgram) {
                 return;
             }
 
-
-            if (!selectedProgram) {
-                return;
-            }
-
-
-            const type =
-                normalizeProgramType(
-                    selectedProgram.program_type
-                );
-
-
-            /*
-             * Clear old cards.
-             */
+            const type = normalizeProgramType(selectedProgram.program_type);
 
             pathGrid.innerHTML = "";
 
+            /* INTERNSHIP */
 
-            /*
-             * INTERNSHIP
-             */
-
-            if (
-                type ===
-                "INTERNSHIP"
-            ) {
-
-                pathGrid.innerHTML =
-                    createPathCard(
-                        {
-                            path:
-                                "internship",
-
-                            title:
-                                "Internship",
-
-                            description:
-                                "Enroll in the internship program and continue to payment.",
-
-                            duration:
-                                selectedProgram.internship_duration ||
-                                selectedProgram.duration ||
-                                "Program duration",
-
-                            fee:
-                                selectedProgram.fee
-                        }
-                    );
-
+            if (type === "INTERNSHIP") {
+                pathGrid.innerHTML = createPathCard({
+                    path: "internship",
+                    title: "Internship",
+                    description:
+                        "Enroll in the internship program and continue to payment.",
+                    duration:
+                        selectedDuration?.duration_label ||
+                        selectedProgram.internship_duration ||
+                        selectedProgram.duration ||
+                        "Program duration",
+                    fee: selectedDuration
+                        ? selectedDuration.fee
+                        : selectedProgram.fee
+                });
             }
 
+            /* TRAINING + INTERNSHIP */
 
-            /*
-             * TRAINING + INTERNSHIP
-             */
-
-            else if (
-                type ===
-                "TRAINING_AND_INTERNSHIP"
-            ) {
-
-                pathGrid.innerHTML =
-                    createPathCard(
-                        {
-                            path:
-                                "training-internship",
-
-                            title:
-                                "Training + Internship",
-
-                            description:
-                                "Complete the training first. Internship access becomes available after training completion and administrative approval.",
-
-                            duration:
-                                getProgramDuration(
-                                    selectedProgram
-                                ),
-
-                            fee:
-                                selectedProgram.fee,
-
-                            featured:
-                                true
-                        }
-                    );
-
+            else if (type === "TRAINING_AND_INTERNSHIP") {
+                pathGrid.innerHTML = createPathCard({
+                    path: "training-internship",
+                    title: "Training + Internship",
+                    description:
+                        "Complete the training first. Internship access becomes available after training completion and administrative approval.",
+                    duration:
+                        selectedDuration?.duration_label ||
+                        getProgramDuration(selectedProgram),
+                    fee: selectedDuration
+                        ? selectedDuration.fee
+                        : selectedProgram.fee,
+                    featured: true
+                });
             }
 
-
-            /*
-             * Unsupported / legacy program.
-             */
+            /* Unsupported / legacy program */
 
             else {
-
-                pathGrid.innerHTML =
-                    `
+                pathGrid.innerHTML = `
                     <div class="enrollment-path-empty">
-                        <strong>
-                            Enrollment currently unavailable
-                        </strong>
-
+                        <strong>Enrollment currently unavailable</strong>
                         <p>
                             This program type is not currently available for online enrollment.
                         </p>
                     </div>
-                    `;
-
+                `;
             }
 
-
             attachPathEvents();
-
         }
-
 
         /* =====================================================
            PATH CARD
         ===================================================== */
 
-        function createPathCard(
-            options
-        ) {
-
-            const featuredClass =
-                options.featured
-                    ? " is-featured"
-                    : "";
-
+        function createPathCard(options) {
+            const featuredClass = options.featured ? " is-featured" : "";
 
             return `
                 <article
                     class="enrollment-path-card${featuredClass}"
                     data-enrollment-path="${escapeHtml(options.path)}"
                 >
-
                     <div class="enrollment-path-card-content">
-
                         <span class="enrollment-path-badge">
                             ${options.featured ? "RECOMMENDED PATH" : "ENROLLMENT PATH"}
                         </span>
 
-                        <h3>
-                            ${escapeHtml(options.title)}
-                        </h3>
+                        <h3>${escapeHtml(options.title)}</h3>
 
-                        <p>
-                            ${escapeHtml(options.description)}
-                        </p>
+                        <p>${escapeHtml(options.description)}</p>
 
                         <div class="enrollment-path-meta">
-
                             <div>
                                 <span>Duration</span>
-                                <strong>
-                                    ${escapeHtml(options.duration)}
-                                </strong>
+                                <strong>${escapeHtml(options.duration)}</strong>
                             </div>
 
                             <div>
                                 <span>Program Fee</span>
-                                <strong>
-                                    ${escapeHtml(
-                                        formatCurrency(
-                                            options.fee
-                                        )
-                                    )}
-                                </strong>
+                                <strong>${escapeHtml(formatCurrency(options.fee))}</strong>
                             </div>
-
                         </div>
 
                         <button
@@ -1090,609 +800,326 @@ document.addEventListener(
                             Continue to Enrollment
                             <span aria-hidden="true">→</span>
                         </button>
-
                     </div>
-
                 </article>
             `;
-
         }
-
 
         /* =====================================================
            ATTACH PATH EVENTS
         ===================================================== */
 
         function attachPathEvents() {
+            const buttons = document.querySelectorAll("[data-start-enrollment]");
 
-            const buttons =
-                document.querySelectorAll(
-                    "[data-start-enrollment]"
-                );
-
-
-            buttons.forEach(
-                button => {
-
-                    button.addEventListener(
-                        "click",
-                        async () => {
-
-                            const path =
-                                button.getAttribute(
-                                    "data-start-enrollment"
-                                );
-
-
-                            await startEnrollment(
-                                path,
-                                button
-                            );
-
-                        }
-                    );
-
-                }
-            );
-
+            buttons.forEach(button => {
+                button.addEventListener("click", async () => {
+                    const path = button.getAttribute("data-start-enrollment");
+                    await startEnrollment(path, button);
+                });
+            });
         }
-
 
         /* =====================================================
            CREATE ENROLLMENT
         ===================================================== */
 
-        async function startEnrollment(
-            path,
-            button
-        ) {
-
-            if (
-                enrollmentInProgress
-            ) {
-
+        async function startEnrollment(path, button) {
+            if (enrollmentInProgress) {
                 return;
-
             }
 
+            /* Session safety check */
 
-            /*
-             * Session safety check.
-             */
-
-            const session =
-                await getCurrentSession();
-
+            const session = await getCurrentSession();
 
             if (!session) {
-
-                window.location.href =
-                    "login.html";
-
+                window.location.href = "login.html";
                 return;
-
             }
 
-
             if (!selectedProgram) {
-
                 showEnrollmentError(
                     "Program information is unavailable. Please return to the Programs page and try again."
                 );
-
                 return;
-
             }
 
+            if (durationLoadError) {
+                showInlineEnrollmentMessage(durationLoadError);
+                return;
+            }
 
-            /*
-             * Validate path.
-             */
+            if (programDurations.length > 0 && !selectedDuration) {
+                showInlineEnrollmentMessage(
+                    "Please select a program duration before continuing."
+                );
+                return;
+            }
 
-            if (
-                !validateProgramPath(
-                    selectedProgram,
-                    path
-                )
-            ) {
+            /* Validate path */
 
+            if (!validateProgramPath(selectedProgram, path)) {
                 showEnrollmentError(
                     "The selected enrollment path is not available for this program."
                 );
-
                 return;
-
             }
 
+            enrollmentInProgress = true;
 
-            enrollmentInProgress =
-                true;
-
-
-            const originalText =
-                button
-                    ? button.innerHTML
-                    : "";
-
+            const originalText = button ? button.innerHTML : "";
 
             if (button) {
-
-                button.disabled =
-                    true;
-
-                button.innerHTML =
-                    `
-                    <span>
-                        Creating enrollment...
-                    </span>
-                    `;
-
+                button.disabled = true;
+                button.innerHTML = `
+                    <span>Creating enrollment...</span>
+                `;
             }
 
-
             try {
-
-                /*
-                 * Get current access token.
-                 */
+                /* Get current access token */
 
                 const {
-                    data:
-                    sessionData,
-                    error:
-                    sessionError
-                } =
-                    await supabase.auth.getSession();
+                    data: sessionData,
+                    error: sessionError
+                } = await supabase.auth.getSession();
 
-
-                if (
-                    sessionError ||
-                    !sessionData?.session
-                ) {
-
+                if (sessionError || !sessionData?.session) {
                     throw new Error(
                         "Your login session has expired. Please login again."
                     );
-
                 }
 
+                const accessToken = sessionData.session.access_token;
 
-                const accessToken =
-                    sessionData.session
-                        .access_token;
-
-
-                /*
-                 * Supabase Edge Function.
-                 */
+                /* Supabase Edge Function */
 
                 const functionUrl =
                     `${getSupabaseFunctionBaseUrl()}/create-enrollment`;
 
+                const response = await fetch(functionUrl, {
+                    method: "POST",
+                    headers: {
+                        "Authorization": `Bearer ${accessToken}`,
+                        "apikey": getSupabasePublishableKey(),
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        programId: selectedProgram.id,
+                        enrollmentPath: path,
+                        durationId: selectedDuration?.id || null
+                    })
+                });
 
-                const response =
-                    await fetch(
-                        functionUrl,
-                        {
-                            method:
-                                "POST",
-
-                            headers:
-                                {
-                                    "Authorization":
-                                        `Bearer ${accessToken}`,
-
-                                    "apikey":
-                                        getSupabasePublishableKey(),
-
-                                    "Content-Type":
-                                        "application/json"
-                                },
-
-                            body:
-                                JSON.stringify(
-                                    {
-                                        programId:
-                                            selectedProgram.id,
-
-                                        enrollmentPath:
-                                            path
-                                    }
-                                )
-                        }
-                    );
-
-
-                /*
-                 * Parse response safely.
-                 */
+                /* Parse response safely */
 
                 let result = null;
 
-
                 try {
-
-                    result =
-                        await response.json();
-
+                    result = await response.json();
                 } catch {
-
                     result = null;
-
                 }
-
 
                 console.log(
                     "NITRIXA: create-enrollment response:",
                     result
                 );
 
-
-                /*
-                 * Already enrolled.
-                 */
+                /* Already enrolled */
 
                 if (
-                    response.status ===
-                        409 &&
-                    result?.code ===
-                        "ALREADY_ENROLLED"
+                    response.status === 409 &&
+                    result?.code === "ALREADY_ENROLLED"
                 ) {
-
                     throw new Error(
                         "You are already enrolled in this program."
                     );
-
                 }
 
-
-                /*
-                 * Duplicate enrollment.
-                 */
+                /* Duplicate enrollment */
 
                 if (
-                    response.status ===
-                        409 &&
-                    result?.code ===
-                        "DUPLICATE_ENROLLMENT"
+                    response.status === 409 &&
+                    result?.code === "DUPLICATE_ENROLLMENT"
                 ) {
-
                     throw new Error(
                         "An enrollment already exists for this program."
                     );
-
                 }
 
+                /* Generic API error */
 
-                /*
-                 * Generic API error.
-                 */
-
-                if (
-                    !response.ok ||
-                    !result?.success
-                ) {
-
+                if (!response.ok || !result?.success) {
                     throw new Error(
-                        result?.error ||
-                        "Unable to create your enrollment."
+                        result?.error || "Unable to create your enrollment."
                     );
-
                 }
 
+                /* Enrollment ID is mandatory */
 
-                /*
-                 * Enrollment ID is mandatory.
-                 */
-
-                const enrollmentId =
-                    result.enrollmentId;
-
+                const enrollmentId = result.enrollmentId;
 
                 if (!enrollmentId) {
-
                     throw new Error(
                         "Enrollment was created but no enrollment ID was returned."
                     );
-
                 }
 
-
-                /*
-                 * Continue to payment.
-                 */
+                /* Continue to payment */
 
                 window.location.href =
-                    `payment.html?enrollment=${encodeURIComponent(
-                        enrollmentId
-                    )}`;
-
+                    `payment.html?enrollment=${encodeURIComponent(enrollmentId)}`;
             } catch (error) {
-
                 console.error(
                     "NITRIXA: Enrollment creation failed:",
                     error
                 );
 
-
-                const message =
-                    getEnrollmentErrorMessage(
-                        error
-                    );
-
-
-                showInlineEnrollmentMessage(
-                    message
-                );
-
+                const message = getEnrollmentErrorMessage(error);
+                showInlineEnrollmentMessage(message);
 
                 if (button) {
-
-                    button.disabled =
-                        false;
-
-                    button.innerHTML =
-                        originalText;
-
+                    button.disabled = false;
+                    button.innerHTML = originalText;
                 }
-
             } finally {
-
-                enrollmentInProgress =
-                    false;
-
+                enrollmentInProgress = false;
             }
-
         }
-
 
         /* =====================================================
            SUPABASE FUNCTION BASE URL
         ===================================================== */
 
         function getSupabaseFunctionBaseUrl() {
-
             /*
              * supabase.js already contains the project URL.
-             * Use the same client configuration rather than
-             * duplicating the project URL here.
+             * Use the same client configuration rather than duplicating it.
              */
 
-            const clientUrl =
-                supabase.supabaseUrl;
-
+            const clientUrl = supabase.supabaseUrl;
 
             if (!clientUrl) {
-
                 throw new Error(
                     "Supabase project URL is unavailable."
                 );
-
             }
 
-
             return (
-                String(
-                    clientUrl
-                ).replace(
-                    /\/+$/,
-                    ""
-                ) +
+                String(clientUrl).replace(/\/+$/, "") +
                 "/functions/v1"
             );
-
         }
-
 
         /* =====================================================
            SUPABASE PUBLISHABLE KEY
         ===================================================== */
 
         function getSupabasePublishableKey() {
-
             /*
-             * supabase-js exposes the public project key
-             * through the client instance.
+             * supabase-js exposes the public project key through the client.
              */
 
-            const key =
-                supabase.supabaseKey;
-
+            const key = supabase.supabaseKey;
 
             if (!key) {
-
                 throw new Error(
                     "Supabase publishable key is unavailable."
                 );
-
             }
 
-
             return key;
-
         }
-
 
         /* =====================================================
            INLINE ERROR
         ===================================================== */
 
-        function showInlineEnrollmentMessage(
-            message
-        ) {
-
+        function showInlineEnrollmentMessage(message) {
             /*
              * Prefer existing error/message element if present.
              */
 
-            if (
-                errorMessage
-            ) {
-
-                errorMessage.textContent =
-                    message;
-
+            if (errorMessage) {
+                errorMessage.textContent = message;
             }
 
-
             /*
-             * If enrollment page has a dedicated
-             * inline message element, use it.
+             * If enrollment page has a dedicated inline message element, use it.
              */
 
             const inlineMessage =
-                document.getElementById(
-                    "enrollmentMessage"
-                );
+                document.getElementById("enrollmentMessage");
 
-
-            if (
-                inlineMessage
-            ) {
-
-                inlineMessage.textContent =
-                    message;
-
-                inlineMessage.hidden =
-                    false;
-
-                inlineMessage.classList.add(
-                    "is-error"
-                );
-
+            if (inlineMessage) {
+                inlineMessage.textContent = message;
+                inlineMessage.hidden = false;
+                inlineMessage.classList.add("is-error");
             }
-
 
             /*
              * Keep the enrollment page visible.
              */
 
-            setHidden(
-                loadingState,
-                true
-            );
-
-            setHidden(
-                errorState,
-                true
-            );
-
-            setHidden(
-                enrollmentApp,
-                false
-            );
-
+            setHidden(loadingState, true);
+            setHidden(errorState, true);
+            setHidden(enrollmentApp, false);
         }
-
 
         /* =====================================================
            ERROR MESSAGE NORMALIZATION
         ===================================================== */
 
-        function getEnrollmentErrorMessage(
-            error
-        ) {
-
-            const message =
-                String(
-                    error?.message ||
-                    ""
-                )
-                    .trim();
-
+        function getEnrollmentErrorMessage(error) {
+            const message = String(error?.message || "").trim();
 
             if (!message) {
-
                 return "We could not start your enrollment. Please try again.";
-
             }
 
-
-            const normalized =
-                message.toLowerCase();
-
+            const normalized = message.toLowerCase();
 
             if (
-                normalized.includes(
-                    "expired"
-                ) ||
-                normalized.includes(
-                    "invalid login"
-                ) ||
-                normalized.includes(
-                    "invalid or expired"
-                )
+                normalized.includes("expired") ||
+                normalized.includes("invalid login") ||
+                normalized.includes("invalid or expired")
             ) {
-
                 return "Your login session has expired. Please login again.";
-
             }
 
-
-            if (
-                normalized.includes(
-                    "already enrolled"
-                )
-            ) {
-
+            if (normalized.includes("already enrolled")) {
                 return "You are already enrolled in this program. Please open your dashboard to continue.";
-
             }
-
 
             if (
-                normalized.includes(
-                    "inactive"
-                ) ||
-                normalized.includes(
-                    "not found"
-                )
+                normalized.includes("inactive") ||
+                normalized.includes("not found")
             ) {
-
                 return "This program is currently unavailable.";
-
             }
-
 
             return message;
-
         }
-
 
         /* =====================================================
            LOGIN BUTTON
         ===================================================== */
 
-        if (
-            enrollmentLoginButton
-        ) {
+        if (enrollmentLoginButton) {
+            enrollmentLoginButton.addEventListener("click", event => {
+                /*
+                 * Do not preserve program/path context.
+                 *
+                 * Locked architecture:
+                 * Login → Dashboard → Choose program
+                 */
 
-            enrollmentLoginButton.addEventListener(
-                "click",
-                event => {
-
-                    /*
-                     * Do not preserve program/path context.
-                     *
-                     * Locked architecture:
-                     *
-                     * Login
-                     *   ↓
-                     * Dashboard
-                     *   ↓
-                     * Choose program
-                     */
-
-                    event.preventDefault();
-
-                    window.location.href =
-                        "login.html";
-
-                }
-            );
-
+                event.preventDefault();
+                window.location.href = "login.html";
+            });
         }
-
 
         /* =====================================================
            INITIALIZE
@@ -1700,75 +1127,75 @@ document.addEventListener(
 
         showLoading();
 
-
-        const programLoaded =
-            await loadProgram();
-
+        const programLoaded = await loadProgram();
 
         if (!programLoaded) {
-
             return;
-
         }
 
+        const session = await getCurrentSession();
+        currentSession = session;
 
-        const session =
-            await getCurrentSession();
+        if (session) {
+            await loadProgramDurations();
+        } else {
+            ensureDurationSelector();
 
+            if (durationContainer) {
+                durationContainer.hidden = true;
+            }
+        }
 
-        renderAuthenticationState(
-            session
-        );
-
-
+        renderAuthenticationState(session);
         showApplication();
-
 
         /* =====================================================
            AUTH STATE CHANGE
         ===================================================== */
 
         supabase.auth.onAuthStateChange(
-            (
-                event,
-                session
-            ) => {
-
+            (event, session) => {
                 /*
                  * Avoid unnecessary reload loops.
                  */
 
-                if (
-                    event ===
-                    "SIGNED_OUT"
-                ) {
+                if (event === "SIGNED_OUT") {
+                    programDurations = [];
+                    selectedDuration = null;
+                    durationLoaded = false;
+                    durationLoadError = null;
+                    currentSession = null;
 
-                    renderAuthenticationState(
-                        null
-                    );
-
+                    updateSelectedDurationUI();
+                    renderAuthenticationState(null);
                     return;
-
                 }
-
 
                 if (
-                    event ===
-                    "SIGNED_IN" ||
-                    event ===
-                    "TOKEN_REFRESHED" ||
-                    event ===
-                    "USER_UPDATED"
+                    event === "SIGNED_IN" ||
+                    event === "TOKEN_REFRESHED" ||
+                    event === "USER_UPDATED"
                 ) {
+                    currentSession = session || null;
 
-                    renderAuthenticationState(
-                        session
-                    );
-
+                    if (session) {
+                        Promise.resolve()
+                            .then(async () => {
+                                await loadProgramDurations();
+                                renderAuthenticationState(session);
+                            })
+                            .catch(error => {
+                                console.error(
+                                    "NITRIXA: Unable to initialize duration options:",
+                                    error
+                                );
+                                renderAuthenticationState(session);
+                            });
+                    } else {
+                        renderAuthenticationState(null);
+                    }
                 }
-
             }
         );
-
     }
 );
