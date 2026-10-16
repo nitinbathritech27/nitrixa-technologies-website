@@ -1,0 +1,818 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Internship Certificates | NITRIXA Admin</title>
+  <link rel="stylesheet" href="../css/global.css">
+
+  <style>
+    :root {
+      --primary: #4f46e5;
+      --bg: #f5f7fb;
+      --border: #e2e8f0;
+      --text: #172033;
+      --muted: #64748b;
+      --green: #166534;
+      --red: #991b1b;
+      --amber: #92400e;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, Arial, sans-serif;
+    }
+
+    .page {
+      max-width: 1200px;
+      padding: 28px 18px 50px;
+      margin: auto;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    h1 { margin: 0 0 8px; font-size: clamp(25px, 4vw, 34px); }
+    h2 { margin: 0 0 12px; font-size: 20px; }
+    h3 { margin: 0 0 10px; font-size: 16px; }
+    p { line-height: 1.6; }
+
+    .muted, .help { color: var(--muted); }
+    .help { font-size: 12px; line-height: 1.55; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      border: 1px solid transparent;
+      border-radius: 9px;
+      padding: 10px 14px;
+      font-size: 14px;
+      font-weight: 650;
+      cursor: pointer;
+      background: var(--primary);
+      color: white;
+      text-decoration: none;
+    }
+
+    .btn.secondary {
+      background: white;
+      border-color: var(--border);
+      color: var(--text);
+    }
+
+    .btn.danger { background: #b91c1c; }
+    .btn:disabled { opacity: .55; cursor: not-allowed; }
+
+    .alert {
+      border-radius: 10px;
+      padding: 13px 15px;
+      margin-bottom: 18px;
+      line-height: 1.55;
+      overflow-wrap: anywhere;
+    }
+
+    .alert.info { background: #eef2ff; color: #3730a3; }
+    .alert.success { background: #f0fdf4; color: var(--green); }
+    .alert.error { background: #fef2f2; color: var(--red); }
+    .alert.warning { background: #fffbeb; color: var(--amber); }
+
+    .summary {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 13px;
+      margin: 20px 0;
+    }
+
+    .summary-card, .intern-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      box-shadow: 0 2px 8px rgb(15 23 42 / 3%);
+    }
+
+    .summary-card { padding: 17px; }
+    .summary-card span { display: block; color: var(--muted); font-size: 13px; }
+    .summary-card strong { display: block; margin-top: 8px; font-size: 26px; }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin: 20px 0;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      min-width: 0;
+      padding: 11px 12px;
+      border: 1px solid #cbd5e1;
+      border-radius: 9px;
+      background: white;
+      color: var(--text);
+      font: inherit;
+    }
+
+    textarea { min-height: 88px; resize: vertical; }
+
+    .toolbar input { flex: 1; min-width: 220px; }
+
+    .intern-list { display: grid; gap: 17px; }
+
+    .intern-card { padding: 21px; min-width: 0; }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .card-header h2 { overflow-wrap: anywhere; }
+
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 17px;
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 8px;
+      overflow-wrap: anywhere;
+    }
+
+    .badge {
+      display: inline-block;
+      border-radius: 999px;
+      padding: 5px 9px;
+      font-size: 12px;
+      font-weight: 700;
+      background: #f1f5f9;
+      color: #475569;
+      white-space: nowrap;
+    }
+
+    .badge.success { background: #dcfce7; color: #166534; }
+    .badge.warning { background: #fef3c7; color: #92400e; }
+    .badge.danger { background: #fee2e2; color: #991b1b; }
+
+    .section {
+      border-top: 1px solid var(--border);
+      margin-top: 18px;
+      padding-top: 17px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 13px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      min-width: 0;
+    }
+
+    .field label { font-size: 13px; font-weight: 650; }
+
+    .full { grid-column: 1 / -1; }
+
+    .check-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 13px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #f8fafc;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .check-row input {
+      width: auto;
+      margin-top: 3px;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .certificate-info {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 13px;
+      overflow-wrap: anywhere;
+    }
+
+    .certificate-info p { margin: 6px 0; }
+
+    .empty, .loading {
+      padding: 35px 18px;
+      text-align: center;
+      border-radius: 12px;
+      line-height: 1.6;
+      color: var(--muted);
+    }
+
+    .empty { background: white; border: 1px dashed #cbd5e1; }
+    .hidden { display: none !important; }
+
+    @media (max-width: 650px) {
+      .page { padding: 20px 12px 35px; }
+      .summary { grid-template-columns: 1fr; }
+      .intern-card { padding: 15px; }
+      .form-grid { grid-template-columns: 1fr; }
+      .full { grid-column: auto; }
+      .toolbar input { width: 100%; min-width: 100%; }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="page">
+    <header class="header">
+      <div>
+        <h1>Final Internship Certificates</h1>
+        <p class="muted">
+          Evaluate interns, approve completion and manage final internship certificates.
+          Task Certificates remain separate.
+        </p>
+      </div>
+
+      <div class="actions">
+        <a class="btn secondary" href="dashboard.html">Admin Dashboard</a>
+        <button class="btn secondary" id="refreshBtn" type="button">Refresh</button>
+      </div>
+    </header>
+
+    <div id="alertBox" class="alert info" role="status" aria-live="polite">
+      Checking administrator access...
+    </div>
+
+    <section class="summary">
+      <div class="summary-card">
+        <span>Active intern enrollments</span>
+        <strong id="internCount">—</strong>
+      </div>
+      <div class="summary-card">
+        <span>Completion approvals</span>
+        <strong id="completionCount">—</strong>
+      </div>
+      <div class="summary-card">
+        <span>Valid final certificates</span>
+        <strong id="certificateCount">—</strong>
+      </div>
+    </section>
+
+    <div class="toolbar">
+      <input id="searchInput" type="search"
+        placeholder="Search by Intern ID, enrollment ID or program">
+      <button class="btn secondary" id="clearSearchBtn" type="button">Clear search</button>
+    </div>
+
+    <div id="internList" class="intern-list">
+      <div class="loading">Loading enrollments...</div>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../js/supabase.js"></script>
+
+  <script>
+    (() => {
+      "use strict";
+
+      const $ = id => document.getElementById(id);
+
+      const state = {
+        db: null,
+        user: null,
+        enrollments: [],
+        interns: [],
+        programs: [],
+        evaluations: [],
+        completions: [],
+        certificates: [],
+        busy: false
+      };
+
+      function escapeHtml(value) {
+        return String(value ?? "").replace(/[&<>"']/g, char => ({
+          "&": "&amp;",
+          "<": "&lt;",
+          ">": "&gt;",
+          '"': "&quot;",
+          "'": "&#39;"
+        })[char]);
+      }
+
+      function showAlert(message, type = "info") {
+        const box = $("alertBox");
+        box.className = "alert " + type;
+        box.textContent = message;
+      }
+
+      function badge(status) {
+        const value = String(status || "NOT STARTED");
+        let cls = "";
+
+        if (["APPROVED", "COMPLETED", "VALID"].includes(value)) {
+          cls = "success";
+        } else if (["REASSESSMENT_REQUIRED", "NOT_APPROVED"].includes(value)) {
+          cls = "warning";
+        } else if (value === "REVOKED") {
+          cls = "danger";
+        }
+
+        return `<span class="badge ${cls}">${escapeHtml(value.replaceAll("_", " "))}</span>`;
+      }
+
+      function latestEvaluation(enrollmentId) {
+        return state.evaluations
+          .filter(row => row.enrollment_id === enrollmentId)
+          .sort((a, b) =>
+            new Date(b.created_at) - new Date(a.created_at) ||
+            b.id.localeCompare(a.id)
+          )[0] || null;
+      }
+
+      function completionFor(enrollmentId) {
+        return state.completions.find(row =>
+          row.enrollment_id === enrollmentId
+        ) || null;
+      }
+
+      function certificateFor(enrollmentId) {
+        return state.certificates.find(row =>
+          row.enrollment_id === enrollmentId &&
+          row.status === "VALID"
+        ) || state.certificates.find(row =>
+          row.enrollment_id === enrollmentId
+        ) || null;
+      }
+
+      async function verifyAdmin() {
+        state.db = window.supabaseClient;
+
+        if (!state.db) {
+          throw new Error("Supabase client was not initialized. Check ../js/supabase.js.");
+        }
+
+        const { data: sessionData, error: sessionError } =
+          await state.db.auth.getSession();
+
+        if (sessionError) throw sessionError;
+
+        if (!sessionData?.session?.user) {
+          window.location.href = "../login.html";
+          return false;
+        }
+
+        state.user = sessionData.session.user;
+
+        const { data: isAdmin, error } = await state.db.rpc("is_admin");
+        if (error) throw error;
+
+        if (isAdmin !== true) {
+          document.body.innerHTML =
+            "<main style='padding:30px;font-family:Arial'><h2>Access denied</h2><p>This page is restricted to authorized administrators.</p><a href='../login.html'>Return to login</a></main>";
+          return false;
+        }
+
+        return true;
+      }
+
+      async function loadData() {
+        const db = state.db;
+
+        const results = await Promise.all([
+          db.from("enrollments")
+            .select("id,user_id,program_id,status,created_at")
+            .order("created_at", { ascending: false }),
+
+          db.from("interns")
+            .select("enrollment_id,intern_id,status"),
+
+          db.from("programs")
+            .select("id,name"),
+
+          db.from("internship_final_evaluations")
+            .select("id,enrollment_id,marks,feedback,decision,evaluated_by,created_at")
+            .order("created_at", { ascending: false }),
+
+          db.from("internship_completions")
+            .select("id,enrollment_id,status,completed_at,approved_by,notes,created_at,updated_at"),
+
+          db.from("internship_certificates")
+            .select("id,enrollment_id,certificate_number,verification_token,status,issued_by,issued_at,revoked_by,revoked_at,revocation_reason,created_at")
+            .order("issued_at", { ascending: false })
+        ]);
+
+        const labels = [
+          "Enrollments",
+          "Intern records",
+          "Programs",
+          "Final evaluations",
+          "Completion approvals",
+          "Final certificates"
+        ];
+
+        results.forEach((result, index) => {
+          if (result.error) {
+            throw new Error(labels[index] + ": " + result.error.message);
+          }
+        });
+
+        state.enrollments = results[0].data || [];
+        state.interns = results[1].data || [];
+        state.programs = results[2].data || [];
+        state.evaluations = results[3].data || [];
+        state.completions = results[4].data || [];
+        state.certificates = results[5].data || [];
+
+        render();
+      }
+
+      function render() {
+        const activeInternEnrollmentIds = new Set(
+          state.interns
+            .filter(row => row.status === "ACTIVE")
+            .map(row => row.enrollment_id)
+        );
+
+        const activeEnrollments = state.enrollments.filter(row =>
+          activeInternEnrollmentIds.has(row.id) &&
+          ["ACTIVE", "PAYMENT_VERIFIED"].includes(row.status)
+        );
+
+        $("internCount").textContent = activeEnrollments.length;
+        $("completionCount").textContent =
+          state.completions.filter(row => row.status === "COMPLETED").length;
+        $("certificateCount").textContent =
+          state.certificates.filter(row => row.status === "VALID").length;
+
+        const query = $("searchInput").value.trim().toLowerCase();
+
+        const filtered = activeEnrollments.filter(enrollment => {
+          const intern = state.interns.find(row =>
+            row.enrollment_id === enrollment.id
+          );
+          const program = state.programs.find(row =>
+            row.id === enrollment.program_id
+          );
+
+          return [
+            intern?.intern_id,
+            enrollment.id,
+            enrollment.status,
+            program?.name
+          ].join(" ").toLowerCase().includes(query);
+        });
+
+        if (!filtered.length) {
+          $("internList").innerHTML =
+            '<div class="empty">No active intern enrollments found for this search.</div>';
+          return;
+        }
+
+        $("internList").innerHTML = filtered.map(enrollment => {
+          const intern = state.interns.find(row =>
+            row.enrollment_id === enrollment.id
+          );
+          const program = state.programs.find(row =>
+            row.id === enrollment.program_id
+          );
+          const evaluation = latestEvaluation(enrollment.id);
+          const completion = completionFor(enrollment.id);
+          const certificate = certificateFor(enrollment.id);
+
+          const approvedEvaluation = evaluation?.decision === "APPROVED";
+          const completed = completion?.status === "COMPLETED";
+          const validCertificate = certificate?.status === "VALID";
+
+          const evaluationHtml = evaluation
+            ? `<p>Latest evaluation: ${badge(evaluation.decision)}</p>
+               <p><strong>Marks:</strong> ${escapeHtml(evaluation.marks)}/100</p>
+               <p><strong>Feedback:</strong> ${escapeHtml(evaluation.feedback || "No feedback")}</p>
+               <p class="help">Recorded: ${escapeHtml(new Date(evaluation.created_at).toLocaleString())}</p>`
+            : '<p class="muted">No final evaluation recorded yet.</p>';
+
+          const completionHtml = completion
+            ? `<p>${badge(completion.status)}</p>
+               <p><strong>Completed:</strong> ${escapeHtml(new Date(completion.completed_at).toLocaleString())}</p>
+               <p><strong>Notes:</strong> ${escapeHtml(completion.notes || "No notes")}</p>`
+            : '<p class="muted">Completion has not been approved.</p>';
+
+          let certificateHtml = '<p class="muted">No final certificate issued yet.</p>';
+
+          if (certificate) {
+            certificateHtml = `
+              <div class="certificate-info">
+                <p><strong>Certificate:</strong> ${escapeHtml(certificate.certificate_number)}</p>
+                <p><strong>Status:</strong> ${badge(certificate.status)}</p>
+                <p><strong>Issued:</strong> ${escapeHtml(new Date(certificate.issued_at).toLocaleString())}</p>
+                ${certificate.status === "REVOKED"
+                  ? `<p><strong>Revocation reason:</strong> ${escapeHtml(certificate.revocation_reason || "Not provided")}</p>`
+                  : ""}
+                <p class="help">Verification token: ${escapeHtml(certificate.verification_token)}</p>
+              </div>`;
+
+            if (validCertificate) {
+              certificateHtml += `
+                <div class="actions">
+                  <button class="btn danger" type="button"
+                    data-action="revoke"
+                    data-certificate-id="${escapeHtml(certificate.id)}">
+                    Revoke certificate
+                  </button>
+                </div>`;
+            }
+          }
+
+          const completionDisabled = !approvedEvaluation || completed;
+          const issueDisabled = !approvedEvaluation || !completed || validCertificate;
+
+          return `
+            <article class="intern-card">
+              <div class="card-header">
+                <div>
+                  <h2>${escapeHtml(intern?.intern_id || "Intern")}</h2>
+                  <div class="meta">
+                    <span>Program: ${escapeHtml(program?.name || "Unknown program")}</span>
+                    <span>Enrollment: ${escapeHtml(enrollment.id)}</span>
+                    <span>Enrollment status: ${escapeHtml(enrollment.status)}</span>
+                  </div>
+                </div>
+                ${badge(enrollment.status)}
+              </div>
+
+              <section class="section">
+                <h3>1. Final evaluation</h3>
+                ${evaluationHtml}
+
+                <form class="evaluation-form" data-enrollment-id="${escapeHtml(enrollment.id)}">
+                  <div class="form-grid">
+                    <div class="field">
+                      <label>Marks (0–100)</label>
+                      <input type="number" name="marks" min="0" max="100"
+                        step="1" required value="${evaluation ? escapeHtml(evaluation.marks) : ""}">
+                    </div>
+
+                    <div class="field">
+                      <label>Decision</label>
+                      <select name="decision" required>
+                        <option value="APPROVED" ${evaluation?.decision === "APPROVED" ? "selected" : ""}>Approved</option>
+                        <option value="REASSESSMENT_REQUIRED" ${evaluation?.decision === "REASSESSMENT_REQUIRED" ? "selected" : ""}>Reassessment required</option>
+                        <option value="NOT_APPROVED" ${evaluation?.decision === "NOT_APPROVED" ? "selected" : ""}>Not approved</option>
+                      </select>
+                    </div>
+
+                    <div class="field full">
+                      <label>Feedback</label>
+                      <textarea name="feedback" placeholder="Enter final evaluation feedback">${escapeHtml(evaluation?.feedback || "")}</textarea>
+                    </div>
+                  </div>
+
+                  <div class="actions">
+                    <button class="btn" type="submit">Save final evaluation</button>
+                  </div>
+                </form>
+              </section>
+
+              <section class="section">
+                <h3>2. Internship completion</h3>
+                ${completionHtml}
+
+                <form class="completion-form" data-enrollment-id="${escapeHtml(enrollment.id)}">
+                  <div class="field">
+                    <label>Admin notes (optional)</label>
+                    <textarea name="notes" placeholder="Record the completion review notes"></textarea>
+                  </div>
+
+                  <label class="check-row" style="margin-top:12px">
+                    <input type="checkbox" name="requirementsVerified" required ${completion ? "checked" : ""}>
+                    <span>I have verified that the required learning, tasks, projects and internship requirements have been checked.</span>
+                  </label>
+
+                  <p class="help">Only confirm this after reviewing the intern's actual work. The checkbox does not automatically verify progress.</p>
+
+                  <div class="actions">
+                    <button class="btn" type="submit" ${completionDisabled ? "disabled" : ""}>
+                      ${completed ? "Completion approved" : "Approve completion"}
+                    </button>
+                  </div>
+                </form>
+              </section>
+
+              <section class="section">
+                <h3>3. Final internship certificate</h3>
+                ${certificateHtml}
+
+                <div class="actions">
+                  <button class="btn" type="button"
+                    data-action="issue"
+                    data-enrollment-id="${escapeHtml(enrollment.id)}"
+                    ${issueDisabled ? "disabled" : ""}>
+                    Issue final certificate
+                  </button>
+                </div>
+
+                ${!approvedEvaluation
+                  ? '<p class="help">Certificate issuance requires the latest final evaluation to be APPROVED.</p>'
+                  : ""}
+                ${!completed
+                  ? '<p class="help">Certificate issuance also requires approved internship completion.</p>'
+                  : ""}
+              </section>
+            </article>`;
+        }).join("");
+      }
+
+      async function saveEvaluation(form) {
+        const enrollmentId = form.dataset.enrollmentId;
+        const marks = Number(form.elements.marks.value);
+        const feedback = form.elements.feedback.value.trim();
+        const decision = form.elements.decision.value;
+
+        if (!Number.isInteger(marks) || marks < 0 || marks > 100) {
+          throw new Error("Marks must be a whole number between 0 and 100.");
+        }
+
+        const { error } = await state.db.rpc("admin_record_final_evaluation", {
+          p_enrollment_id: enrollmentId,
+          p_marks: marks,
+          p_feedback: feedback || null,
+          p_decision: decision
+        });
+
+        if (error) throw error;
+
+        showAlert("Final evaluation saved successfully.", "success");
+        await loadData();
+      }
+
+      async function approveCompletion(form) {
+        const enrollmentId = form.dataset.enrollmentId;
+        const verified = form.elements.requirementsVerified.checked;
+        const notes = form.elements.notes.value.trim();
+
+        if (!verified) {
+          throw new Error("Confirm that the required internship work has been checked.");
+        }
+
+        if (!window.confirm(
+          "Approve internship completion for this enrollment? Confirm only after checking the intern's actual requirements."
+        )) return;
+
+        const { error } = await state.db.rpc("admin_approve_internship_completion", {
+          p_enrollment_id: enrollmentId,
+          p_requirements_verified: verified,
+          p_notes: notes || null
+        });
+
+        if (error) throw error;
+
+        showAlert("Internship completion approved.", "success");
+        await loadData();
+      }
+
+      async function issueCertificate(enrollmentId) {
+        if (!window.confirm(
+          "Issue the final internship certificate? Make sure the final evaluation and completion are approved."
+        )) return;
+
+        const { data, error } = await state.db.rpc(
+          "admin_issue_internship_certificate",
+          { p_enrollment_id: enrollmentId }
+        );
+
+        if (error) throw error;
+
+        showAlert(
+          "Certificate issued: " + (data?.certificate_number || "Success"),
+          "success"
+        );
+
+        await loadData();
+      }
+
+      async function revokeCertificate(certificateId) {
+        const reason = window.prompt("Enter the reason for revoking this certificate:");
+        if (reason === null) return;
+
+        if (!reason.trim()) {
+          throw new Error("A revocation reason is required.");
+        }
+
+        if (!window.confirm("Are you sure you want to revoke this certificate?")) return;
+
+        const { error } = await state.db.rpc(
+          "admin_revoke_internship_certificate",
+          {
+            p_certificate_id: certificateId,
+            p_reason: reason.trim()
+          }
+        );
+
+        if (error) throw error;
+
+        showAlert("Certificate revoked successfully.", "success");
+        await loadData();
+      }
+
+      async function runAction(action) {
+        if (state.busy) return;
+
+        state.busy = true;
+        $("refreshBtn").disabled = true;
+
+        try {
+          await action();
+        } catch (error) {
+          console.error(error);
+          showAlert(error.message || "An unexpected error occurred.", "error");
+        } finally {
+          state.busy = false;
+          $("refreshBtn").disabled = false;
+        }
+      }
+
+      document.addEventListener("submit", event => {
+        const form = event.target;
+
+        if (form.matches(".evaluation-form")) {
+          event.preventDefault();
+          runAction(() => saveEvaluation(form));
+        }
+
+        if (form.matches(".completion-form")) {
+          event.preventDefault();
+          runAction(() => approveCompletion(form));
+        }
+      });
+
+      document.addEventListener("click", event => {
+        const button = event.target.closest("button[data-action]");
+        if (!button) return;
+
+        if (button.dataset.action === "issue") {
+          runAction(() => issueCertificate(button.dataset.enrollmentId));
+        }
+
+        if (button.dataset.action === "revoke") {
+          runAction(() => revokeCertificate(button.dataset.certificateId));
+        }
+      });
+
+      $("refreshBtn").addEventListener("click", () => {
+        runAction(loadData);
+      });
+
+      $("searchInput").addEventListener("input", render);
+
+      $("clearSearchBtn").addEventListener("click", () => {
+        $("searchInput").value = "";
+        render();
+      });
+
+      async function init() {
+        try {
+          if (!(await verifyAdmin())) return;
+
+          await loadData();
+          showAlert(
+            "Admin access verified. Final evaluation and certificate management is ready.",
+            "success"
+          );
+        } catch (error) {
+          console.error(error);
+          showAlert(error.message || "Could not initialize the page.", "error");
+          $("internList").innerHTML =
+            '<div class="empty">Unable to load certificate management data. Check the error message above.</div>';
+        }
+      }
+
+      init();
+    })();
+  </script>
+</body>
+</html>

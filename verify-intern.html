@@ -1,0 +1,2060 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#10152f">
+  <meta name="description" content="Official NITRIXA Technologies intern and approved project verification portal.">
+  <title>Intern Verification | NITRIXA Technologies</title>
+
+  <style>
+    :root {
+      --ink: #151b35;
+      --muted: #727b98;
+      --purple: #7163ff;
+      --cyan: #52e1f2;
+      --green: #0a9b72;
+      --line: #e8eaf4;
+      --surface: #ffffff;
+      --page: #f5f6fc;
+      --shadow: 0 20px 65px rgba(29, 35, 85, .09);
+      --radius: 24px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      background:
+        radial-gradient(ellipse at 0 10%, rgba(113,99,255,.09), transparent 35%),
+        radial-gradient(ellipse at 100% 42%, rgba(82,225,242,.11), transparent 30%),
+        var(--page);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system,
+        BlinkMacSystemFont, "Segoe UI", sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    button, input { font: inherit; }
+    button, a, label { -webkit-tap-highlight-color: transparent; }
+
+    button:focus-visible, a:focus-visible, input:focus-visible,
+    label:focus-within {
+      outline: 3px solid rgba(113,99,255,.45);
+      outline-offset: 3px;
+    }
+
+    .site-header {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 17px clamp(18px, 5vw, 76px);
+      border-bottom: 1px solid rgba(225,228,244,.85);
+      background: rgba(255,255,255,.86);
+      backdrop-filter: blur(18px);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .brand-mark {
+      display: grid;
+      place-items: center;
+      width: 45px;
+      height: 45px;
+      flex: 0 0 45px;
+      border-radius: 15px;
+      color: white;
+      background: linear-gradient(145deg, #897cff, #5141d7);
+      box-shadow: 0 8px 20px rgba(91,73,226,.25);
+    }
+
+    .brand-mark svg { width: 26px; height: 26px; }
+
+    .brand-name {
+      display: block;
+      color: #171d3b;
+      font-size: 14px;
+      font-weight: 900;
+      letter-spacing: .65px;
+    }
+
+    .brand-caption {
+      display: block;
+      margin-top: 4px;
+      color: #858ba5;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .header-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      padding: 10px 14px;
+      border: 1px solid #dcefe8;
+      border-radius: 999px;
+      color: #087c5d;
+      background: #f0fbf6;
+      font-size: 11px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .live-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #14b889;
+      box-shadow: 0 0 0 4px rgba(20,184,137,.12);
+    }
+
+    main {
+      width: min(1160px, 100%);
+      margin: 0 auto;
+      padding: 38px 26px 65px;
+    }
+
+    .hero {
+      position: relative;
+      isolation: isolate;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: minmax(0,1fr) 220px;
+      align-items: center;
+      gap: 35px;
+      min-height: 310px;
+      padding: clamp(30px, 5vw, 65px);
+      border: 1px solid rgba(255,255,255,.13);
+      border-radius: 30px;
+      color: white;
+      background:
+        radial-gradient(ellipse at 83% 10%, rgba(82,225,242,.22), transparent 33%),
+        radial-gradient(ellipse at 0 100%, rgba(113,99,255,.3), transparent 42%),
+        linear-gradient(120deg, #10152f 0%, #1b2450 58%, #30266d 100%);
+      box-shadow: 0 28px 75px rgba(23,28,77,.19);
+      animation: appear .55s ease both;
+    }
+
+    .hero::before, .hero::after {
+      position: absolute;
+      z-index: -1;
+      content: "";
+      border: 1px solid rgba(255,255,255,.09);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .hero::before {
+      width: 390px;
+      height: 390px;
+      right: -150px;
+      top: -240px;
+      box-shadow: 0 0 0 35px rgba(255,255,255,.025),
+                  0 0 0 75px rgba(255,255,255,.02);
+    }
+
+    .hero::after {
+      width: 190px;
+      height: 190px;
+      right: 130px;
+      bottom: -155px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      margin-bottom: 22px;
+      padding: 9px 13px;
+      border: 1px solid rgba(151,240,255,.23);
+      border-radius: 999px;
+      color: #b4f5ff;
+      background: rgba(82,225,242,.08);
+      font-size: 10px;
+      font-weight: 850;
+      letter-spacing: 1.25px;
+    }
+
+    .eyebrow-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #62edc0;
+    }
+
+    .hero h1 {
+      max-width: 700px;
+      margin: 0;
+      font-size: clamp(36px, 5vw, 61px);
+      font-weight: 850;
+      line-height: 1.06;
+      letter-spacing: -2.2px;
+    }
+
+    .hero h1 span { color: var(--cyan); }
+
+    .hero-description {
+      max-width: 570px;
+      margin: 20px 0 0;
+      color: #c5cbe6;
+      font-size: 14px;
+      line-height: 1.95;
+    }
+
+    .hero-graphic {
+      position: relative;
+      display: grid;
+      place-items: center;
+      width: 190px;
+      aspect-ratio: 1;
+      justify-self: center;
+      border: 1px solid rgba(255,255,255,.15);
+      border-radius: 38px;
+      background: linear-gradient(145deg, rgba(255,255,255,.12), rgba(255,255,255,.035));
+      box-shadow: inset 0 1px rgba(255,255,255,.1),
+                  0 20px 50px rgba(0,0,0,.1);
+      transform: rotate(3deg);
+      animation: float 5s ease-in-out infinite;
+    }
+
+    .hero-graphic::before {
+      position: absolute;
+      inset: 12px;
+      content: "";
+      border: 1px solid rgba(255,255,255,.09);
+      border-radius: 29px;
+    }
+
+    .hero-graphic svg {
+      width: 85px;
+      height: 85px;
+      color: #a8f3ff;
+      filter: drop-shadow(0 0 15px rgba(82,225,242,.18));
+    }
+
+    .section-label {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      margin: 36px 0 17px;
+      color: #747d99;
+      font-size: 10px;
+      font-weight: 850;
+      letter-spacing: 1.7px;
+      text-transform: uppercase;
+    }
+
+    .section-label::before {
+      width: 22px;
+      height: 2px;
+      content: "";
+      border-radius: 2px;
+      background: var(--purple);
+    }
+
+    .search-panel {
+      display: grid;
+      grid-template-columns: minmax(0,1fr) auto;
+      align-items: end;
+      gap: 25px;
+      padding: 25px 28px;
+      margin-top: 25px;
+      border: 1px solid var(--line);
+      border-radius: 21px;
+      background: rgba(255,255,255,.94);
+      box-shadow: var(--shadow);
+    }
+
+    .search-title {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      margin-bottom: 17px;
+    }
+
+    .search-icon, .card-icon {
+      display: grid;
+      place-items: center;
+      flex: 0 0 auto;
+      color: #6355ef;
+      background: #f0efff;
+    }
+
+    .search-icon {
+      width: 43px;
+      height: 43px;
+      border-radius: 14px;
+    }
+
+    .search-icon svg, .card-icon svg { width: 22px; height: 22px; }
+
+    .search-title h2 {
+      margin: 0 0 5px;
+      color: #171d3b;
+      font-size: 19px;
+      font-weight: 850;
+      letter-spacing: -.5px;
+    }
+
+    .search-title p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.7;
+    }
+
+    .input-label {
+      display: block;
+      margin-bottom: 8px;
+      color: #39415f;
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .search-input {
+      display: block;
+      width: 100%;
+      min-height: 51px;
+      padding: 13px 15px;
+      border: 1px solid #dfe3f2;
+      border-radius: 12px;
+      outline: none;
+      color: #1c2444;
+      background: #fafbff;
+      font-size: 13px;
+      transition: border-color .2s, box-shadow .2s;
+    }
+
+    .search-input:focus {
+      border-color: #a9a2ff;
+      box-shadow: 0 0 0 4px rgba(113,99,255,.1);
+    }
+
+    .primary-button, .secondary-button, .upload-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      min-height: 47px;
+      padding: 12px 18px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 850;
+      cursor: pointer;
+      transition: transform .2s, box-shadow .2s, background .2s;
+    }
+
+    .primary-button {
+      border: 0;
+      color: white;
+      background: linear-gradient(115deg, #796bff, #5444e0);
+      box-shadow: 0 8px 20px rgba(91,73,226,.22);
+    }
+
+    .primary-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 13px 25px rgba(91,73,226,.28);
+    }
+
+    .secondary-button, .upload-button {
+      border: 1px solid #dedbff;
+      color: #5548d9;
+      background: #f5f4ff;
+    }
+
+    .secondary-button:hover, .upload-button:hover { background: #eceaff; }
+
+    .primary-button:disabled, .secondary-button:disabled {
+      opacity: .65;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .primary-button svg { width: 17px; height: 17px; }
+
+    .feedback {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 15px 17px;
+      margin-top: 17px;
+      border: 1px solid #e0e4f3;
+      border-radius: 14px;
+      color: #4b5590;
+      background: #f0f2ff;
+      font-size: 12px;
+      line-height: 1.8;
+      overflow-wrap: anywhere;
+    }
+
+    .feedback-icon {
+      display: grid;
+      place-items: center;
+      width: 30px;
+      height: 30px;
+      flex: 0 0 30px;
+      border-radius: 10px;
+      background: rgba(255,255,255,.8);
+    }
+
+    .feedback-icon svg { width: 17px; height: 17px; }
+
+    .feedback-title {
+      display: block;
+      margin-bottom: 2px;
+      font-size: 12px;
+      font-weight: 850;
+    }
+
+    .feedback.info { color: #4b5590; background: #f0f2ff; border-color: #e0e4f3; }
+    .feedback.success { color: #087d5b; background: #edfbf5; border-color: #d0f1e2; }
+    .feedback.warning { color: #93590a; background: #fff8e8; border-color: #f5e7bf; }
+    .feedback.error { color: #a32d40; background: #fff0f2; border-color: #f8d7de; }
+
+    .hidden { display: none !important; }
+
+    /* QR Scanner */
+    .qr-scanner-panel {
+      margin-top: 20px;
+      padding: 25px 28px;
+      border: 1px solid var(--line);
+      border-radius: 21px;
+      background: rgba(255,255,255,.96);
+      box-shadow: var(--shadow);
+    }
+
+    .qr-scanner-heading {
+      margin: 0 0 8px;
+      color: #171d3b;
+      font-size: 19px;
+      font-weight: 850;
+    }
+
+    .qr-scanner-description {
+      max-width: 750px;
+      margin: 0 0 18px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.9;
+    }
+
+    .qr-scanner-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .upload-button { position: relative; overflow: hidden; }
+
+    .upload-button input {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    #qr-reader {
+      width: 100%;
+      max-width: 520px;
+      margin-top: 18px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: #fff;
+    }
+
+    #qr-reader video {
+      width: 100% !important;
+      border-radius: 12px;
+    }
+
+    #qr-reader__dashboard button,
+    #qr-reader__dashboard select {
+      max-width: 100%;
+      padding: 8px;
+      border-radius: 8px;
+    }
+
+    .qr-help {
+      margin: 13px 0 0;
+      color: #858ba5;
+      font-size: 11px;
+      line-height: 1.8;
+    }
+
+    .result { margin-top: 35px; animation: appear .45s ease both; }
+
+    .result-heading {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 18px;
+    }
+
+    .result-kicker {
+      margin: 0 0 8px;
+      color: #777f9c;
+      font-size: 10px;
+      font-weight: 850;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+
+    .result-heading h2 {
+      margin: 0;
+      color: #171d3b;
+      font-size: clamp(25px, 3vw, 35px);
+      font-weight: 850;
+      letter-spacing: -1px;
+    }
+
+    .verification-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 11px 15px;
+      border: 1px solid #bcebd8;
+      border-radius: 12px;
+      color: #087c5b;
+      background: #eafaf3;
+      font-size: 11px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .verification-badge.not-verified {
+      border-color: #f1dfad;
+      color: #8a5a05;
+      background: #fff7df;
+    }
+
+    .verification-badge svg { width: 17px; height: 17px; }
+
+    .profile-banner {
+      position: relative;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: minmax(0,1fr) auto;
+      align-items: center;
+      gap: 22px;
+      padding: 31px;
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 24px;
+      color: white;
+      background:
+        radial-gradient(ellipse at 90% 0%, rgba(82,225,242,.16), transparent 35%),
+        linear-gradient(120deg, #171d40, #27295e);
+      box-shadow: 0 18px 45px rgba(25,31,76,.12);
+    }
+
+    .profile-identity {
+      display: flex;
+      align-items: center;
+      gap: 19px;
+      min-width: 0;
+    }
+
+    .avatar {
+      display: grid;
+      place-items: center;
+      width: 77px;
+      height: 77px;
+      flex: 0 0 77px;
+      border: 1px solid rgba(255,255,255,.2);
+      border-radius: 24px;
+      color: white;
+      background: linear-gradient(145deg, #8174ff, #4d42c5);
+      font-size: 28px;
+      font-weight: 900;
+      box-shadow: 0 10px 28px rgba(0,0,0,.13);
+    }
+
+    .profile-overline {
+      margin: 0 0 8px;
+      color: #a7b0d8;
+      font-size: 10px;
+      font-weight: 850;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+    }
+
+    .profile-name {
+      margin: 0;
+      color: white;
+      font-size: clamp(23px, 3.2vw, 36px);
+      font-weight: 850;
+      line-height: 1.2;
+      letter-spacing: -.9px;
+      overflow-wrap: anywhere;
+    }
+
+    .profile-id {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      margin-top: 10px;
+      color: #c7cde9;
+      font-size: 12px;
+      overflow-wrap: anywhere;
+    }
+
+    .profile-id strong { color: #a8f2ff; font-weight: 800; }
+    .profile-side { text-align: right; }
+
+    .profile-side-label {
+      display: block;
+      margin-bottom: 8px;
+      color: #aab1d5;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .profile-side-value {
+      display: block;
+      color: white;
+      font-size: 14px;
+      font-weight: 850;
+    }
+
+    .profile-side-note {
+      display: block;
+      margin-top: 6px;
+      color: #bfc5e2;
+      font-size: 11px;
+    }
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: minmax(0,1.15fr) minmax(0,.85fr);
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .content-card {
+      min-width: 0;
+      padding: 26px;
+      border: 1px solid var(--line);
+      border-radius: 21px;
+      background: rgba(255,255,255,.96);
+      box-shadow: var(--shadow);
+    }
+
+    .card-heading {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      margin-bottom: 22px;
+    }
+
+    .card-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+    }
+
+    .card-heading h3 {
+      margin: 0 0 5px;
+      color: #1b2140;
+      font-size: 17px;
+      font-weight: 850;
+      letter-spacing: -.4px;
+    }
+
+    .card-heading p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.7;
+    }
+
+    .details-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: 11px;
+    }
+
+    .detail {
+      min-width: 0;
+      padding: 15px;
+      border: 1px solid #ebedf6;
+      border-radius: 13px;
+      background: #fafbff;
+      transition: border-color .2s, transform .2s;
+    }
+
+    .detail:hover { transform: translateY(-2px); border-color: #cfcbff; }
+
+    .detail-label {
+      display: block;
+      margin-bottom: 8px;
+      color: #7b839e;
+      font-size: 9px;
+      font-weight: 850;
+      letter-spacing: .9px;
+      text-transform: uppercase;
+    }
+
+    .detail-value {
+      display: block;
+      color: #252b49;
+      font-size: 12px;
+      font-weight: 800;
+      line-height: 1.7;
+      overflow-wrap: anywhere;
+      word-break: break-word;
+    }
+
+    .program-description {
+      margin: 18px 0 0;
+      padding: 16px;
+      border: 1px solid #e9e8ff;
+      border-radius: 13px;
+      color: #626b89;
+      background: #f8f7ff;
+      font-size: 12px;
+      line-height: 1.9;
+      overflow-wrap: anywhere;
+    }
+
+    .program-description strong {
+      display: block;
+      margin-bottom: 6px;
+      color: #34345f;
+      font-size: 11px;
+      font-weight: 850;
+    }
+
+    .status-list { display: grid; gap: 12px; }
+
+    .status-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 14px 15px;
+      border: 1px solid #ebedf6;
+      border-radius: 13px;
+      background: #fafbff;
+    }
+
+    .status-item-label { color: #747d98; font-size: 11px; font-weight: 700; }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 9px;
+      border-radius: 8px;
+      color: #5145c8;
+      background: #efeeff;
+      font-size: 10px;
+      font-weight: 850;
+      text-align: right;
+      overflow-wrap: anywhere;
+    }
+
+    .status-pill.good { color: #087d5b; background: #e5f8ef; }
+    .status-pill.pending { color: #8a5a05; background: #fff3d3; }
+
+    .technology-section { margin-top: 23px; }
+
+    .subsection-title {
+      margin: 0 0 12px;
+      color: #252b49;
+      font-size: 13px;
+      font-weight: 850;
+    }
+
+    .technology-list { display: flex; flex-wrap: wrap; gap: 8px; }
+
+    .technology-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 9px 11px;
+      border: 1px solid #dfdefe;
+      border-radius: 10px;
+      color: #5045d9;
+      background: #f5f4ff;
+      font-size: 11px;
+      font-weight: 800;
+      overflow-wrap: anywhere;
+    }
+
+    .technology-tag::before {
+      width: 6px;
+      height: 6px;
+      flex: 0 0 6px;
+      content: "";
+      border-radius: 50%;
+      background: #7669ff;
+    }
+
+    .projects-section {
+      margin-top: 23px;
+      padding: 27px;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: rgba(255,255,255,.97);
+      box-shadow: var(--shadow);
+    }
+
+    .projects-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 22px;
+    }
+
+    .projects-title-wrap { display: flex; align-items: center; gap: 13px; }
+
+    .projects-header h3 {
+      margin: 0 0 6px;
+      color: #1b2140;
+      font-size: 20px;
+      font-weight: 850;
+      letter-spacing: -.6px;
+    }
+
+    .projects-header p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.8;
+    }
+
+    .project-counter {
+      display: grid;
+      place-items: center;
+      min-width: 43px;
+      height: 43px;
+      padding: 0 10px;
+      border: 1px solid #e2e0ff;
+      border-radius: 14px;
+      color: #5145d9;
+      background: #f2f1ff;
+      font-size: 14px;
+      font-weight: 900;
+    }
+
+    .project-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: 16px;
+    }
+
+    .project-card {
+      min-width: 0;
+      padding: 22px;
+      border: 1px solid #e7e9f4;
+      border-radius: 17px;
+      background:
+        radial-gradient(ellipse at 100% 0, rgba(113,99,255,.06), transparent 42%),
+        #fff;
+      transition: transform .22s, border-color .22s, box-shadow .22s;
+      animation: appear .4s ease both;
+    }
+
+    .project-card:hover {
+      transform: translateY(-4px);
+      border-color: #cfcbff;
+      box-shadow: 0 15px 32px rgba(44,47,113,.09);
+    }
+
+    .project-card-top { display: flex; align-items: flex-start; gap: 13px; margin-bottom: 17px; }
+
+    .project-symbol {
+      display: grid;
+      place-items: center;
+      width: 48px;
+      height: 48px;
+      flex: 0 0 48px;
+      border-radius: 15px;
+      color: #6152e8;
+      background: #efeeff;
+    }
+
+    .project-symbol svg { width: 24px; height: 24px; }
+
+    .project-card h4 {
+      margin: 2px 0 7px;
+      color: #202744;
+      font-size: 16px;
+      font-weight: 850;
+      line-height: 1.5;
+      overflow-wrap: anywhere;
+    }
+
+    .project-type {
+      color: #8188a2;
+      font-size: 9px;
+      font-weight: 850;
+      letter-spacing: .9px;
+      text-transform: uppercase;
+    }
+
+    .project-description {
+      margin: 0;
+      color: #707995;
+      font-size: 12px;
+      line-height: 1.9;
+      overflow-wrap: anywhere;
+    }
+
+    .project-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 20px;
+      padding-top: 15px;
+      border-top: 1px solid #eef0f7;
+    }
+
+    .approved-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 8px 10px;
+      border: 1px solid #c9efdf;
+      border-radius: 9px;
+      color: #087d5b;
+      background: #eafaf3;
+      font-size: 10px;
+      font-weight: 850;
+    }
+
+    .approved-badge svg { width: 14px; height: 14px; }
+
+    .project-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: #5749dc;
+      font-size: 11px;
+      font-weight: 850;
+      text-decoration: none;
+    }
+
+    .project-link:hover { text-decoration: underline; }
+
+    .empty-projects {
+      padding: 36px 20px;
+      border: 1px dashed #d8dcef;
+      border-radius: 17px;
+      background: #fafbff;
+      text-align: center;
+    }
+
+    .empty-project-icon {
+      display: grid;
+      place-items: center;
+      width: 54px;
+      height: 54px;
+      margin: 0 auto 14px;
+      border-radius: 17px;
+      color: #6355eb;
+      background: #efeeff;
+    }
+
+    .empty-project-icon svg { width: 25px; height: 25px; }
+
+    .empty-projects h4 {
+      margin: 0 0 8px;
+      color: #292f4e;
+      font-size: 15px;
+      font-weight: 850;
+    }
+
+    .empty-projects p {
+      max-width: 480px;
+      margin: 0 auto;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.9;
+    }
+
+    .privacy-note {
+      display: flex;
+      align-items: flex-start;
+      gap: 11px;
+      padding: 16px;
+      margin-top: 20px;
+      border: 1px solid #d7eee4;
+      border-radius: 13px;
+      color: #4f796c;
+      background: #f0fbf6;
+      font-size: 11px;
+      line-height: 1.9;
+    }
+
+    .privacy-note svg {
+      width: 18px;
+      height: 18px;
+      flex: 0 0 18px;
+      margin-top: 2px;
+    }
+
+    .footer {
+      padding: 25px 20px;
+      border-top: 1px solid #e6e8f3;
+      color: #828aa4;
+      background: rgba(255,255,255,.88);
+      text-align: center;
+      font-size: 11px;
+      line-height: 1.9;
+    }
+
+    .footer strong { color: #333b5b; font-weight: 850; }
+
+    .footer-note {
+      display: block;
+      margin-top: 5px;
+      color: #9ba2b7;
+      font-size: 10px;
+    }
+
+    @keyframes appear {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(3px) rotate(3deg); }
+      50% { transform: translateY(-5px) rotate(1deg); }
+    }
+
+    @media (max-width: 850px) {
+      main { padding: 28px 19px 45px; }
+      .hero { grid-template-columns: minmax(0,1fr) 130px; gap: 20px; padding: 35px; }
+      .hero-graphic { width: 125px; border-radius: 27px; }
+      .hero-graphic svg { width: 65px; height: 65px; }
+      .content-grid { grid-template-columns: minmax(0,1fr); }
+    }
+
+    @media (max-width: 600px) {
+      .site-header { padding: 13px 14px; gap: 10px; }
+      .brand { gap: 9px; }
+      .brand-mark { width: 38px; height: 38px; flex-basis: 38px; border-radius: 12px; }
+      .brand-mark svg { width: 22px; height: 22px; }
+      .brand-name { font-size: 10px; letter-spacing: .35px; }
+      .brand-caption { font-size: 9px; }
+      .header-status { gap: 7px; padding: 8px 9px; font-size: 9px; }
+      .live-dot { width: 6px; height: 6px; }
+      main { padding: 19px 12px 38px; }
+      .hero { grid-template-columns: minmax(0,1fr) 60px; gap: 12px; min-height: auto; padding: 26px 19px; border-radius: 22px; }
+      .eyebrow { margin-bottom: 16px; padding: 7px 9px; font-size: 8px; }
+      .hero h1 { font-size: clamp(29px, 8vw, 43px); letter-spacing: -1.2px; }
+      .hero-description { margin-top: 13px; font-size: 11px; line-height: 1.85; }
+      .hero-graphic { width: 57px; border-radius: 16px; }
+      .hero-graphic::before { inset: 5px; border-radius: 12px; }
+      .hero-graphic svg { width: 30px; height: 30px; }
+      .search-panel { grid-template-columns: minmax(0,1fr); gap: 17px; padding: 20px 16px; margin-top: 15px; border-radius: 17px; }
+      .search-title { gap: 10px; margin-bottom: 15px; }
+      .search-icon { width: 38px; height: 38px; flex-basis: 38px; }
+      .search-title h2 { font-size: 16px; }
+      .search-title p { font-size: 11px; }
+      .primary-button { width: 100%; }
+      .qr-scanner-panel { padding: 20px 16px; border-radius: 17px; }
+      .qr-scanner-actions > * { flex: 1 1 100%; width: 100%; }
+      .feedback { padding: 12px; font-size: 11px; }
+      .result { margin-top: 27px; }
+      .result-heading { align-items: flex-start; flex-direction: column; gap: 12px; }
+      .result-heading h2 { font-size: 27px; }
+      .profile-banner { grid-template-columns: minmax(0,1fr); gap: 20px; padding: 22px 17px; border-radius: 19px; }
+      .profile-identity { align-items: center; gap: 13px; }
+      .avatar { width: 57px; height: 57px; flex-basis: 57px; border-radius: 17px; font-size: 21px; }
+      .profile-name { font-size: 23px; }
+      .profile-id { align-items: flex-start; flex-direction: column; gap: 4px; font-size: 10px; overflow-wrap: anywhere; }
+      .profile-side { padding-top: 16px; border-top: 1px solid rgba(255,255,255,.13); text-align: left; }
+      .content-grid { gap: 14px; margin-top: 14px; }
+      .content-card { padding: 20px 15px; border-radius: 17px; }
+      .card-heading { gap: 10px; margin-bottom: 17px; }
+      .card-icon { width: 39px; height: 39px; flex-basis: 39px; }
+      .card-heading h3 { font-size: 15px; }
+      .details-grid { grid-template-columns: minmax(0,1fr); gap: 9px; }
+      .detail { padding: 13px; }
+      .projects-section { padding: 19px 14px; margin-top: 14px; border-radius: 17px; }
+      .projects-header { gap: 12px; margin-bottom: 16px; }
+      .projects-title-wrap { gap: 10px; }
+      .projects-header h3 { font-size: 17px; }
+      .projects-header p { font-size: 11px; }
+      .project-counter { min-width: 37px; height: 37px; border-radius: 11px; }
+      .project-list { grid-template-columns: minmax(0,1fr); gap: 12px; }
+      .project-card { padding: 17px; }
+      .privacy-note { padding: 12px; font-size: 10px; }
+    }
+
+    @media (max-width: 350px) {
+      .header-status { white-space: normal; text-align: center; }
+      .hero { grid-template-columns: minmax(0,1fr); }
+      .hero-graphic { display: none; }
+      .profile-identity { align-items: flex-start; }
+      .profile-name { font-size: 20px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+
+    @media print {
+      body { color: #111; background: white; }
+      .site-header, .hero, .search-panel, .qr-scanner-panel, #message, .footer {
+        display: none !important;
+      }
+      main { width: 100%; max-width: none; padding: 0; }
+      .content-card, .projects-section { box-shadow: none; break-inside: avoid; }
+      .project-card, .detail { break-inside: avoid; }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="site-header">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none">
+          <path d="M5 18V6l7 8V6l7 12V6"
+            stroke="currentColor" stroke-width="2.2"
+            stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
+      <span>
+        <span class="brand-name">NITRIXA TECHNOLOGIES</span>
+        <span class="brand-caption">Official Intern Verification</span>
+      </span>
+    </div>
+    <div class="header-status"><span class="live-dot"></span>Public Verification Portal</div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div>
+        <div class="eyebrow"><span class="eyebrow-dot"></span>OFFICIAL VERIFICATION</div>
+        <h1>Verify the Person.<br>Explore the <span>Work.</span></h1>
+        <p class="hero-description">
+          A transparent view of internship records and approved project
+          experience. Verify an intern through the official NITRIXA system
+          and explore the work that has passed an approved review.
+        </p>
+      </div>
+      <div class="hero-graphic" aria-hidden="true">
+        <svg viewBox="0 0 64 64" fill="none">
+          <path d="M32 5L53 13V29C53 43 44 53 32 59C20 53 11 43 11 29V13L32 5Z"
+            stroke="currentColor" stroke-width="2.7" stroke-linejoin="round"/>
+          <path d="M21 32L28 39L43 23"
+            stroke="currentColor" stroke-width="3.2"
+            stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+    </section>
+
+    <div class="section-label">Verification portal</div>
+
+    <section class="search-panel">
+      <div>
+        <div class="search-title">
+          <span class="search-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none">
+              <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/>
+              <path d="m16 16 4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+            </svg>
+          </span>
+          <div>
+            <h2>Verify an Intern</h2>
+            <p>Enter the official Intern ID to view the recorded profile.</p>
+          </div>
+        </div>
+
+        <form id="verifyForm">
+          <label class="input-label" for="internId">Unique Intern ID</label>
+          <input class="search-input" id="internId" name="internId" type="text"
+            placeholder="e.g. NITRIXA-INT-2026-XXXXXXXX"
+            autocomplete="off" maxlength="120" required>
+        </form>
+      </div>
+
+      <button id="verifyButton" class="primary-button" type="submit" form="verifyForm">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/>
+          <path d="m16 16 4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+        Verify Intern
+      </button>
+    </section>
+
+    <section class="qr-scanner-panel" aria-labelledby="qrScannerTitle">
+      <h2 class="qr-scanner-heading" id="qrScannerTitle">Scan Intern Verification QR</h2>
+      <p class="qr-scanner-description">
+        Scan the official intern QR code using your device camera, or upload a saved QR image.
+        The scanner reads the verification token or Intern ID and checks it against the NITRIXA system.
+      </p>
+
+      <div class="qr-scanner-actions">
+        <button type="button" class="primary-button" id="startQrScanner">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3"
+              stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+            <rect x="8" y="8" width="8" height="8" rx="1"
+              stroke="currentColor" stroke-width="1.8"/>
+          </svg>
+          Scan with Camera
+        </button>
+
+        <button type="button" class="secondary-button" id="stopQrScanner" disabled>
+          Stop Camera
+        </button>
+
+        <label class="upload-button" for="qrImageInput">
+          Upload QR Image
+          <input type="file" id="qrImageInput" accept="image/*">
+        </label>
+      </div>
+
+      <div id="qr-reader" class="hidden"></div>
+      <p class="qr-help">
+        Camera scanning generally requires HTTPS or localhost and camera permission.
+        If camera access is unavailable, use Upload QR Image.
+      </p>
+    </section>
+
+    <div id="message" class="feedback info" role="status" aria-live="polite">
+      <span id="messageIcon" class="feedback-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none">
+          <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/>
+          <path d="M12 11v5M12 7.5h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </span>
+      <span>
+        <strong id="messageTitle" class="feedback-title">Ready to verify</strong>
+        <span id="messageText">Enter an Intern ID, scan a QR code, or open a unique verification link shared by the intern.</span>
+      </span>
+    </div>
+
+    <section id="result" class="result hidden" aria-live="polite"></section>
+  </main>
+
+  <footer class="footer">
+    © <span id="year"></span> <strong>NITRIXA TECHNOLOGIES</strong>
+    · Official Intern Verification Portal
+    <span class="footer-note">Verification reflects the records available in the NITRIXA system.</span>
+  </footer>
+
+  <!-- Keep the existing Supabase client file unchanged. -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase.js"></script>
+
+  <!-- QR scanning library: live camera + image upload. -->
+  <script src="https://unpkg.com/html5-qrcode"></script>
+
+  <script>
+    (() => {
+      "use strict";
+
+      const $ = id => document.getElementById(id);
+      $("year").textContent = new Date().getFullYear();
+
+      const icons = {
+        info: `
+          <svg viewBox="0 0 24 24" fill="none">
+            <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/>
+            <path d="M12 11v5M12 7.5h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>`,
+        success: `
+          <svg viewBox="0 0 24 24" fill="none">
+            <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/>
+            <path d="M8 12l2.5 2.5L16 9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>`,
+        warning: `
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M12 3L22 20H2L12 3Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+            <path d="M12 9v5M12 17h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>`,
+        error: `
+          <svg viewBox="0 0 24 24" fill="none">
+            <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/>
+            <path d="M9 9l6 6m0-6l-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>`
+      };
+
+      const titles = {
+        info: "Verification information",
+        success: "Verification record found",
+        warning: "Status needs attention",
+        error: "Unable to verify"
+      };
+
+      function showMessage(message, type = "info") {
+        $("message").className = "feedback " + type;
+        $("messageIcon").innerHTML = icons[type] || icons.info;
+        $("messageTitle").textContent = titles[type] || titles.info;
+        $("messageText").textContent = message;
+      }
+
+      function escapeHtml(value) {
+        return String(value ?? "").replace(/[&<>"']/g, character => ({
+          "&": "&amp;",
+          "<": "&lt;",
+          ">": "&gt;",
+          '"': "&quot;",
+          "'": "&#39;"
+        })[character]);
+      }
+
+      function displayValue(value, fallback = "Not available") {
+        if (value === null || value === undefined || value === "") return fallback;
+
+        if (Array.isArray(value)) {
+          const items = value
+            .filter(item => item !== null && item !== undefined && item !== "")
+            .map(String);
+          return items.length ? items.join(", ") : fallback;
+        }
+
+        return String(value);
+      }
+
+      function formatStatus(value) {
+        if (!value) return "Not available";
+
+        return String(value)
+          .replace(/_/g, " ")
+          .toLowerCase()
+          .replace(/\b\w/g, letter => letter.toUpperCase());
+      }
+
+      function initials(name) {
+        const parts = String(name || "").trim().split(/\s+/).filter(Boolean);
+        if (!parts.length) return "NT";
+        return parts.slice(0, 2)
+          .map(part => part.charAt(0).toUpperCase())
+          .join("");
+      }
+
+      function detail(label, value, fallback = "Not available") {
+        return `
+          <div class="detail">
+            <span class="detail-label">${escapeHtml(label)}</span>
+            <strong class="detail-value">${escapeHtml(displayValue(value, fallback))}</strong>
+          </div>
+        `;
+      }
+
+      function statusPill(value, type = "") {
+        return `<span class="status-pill ${type}">${escapeHtml(formatStatus(value))}</span>`;
+      }
+
+      function safePublicUrl(value) {
+        if (!value) return null;
+
+        try {
+          const url = new URL(String(value));
+
+          if (!["http:", "https:"].includes(url.protocol)) return null;
+
+          // Do not present placeholder URLs as genuine project submissions.
+          if (url.hostname === "example.com" || url.hostname.endsWith(".example.com")) {
+            return null;
+          }
+
+          return url.href;
+        } catch {
+          return null;
+        }
+      }
+
+      function renderTechnologies(data) {
+        const values = Array.isArray(data.technologies)
+          ? data.technologies.filter(Boolean)
+          : [];
+
+        if (!values.length) return "";
+
+        return `
+          <div class="technology-section">
+            <h4 class="subsection-title">Technologies &amp; Skills</h4>
+            <div class="technology-list">
+              ${values.map(value => `<span class="technology-tag">${escapeHtml(value)}</span>`).join("")}
+            </div>
+          </div>
+        `;
+      }
+
+      function renderProject(project) {
+        const title = escapeHtml(project.title || "Project");
+        const description = String(project.description || "").trim();
+        const safeDescription = description
+          ? escapeHtml(description)
+          : "No public project description is available.";
+
+        const type = String(project.project_type || "").toUpperCase();
+        const typeLabel = type === "WORK_PROJECT" ? "Work Project" : "Task Project";
+        const url = safePublicUrl(project.submission_url);
+
+        const link = url ? `
+          <a class="project-link" href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">
+            View submission ↗
+          </a>
+        ` : "";
+
+        return `
+          <article class="project-card">
+            <div class="project-card-top">
+              <span class="project-symbol" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none">
+                  <path d="M3 7a2 2 0 0 1 2-2h5l2 2h7a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z"
+                    stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
+                  <path d="M3 10h18" stroke="currentColor" stroke-width="1.7"/>
+                </svg>
+              </span>
+              <div style="min-width:0;flex:1">
+                <h4>${title}</h4>
+                <span class="project-type">${typeLabel}</span>
+              </div>
+            </div>
+            <p class="project-description">${safeDescription}</p>
+            <div class="project-footer">
+              <span class="approved-badge">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M5 12l4 4L19 6" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Approved Review
+              </span>
+              ${link}
+            </div>
+          </article>
+        `;
+      }
+
+      function renderProgramDescription(data) {
+        const description = String(data.program_description || "").trim();
+        if (!description) return "";
+
+        return `
+          <div class="program-description">
+            <strong>Program Overview</strong>
+            ${escapeHtml(description)}
+          </div>
+        `;
+      }
+
+      function renderProjects(data, includeProjects) {
+        if (!includeProjects) return "";
+
+        const projects = Array.isArray(data.projects)
+          ? data.projects.filter(project =>
+              project &&
+              String(project.status || "").toUpperCase() === "APPROVED" &&
+              String(project.title || "").trim()
+            )
+          : [];
+
+        const projectContent = projects.length ? `
+          <div class="project-list">${projects.map(renderProject).join("")}</div>
+        ` : `
+          <div class="empty-projects">
+            <span class="empty-project-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M3 7a2 2 0 0 1 2-2h5l2 2h7a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z"
+                  stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
+              </svg>
+            </span>
+            <h4>No approved projects to display yet</h4>
+            <p>
+              No projects with an approved latest review are currently available
+              for public display. This does not necessarily mean the intern has
+              never worked on a project.
+            </p>
+          </div>
+        `;
+
+        return `
+          <section class="projects-section">
+            <div class="projects-header">
+              <div class="projects-title-wrap">
+                <span class="card-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none">
+                    <path d="M4 5h16v14H4z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
+                    <path d="M8 9h8M8 13h5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+                  </svg>
+                </span>
+                <div>
+                  <h3>Verified Project Experience</h3>
+                  <p>Work with an approved recorded review.</p>
+                </div>
+              </div>
+              <span class="project-counter">${projects.length}</span>
+            </div>
+
+            ${projectContent}
+
+            <div class="privacy-note">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M12 3l8 4v5c0 5-3.4 7.8-8 9-4.6-1.2-8-4-8-9V7l8-4Z"
+                  stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
+                <path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="1.7"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <span>
+                Only approved project titles, descriptions and available submission
+                links are displayed. Reviewer feedback, marks, comments and uploaded
+                private files are not exposed.
+              </span>
+            </div>
+          </section>
+        `;
+      }
+
+      function showNotFound() {
+        $("result").classList.add("hidden");
+        $("result").innerHTML = "";
+        showMessage(
+          "No intern record matched the supplied ID or verification link. Check the details and try again.",
+          "error"
+        );
+      }
+
+      function renderResult(data, includeProjects) {
+        if (!data || data.found !== true) {
+          showNotFound();
+          return;
+        }
+
+        const status = String(data.verification_status || "").toUpperCase();
+
+        if (!["VERIFIED", "NOT_VERIFIED"].includes(status)) {
+          $("result").classList.add("hidden");
+          $("result").innerHTML = "";
+          showMessage(
+            "The record was found, but its verification status could not be confirmed.",
+            "warning"
+          );
+          return;
+        }
+
+        const verified = status === "VERIFIED";
+
+        showMessage(
+          verified
+            ? "The intern record is present in the NITRIXA system. Review the recorded details below."
+            : "The record exists, but its current status does not qualify as verified.",
+          verified ? "success" : "warning"
+        );
+
+        const name = displayValue(data.intern_name, "Name not available");
+        const completion = String(data.completion_status || "").toUpperCase();
+        const completionLabel = completion === "COMPLETED"
+          ? "Completed"
+          : "In progress or pending";
+
+        const internStatus = formatStatus(data.intern_status);
+        const enrollmentStatus = formatStatus(data.enrollment_status);
+
+        const profile = `
+          <div class="profile-banner">
+            <div class="profile-identity">
+              <div class="avatar">${escapeHtml(initials(data.intern_name))}</div>
+              <div style="min-width:0">
+                <p class="profile-overline">Intern profile</p>
+                <h3 class="profile-name">${escapeHtml(name)}</h3>
+                <div class="profile-id">
+                  <span>INTERN ID</span>
+                  <strong>${escapeHtml(displayValue(data.intern_id))}</strong>
+                </div>
+              </div>
+            </div>
+            <div class="profile-side">
+              <span class="profile-side-label">Registered program</span>
+              <span class="profile-side-value">${escapeHtml(displayValue(data.program_name))}</span>
+              <span class="profile-side-note">
+                ${verified ? "Record verified in system" : "Status requires attention"}
+              </span>
+            </div>
+          </div>
+        `;
+
+        $("result").innerHTML = `
+          <div class="result-heading">
+            <div>
+              <p class="result-kicker">Official record</p>
+              <h2>Intern Profile</h2>
+            </div>
+            <span class="verification-badge ${verified ? "" : "not-verified"}">
+              ${icons[verified ? "success" : "warning"]}
+              ${verified ? "VERIFIED RECORD" : "NOT VERIFIED"}
+            </span>
+          </div>
+
+          ${profile}
+
+          <div class="content-grid">
+            <section class="content-card">
+              <div class="card-heading">
+                <span class="card-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none">
+                    <rect x="4" y="3" width="16" height="18" rx="2" stroke="currentColor" stroke-width="1.7"/>
+                    <path d="M8 8h8M8 12h8M8 16h5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+                  </svg>
+                </span>
+                <div>
+                  <h3>Program Details</h3>
+                  <p>Information recorded in the internship system.</p>
+                </div>
+              </div>
+
+              <div class="details-grid">
+                ${detail("Program Name", data.program_name)}
+                ${detail("Program Level", formatStatus(data.level))}
+                ${detail("Program Category", formatStatus(data.category))}
+                ${detail("Internship Duration", data.internship_duration)}
+              </div>
+
+              ${renderProgramDescription(data)}
+              ${renderTechnologies(data)}
+            </section>
+
+            <section class="content-card">
+              <div class="card-heading">
+                <span class="card-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none">
+                    <path d="M12 3l8 4v5c0 5-3.4 7.8-8 9-4.6-1.2-8-4-8-9V7l8-4Z"
+                      stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
+                    <path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="1.7"
+                      stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </span>
+                <div>
+                  <h3>Verification Status</h3>
+                  <p>Current status from the recorded system response.</p>
+                </div>
+              </div>
+
+              <div class="status-list">
+                <div class="status-item">
+                  <span class="status-item-label">Intern Status</span>
+                  ${statusPill(
+                    internStatus,
+                    ["ACTIVE", "COMPLETED"].includes(String(data.intern_status || "").toUpperCase()) ? "good" : ""
+                  )}
+                </div>
+                <div class="status-item">
+                  <span class="status-item-label">Enrollment Status</span>
+                  ${statusPill(
+                    enrollmentStatus,
+                    ["ACTIVE", "COMPLETED"].includes(String(data.enrollment_status || "").toUpperCase()) ? "good" : ""
+                  )}
+                </div>
+                <div class="status-item">
+                  <span class="status-item-label">Internship Completion</span>
+                  ${statusPill(completionLabel, completion === "COMPLETED" ? "good" : "pending")}
+                </div>
+                <div class="status-item">
+                  <span class="status-item-label">Verification Result</span>
+                  ${statusPill(verified ? "Verified" : "Not verified", verified ? "good" : "pending")}
+                </div>
+              </div>
+            </section>
+          </div>
+
+          ${renderProjects(data, includeProjects)}
+
+          <div class="privacy-note">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M12 3l8 4v5c0 5-3.4 7.8-8 9-4.6-1.2-8-4-8-9V7l8-4Z"
+                stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
+              <path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="1.7"
+                stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span>
+              This page reflects records returned by the NITRIXA verification system.
+              It does not independently establish a person's identity. Only information
+              available in the public verification response is shown.
+            </span>
+          </div>
+        `;
+
+        $("result").classList.remove("hidden");
+      }
+
+      async function verifyIntern({ internId = null, token = null }) {
+        const db = window.supabaseClient;
+
+        if (!db) {
+          throw new Error(
+            "Supabase client was not initialized. Check js/supabase.js and ensure the Supabase CDN loads first."
+          );
+        }
+
+        let data;
+        let error;
+        let includeProjects = true;
+
+        if (token) {
+          // Existing token-based public verification RPC.
+          ({ data, error } = await db.rpc("verify_intern_with_projects", {
+            p_verification_token: token
+          }));
+        } else if (internId) {
+          // Existing manual Intern ID RPC.
+          ({ data, error } = await db.rpc("verify_intern_public", {
+            p_intern_id: internId,
+            p_token: null
+          }));
+        } else {
+          showNotFound();
+          return;
+        }
+
+        if (error) throw error;
+        renderResult(data, includeProjects);
+      }
+
+      async function runVerification(params) {
+        const button = $("verifyButton");
+        button.disabled = true;
+        button.innerHTML = `
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/>
+            <path d="M12 7v5l3 2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          Verifying...
+        `;
+
+        $("result").classList.add("hidden");
+        $("result").innerHTML = "";
+        showMessage("Checking the official intern record...", "info");
+
+        try {
+          await verifyIntern(params);
+        } catch (error) {
+          console.error("Intern verification error:", error);
+          showMessage(
+            error.message || "Verification failed. Please try again later.",
+            "error"
+          );
+        } finally {
+          button.disabled = false;
+          button.innerHTML = `
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/>
+              <path d="m16 16 4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+            </svg>
+            Verify Intern
+          `;
+        }
+      }
+
+      $("verifyForm").addEventListener("submit", event => {
+        event.preventDefault();
+
+        const internId = $("internId").value.trim();
+
+        if (!internId) {
+          showMessage("Please enter a valid Intern ID.", "error");
+          $("internId").focus();
+          return;
+        }
+
+        runVerification({ internId, token: null });
+      });
+
+      /* ---------------------------------------------------------
+         QR SCANNER
+         Supports:
+         1. Live camera scanning
+         2. QR image upload
+         3. Raw NITRIXA Intern IDs
+         4. Verification links containing ?token= or ?id=
+         --------------------------------------------------------- */
+
+      let qrScanner = null;
+      let qrScannerRunning = false;
+      let qrScanProcessing = false;
+      let qrScanCompleted = false;
+
+      const startQrButton = $("startQrScanner");
+      const stopQrButton = $("stopQrScanner");
+      const qrReader = $("qr-reader");
+      const qrImageInput = $("qrImageInput");
+
+      function extractVerificationParams(rawText) {
+        const value = String(rawText || "").trim();
+
+        if (!value) {
+          throw new Error("The QR code is empty.");
+        }
+
+        // Accept an Intern ID encoded directly in the QR code.
+        if (/^NITRIXA-INT-[A-Z0-9-]+$/i.test(value)) {
+          return { internId: value, token: null };
+        }
+
+        let parsedUrl;
+
+        try {
+          parsedUrl = new URL(value);
+        } catch {
+          throw new Error(
+            "This QR code is not a valid NITRIXA verification link or Intern ID."
+          );
+        }
+
+        if (!["https:", "http:"].includes(parsedUrl.protocol)) {
+          throw new Error("The QR code contains an unsupported link.");
+        }
+
+        const token = parsedUrl.searchParams.get("token");
+        const internId =
+          parsedUrl.searchParams.get("id") ||
+          parsedUrl.searchParams.get("intern_id");
+
+        // UUID format expected by the existing verification-token RPC.
+        if (token && /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(token)) {
+          return { internId: null, token };
+        }
+
+        if (internId && /^NITRIXA-INT-[A-Z0-9-]+$/i.test(internId)) {
+          return { internId, token: null };
+        }
+
+        throw new Error(
+          "No valid verification token or Intern ID was found in this QR code."
+        );
+      }
+
+      async function stopQrCamera() {
+        const scanner = qrScanner;
+
+        if (scanner && qrScannerRunning) {
+          try {
+            await scanner.stop();
+          } catch (error) {
+            console.warn("QR camera stop notice:", error);
+          }
+        }
+
+        qrScannerRunning = false;
+        stopQrButton.disabled = true;
+        startQrButton.disabled = false;
+        qrReader.classList.add("hidden");
+
+        if (scanner) {
+          try {
+            await scanner.clear();
+          } catch (error) {
+            console.warn("QR scanner cleanup notice:", error);
+          }
+        }
+
+        if (qrScanner === scanner) qrScanner = null;
+      }
+
+      async function processScannedQr(decodedText) {
+        if (qrScanProcessing) return;
+
+        qrScanProcessing = true;
+
+        try {
+          const params = extractVerificationParams(decodedText);
+          await stopQrCamera();
+
+          if (params.internId) {
+            $("internId").value = params.internId;
+          }
+
+          showMessage("QR code read successfully. Verifying the intern...", "info");
+          await runVerification(params);
+        } catch (error) {
+          console.error("QR verification error:", error);
+          showMessage(
+            error.message || "QR verification failed. Please try again.",
+            "error"
+          );
+        } finally {
+          qrScanProcessing = false;
+        }
+      }
+
+      startQrButton.addEventListener("click", async () => {
+        if (!window.Html5Qrcode) {
+          showMessage(
+            "The QR scanner library could not be loaded. Check your internet connection and refresh the page.",
+            "error"
+          );
+          return;
+        }
+
+        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+          showMessage(
+            "Camera scanning requires HTTPS or localhost in a supported browser. You can upload a QR image instead.",
+            "warning"
+          );
+          return;
+        }
+
+        startQrButton.disabled = true;
+        qrReader.classList.remove("hidden");
+        qrScanCompleted = false;
+
+        try {
+          qrScanner = new Html5Qrcode("qr-reader");
+
+          await qrScanner.start(
+            { facingMode: "environment" },
+            {
+              fps: 10,
+              qrbox: { width: 240, height: 240 },
+              aspectRatio: 1
+            },
+            async decodedText => {
+              if (qrScanCompleted || qrScanProcessing) return;
+              qrScanCompleted = true;
+              await processScannedQr(decodedText);
+            },
+            () => {
+              // No QR code in this camera frame; continue scanning.
+            }
+          );
+
+          qrScannerRunning = true;
+          stopQrButton.disabled = false;
+
+          showMessage(
+            "Camera is active. Place the QR code inside the camera frame.",
+            "info"
+          );
+        } catch (error) {
+          console.error("Camera start error:", error);
+          await stopQrCamera();
+
+          showMessage(
+            "Camera could not start. Allow camera permission or use Upload QR Image.",
+            "error"
+          );
+        } finally {
+          if (!qrScannerRunning) startQrButton.disabled = false;
+        }
+      });
+
+      stopQrButton.addEventListener("click", async () => {
+        await stopQrCamera();
+        showMessage("QR camera stopped.", "info");
+      });
+
+      qrImageInput.addEventListener("change", async event => {
+        const file = event.target.files && event.target.files[0];
+        if (!file) return;
+
+        if (!window.Html5Qrcode) {
+          showMessage(
+            "The QR scanner library could not be loaded. Refresh the page and try again.",
+            "error"
+          );
+          event.target.value = "";
+          return;
+        }
+
+        if (qrScanProcessing) {
+          event.target.value = "";
+          return;
+        }
+
+        qrScanProcessing = true;
+
+        let imageScanner = null;
+
+        try {
+          await stopQrCamera();
+          qrReader.classList.remove("hidden");
+          showMessage("Reading the uploaded QR image...", "info");
+
+          imageScanner = new Html5Qrcode("qr-reader");
+          const decodedText = await imageScanner.scanFile(file, true);
+
+          try {
+            await imageScanner.clear();
+          } catch (_) {}
+
+          qrReader.classList.add("hidden");
+          imageScanner = null;
+
+          const params = extractVerificationParams(decodedText);
+
+          if (params.internId) {
+            $("internId").value = params.internId;
+          }
+
+          showMessage("QR image read successfully. Verifying the intern...", "info");
+          await runVerification(params);
+        } catch (error) {
+          console.error("QR image scan error:", error);
+
+          if (imageScanner) {
+            try {
+              await imageScanner.clear();
+            } catch (_) {}
+          }
+
+          qrReader.classList.add("hidden");
+
+          showMessage(
+            error.message && /valid|token|intern id|unsupported/i.test(error.message)
+              ? error.message
+              : "No readable QR code was found in that image. Choose a clear QR image and try again.",
+            "error"
+          );
+        } finally {
+          qrScanProcessing = false;
+          event.target.value = "";
+        }
+      });
+
+      // Automatically verify when a shareable token or Intern ID is in the URL.
+      const params = new URLSearchParams(window.location.search);
+      const tokenFromUrl = params.get("token");
+      const internIdFromUrl = params.get("id");
+
+      if (tokenFromUrl) {
+        runVerification({ internId: null, token: tokenFromUrl });
+      } else if (internIdFromUrl) {
+        $("internId").value = internIdFromUrl;
+        runVerification({ internId: internIdFromUrl, token: null });
+      }
+
+      // Stop camera tracks when the visitor leaves or backgrounds the page.
+      window.addEventListener("pagehide", () => {
+        if (qrScanner && qrScannerRunning) {
+          qrScanner.stop().catch(() => {});
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

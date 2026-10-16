@@ -1,0 +1,1720 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#111638">
+  <meta name="description" content="Manage and share your official NITRIXA Technologies intern verification profile.">
+
+  <title>My Intern Verification | NITRIXA Technologies</title>
+
+  <style>
+    :root {
+      --navy: #111638;
+      --navy-light: #1d2554;
+      --primary: #635bff;
+      --primary-dark: #4f46e5;
+      --cyan: #42d8f5;
+      --text: #202744;
+      --muted: #77809b;
+      --border: #e7eaf5;
+      --white: #ffffff;
+      --bg: #f6f7fc;
+      --success: #087f5b;
+      --shadow: 0 16px 50px rgba(31, 41, 91, 0.075);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      margin: 0;
+      min-width: 0;
+      min-height: 100vh;
+      min-height: 100dvh;
+      overflow-x: hidden;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, "Segoe UI", Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    button,
+    input,
+    a {
+      font: inherit;
+    }
+
+    a {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    button {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    /* =========================
+       TOP NAVIGATION
+    ========================== */
+
+    .topbar {
+      position: relative;
+      z-index: 5;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      min-height: 76px;
+      padding: 15px clamp(16px, 5vw, 76px);
+      background: #fff;
+      border-bottom: 1px solid #e9ebf5;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+      text-decoration: none;
+      color: var(--navy);
+    }
+
+    .brand-mark {
+      display: grid;
+      place-items: center;
+      flex: 0 0 43px;
+      width: 43px;
+      height: 43px;
+      border-radius: 13px;
+      color: white;
+      background: linear-gradient(140deg, #716bff, #4338ca);
+      box-shadow: 0 7px 18px rgba(99, 91, 255, .25);
+    }
+
+    .brand-mark svg {
+      width: 25px;
+      height: 25px;
+    }
+
+    .brand-copy {
+      min-width: 0;
+    }
+
+    .brand-name {
+      display: block;
+      font-size: clamp(13px, 1.2vw, 16px);
+      font-weight: 850;
+      letter-spacing: 1px;
+      line-height: 1.35;
+    }
+
+    .brand-subtitle {
+      display: block;
+      margin-top: 3px;
+      color: var(--muted);
+      font-size: 11px;
+      letter-spacing: .35px;
+    }
+
+    .nav-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 42px;
+      padding: 10px 15px;
+      border: 1px solid #e6e8f3;
+      border-radius: 11px;
+      background: white;
+      color: #424a68;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 700;
+      transition: .22s ease;
+    }
+
+    .nav-link:hover {
+      border-color: #c7c5ff;
+      color: var(--primary-dark);
+      background: #f8f7ff;
+      transform: translateY(-2px);
+    }
+
+    .nav-link svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    /* =========================
+       PAGE LAYOUT
+    ========================== */
+
+    .page {
+      width: 100%;
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: clamp(24px, 4vw, 48px) clamp(14px, 3.5vw, 38px) 48px;
+    }
+
+    /* =========================
+       HERO
+    ========================== */
+
+    .hero {
+      position: relative;
+      isolation: isolate;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 25px;
+      min-height: 250px;
+      padding: clamp(25px, 4.2vw, 48px);
+      margin-bottom: 27px;
+      border-radius: 25px;
+      color: white;
+      background:
+        radial-gradient(ellipse at 82% 12%, rgba(66, 216, 245, .21), transparent 35%),
+        radial-gradient(ellipse at 6% 110%, rgba(119, 104, 255, .30), transparent 42%),
+        linear-gradient(120deg, #111638 0%, #1a2250 55%, #282a69 100%);
+      box-shadow: 0 20px 55px rgba(24, 31, 83, .17);
+      animation: heroEnter .65s ease both;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      z-index: -1;
+      width: 270px;
+      height: 270px;
+      right: 90px;
+      top: -185px;
+      border: 1px solid rgba(255, 255, 255, .14);
+      border-radius: 50%;
+      box-shadow:
+        0 0 0 32px rgba(255, 255, 255, .025),
+        0 0 0 66px rgba(255, 255, 255, .02);
+      animation: orbit 18s linear infinite;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      z-index: -1;
+      right: 16%;
+      bottom: -95px;
+      width: 250px;
+      height: 160px;
+      background: rgba(99, 91, 255, .26);
+      filter: blur(55px);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .hero-content {
+      max-width: 680px;
+      min-width: 0;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 11px;
+      margin-bottom: 18px;
+      border: 1px solid rgba(151, 240, 255, .24);
+      border-radius: 999px;
+      background: rgba(66, 216, 245, .09);
+      color: #a4f0ff;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 1.25px;
+      text-transform: uppercase;
+    }
+
+    .live-dot {
+      width: 7px;
+      height: 7px;
+      flex: 0 0 7px;
+      border-radius: 50%;
+      background: #65e7ba;
+      box-shadow: 0 0 0 4px rgba(101, 231, 186, .12);
+    }
+
+    .hero h1 {
+      max-width: 650px;
+      margin: 0;
+      font-size: clamp(30px, 4.3vw, 52px);
+      line-height: 1.09;
+      letter-spacing: -1.7px;
+      font-weight: 850;
+      color: white;
+    }
+
+    .hero h1 span {
+      color: var(--cyan);
+    }
+
+    .hero-description {
+      max-width: 570px;
+      margin: 17px 0 0;
+      color: #c5cbe7;
+      font-size: clamp(13px, 1.3vw, 16px);
+      line-height: 1.85;
+    }
+
+    .hero-visual {
+      position: relative;
+      display: grid;
+      place-items: center;
+      width: clamp(105px, 16vw, 175px);
+      aspect-ratio: 1;
+      border: 1px solid rgba(255, 255, 255, .17);
+      border-radius: 35%;
+      background: linear-gradient(145deg, rgba(255,255,255,.12), rgba(255,255,255,.035));
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.15),
+        0 18px 45px rgba(0,0,0,.12);
+      backdrop-filter: blur(10px);
+      animation: floatIcon 5s ease-in-out infinite;
+    }
+
+    .hero-visual::before {
+      content: "";
+      position: absolute;
+      inset: -12px;
+      border: 1px solid rgba(66, 216, 245, .15);
+      border-radius: 35%;
+    }
+
+    .hero-visual svg {
+      width: 48%;
+      height: 48%;
+      color: #a6f1ff;
+      filter: drop-shadow(0 0 16px rgba(66,216,245,.25));
+    }
+
+    /* =========================
+       STATUS MESSAGE
+    ========================== */
+
+    .message {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 15px 18px;
+      margin: 0 0 24px;
+      border: 1px solid transparent;
+      border-radius: 14px;
+      font-size: 13px;
+      line-height: 1.7;
+      overflow-wrap: anywhere;
+      animation: fadeUp .4s ease both;
+    }
+
+    .message-icon {
+      display: grid;
+      place-items: center;
+      flex: 0 0 30px;
+      width: 30px;
+      height: 30px;
+      border-radius: 9px;
+      background: rgba(255,255,255,.7);
+    }
+
+    .message-icon svg {
+      width: 17px;
+      height: 17px;
+    }
+
+    .message-copy {
+      min-width: 0;
+      padding-top: 3px;
+    }
+
+    .message-title {
+      display: block;
+      margin-bottom: 2px;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .message.info {
+      background: #eef2ff;
+      border-color: #dfe3ff;
+      color: #4338a8;
+    }
+
+    .message.success {
+      background: #e8fbf3;
+      border-color: #c9f2df;
+      color: #087f5b;
+    }
+
+    .message.error {
+      background: #fff0f0;
+      border-color: #ffdada;
+      color: #a12e39;
+    }
+
+    /* =========================
+       MAIN CONTENT GRID
+    ========================== */
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.3fr) minmax(280px, .7fr);
+      align-items: start;
+      gap: 23px;
+    }
+
+    .left-column,
+    .right-column {
+      display: grid;
+      gap: 23px;
+      min-width: 0;
+    }
+
+    .card {
+      min-width: 0;
+      padding: clamp(20px, 2.6vw, 30px);
+      border: 1px solid rgba(226, 230, 245, .95);
+      border-radius: 21px;
+      background: rgba(255,255,255,.96);
+      box-shadow: var(--shadow);
+      transition:
+        transform .28s ease,
+        box-shadow .28s ease,
+        border-color .28s ease;
+      animation: fadeUp .65s ease both;
+    }
+
+    .left-column .card:nth-child(2) {
+      animation-delay: .08s;
+    }
+
+    .right-column .card {
+      animation-delay: .16s;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: #d9d8ff;
+      box-shadow: 0 23px 60px rgba(31, 41, 91, .11);
+    }
+
+    .card-heading {
+      display: flex;
+      align-items: flex-start;
+      gap: 13px;
+      margin-bottom: 23px;
+    }
+
+    .heading-icon {
+      display: grid;
+      place-items: center;
+      flex: 0 0 44px;
+      width: 44px;
+      height: 44px;
+      border-radius: 13px;
+      background: #f0efff;
+      color: var(--primary-dark);
+    }
+
+    .heading-icon.cyan {
+      background: #e8faff;
+      color: #0786a6;
+    }
+
+    .heading-icon svg {
+      width: 22px;
+      height: 22px;
+    }
+
+    .heading-copy {
+      min-width: 0;
+    }
+
+    .heading-copy h2 {
+      margin: 1px 0 6px;
+      color: var(--navy);
+      font-size: clamp(17px, 1.8vw, 21px);
+      line-height: 1.4;
+      letter-spacing: -.35px;
+    }
+
+    .heading-copy p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.7;
+    }
+
+    /* =========================
+       PROFILE DETAILS
+    ========================== */
+
+    .details {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .detail {
+      min-width: 0;
+      padding: 17px;
+      border: 1px solid #e8eaf5;
+      border-radius: 14px;
+      background: linear-gradient(145deg, #fff, #fafaff);
+      transition:
+        transform .22s ease,
+        border-color .22s ease,
+        box-shadow .22s ease;
+    }
+
+    .detail:hover {
+      transform: translateY(-3px);
+      border-color: #cfceff;
+      box-shadow: 0 10px 25px rgba(99,91,255,.075);
+    }
+
+    .detail-label {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      margin-bottom: 10px;
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: .9px;
+      line-height: 1.5;
+      text-transform: uppercase;
+    }
+
+    .detail-label svg {
+      width: 14px;
+      height: 14px;
+      flex: 0 0 14px;
+      color: #7b79dd;
+    }
+
+    .detail strong {
+      display: block;
+      color: #252c4b;
+      font-size: clamp(12px, 1.15vw, 15px);
+      line-height: 1.65;
+      font-weight: 750;
+      overflow-wrap: anywhere;
+      word-break: break-word;
+    }
+
+    /* =========================
+       SHARE LINK
+    ========================== */
+
+    .section-divider {
+      height: 1px;
+      margin: 25px 0;
+      background: linear-gradient(90deg, #e8e9f6, transparent);
+    }
+
+    .subheading {
+      margin: 0 0 8px;
+      color: var(--navy);
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: -.25px;
+    }
+
+    .subtext {
+      margin: 0 0 16px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.8;
+    }
+
+    .link-field {
+      position: relative;
+      min-width: 0;
+    }
+
+    .link-field input {
+      display: block;
+      width: 100%;
+      min-width: 0;
+      min-height: 48px;
+      padding: 13px 14px;
+      border: 1px solid #dfe3f2;
+      border-radius: 12px;
+      outline: none;
+      background: #f9faff;
+      color: #59617e;
+      font-size: 12px;
+      transition: .2s ease;
+    }
+
+    .link-field input:focus {
+      border-color: #aaa6ff;
+      box-shadow: 0 0 0 4px rgba(99,91,255,.09);
+    }
+
+    .actions {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      min-height: 44px;
+      max-width: 100%;
+      padding: 11px 16px;
+      border: 1px solid transparent;
+      border-radius: 12px;
+      color: white;
+      background: linear-gradient(120deg, #6b63ff, #5045e9);
+      box-shadow: 0 7px 18px rgba(91,81,245,.18);
+      text-decoration: none;
+      text-align: center;
+      font-size: 12px;
+      line-height: 1.4;
+      font-weight: 800;
+      cursor: pointer;
+      transition:
+        transform .2s ease,
+        box-shadow .2s ease,
+        background .2s ease;
+    }
+
+    .button svg {
+      width: 16px;
+      height: 16px;
+      flex: 0 0 16px;
+    }
+
+    .button:hover {
+      transform: translateY(-2px);
+      background: linear-gradient(120deg, #574df0, #4136d5);
+      box-shadow: 0 11px 25px rgba(91,81,245,.27);
+    }
+
+    .button:active {
+      transform: translateY(0) scale(.98);
+    }
+
+    .button.secondary {
+      color: #4841bb;
+      border-color: #e0dfff;
+      background: #fff;
+      box-shadow: none;
+    }
+
+    .button.secondary:hover {
+      background: #f6f5ff;
+      border-color: #c7c4ff;
+      box-shadow: 0 7px 20px rgba(91,81,245,.08);
+    }
+
+    .button:focus-visible,
+    .nav-link:focus-visible {
+      outline: 3px solid rgba(66,216,245,.8);
+      outline-offset: 3px;
+    }
+
+    .button:disabled {
+      opacity: .6;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    /* =========================
+       QR CODE CARD
+    ========================== */
+
+    .qr-card {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .qr-card::before {
+      content: "";
+      position: absolute;
+      z-index: 0;
+      top: -90px;
+      right: -90px;
+      width: 190px;
+      height: 190px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(99,91,255,.10), transparent 70%);
+      pointer-events: none;
+    }
+
+    .qr-card > * {
+      position: relative;
+    }
+
+    .qr-stage {
+      display: grid;
+      place-items: center;
+      padding: 22px 12px;
+      margin: 20px 0;
+      border: 1px dashed #dcdcf6;
+      border-radius: 18px;
+      background:
+        radial-gradient(circle at center, #fff 0%, #fafaff 70%);
+    }
+
+    #qrCode {
+      display: grid;
+      place-items: center;
+      width: fit-content;
+      max-width: 100%;
+      min-width: 0;
+      min-height: 0;
+      padding: 14px;
+      border: 1px solid #ebebfa;
+      border-radius: 17px;
+      background: white;
+      box-shadow: 0 10px 28px rgba(48,44,121,.09);
+      transition:
+        transform .28s ease,
+        box-shadow .28s ease;
+    }
+
+    #qrCode:hover {
+      transform: scale(1.025);
+      box-shadow: 0 17px 36px rgba(48,44,121,.14);
+    }
+
+    #qrCode img,
+    #qrCode canvas {
+      display: block;
+      width: 220px;
+      max-width: 100%;
+      height: auto;
+      image-rendering: pixelated;
+    }
+
+    .qr-caption {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.7;
+      text-align: center;
+    }
+
+    .qr-caption svg {
+      width: 15px;
+      height: 15px;
+      flex: 0 0 15px;
+      color: #0d9c79;
+    }
+
+    .qr-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 9px;
+    }
+
+    .qr-actions .button {
+      width: 100%;
+      padding: 12px 9px;
+    }
+
+    /* Small trust panel */
+    .trust-panel {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 16px;
+      border: 1px solid #dcefe9;
+      border-radius: 15px;
+      background: linear-gradient(130deg, #f0fcf7, #f8fffd);
+    }
+
+    .trust-icon {
+      display: grid;
+      place-items: center;
+      flex: 0 0 35px;
+      width: 35px;
+      height: 35px;
+      border-radius: 11px;
+      background: #d8f7e9;
+      color: #087f5b;
+    }
+
+    .trust-icon svg {
+      width: 19px;
+      height: 19px;
+    }
+
+    .trust-copy strong {
+      display: block;
+      margin-bottom: 5px;
+      color: #146b54;
+      font-size: 12px;
+    }
+
+    .trust-copy p {
+      margin: 0;
+      color: #527b70;
+      font-size: 11px;
+      line-height: 1.75;
+    }
+
+    /* =========================
+       FOOTER
+    ========================== */
+
+    .footer {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 22px clamp(16px, 5vw, 76px);
+      border-top: 1px solid #e8eaf4;
+      background: #fff;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.7;
+    }
+
+    .footer strong {
+      color: #444b6a;
+      letter-spacing: .5px;
+    }
+
+    /* =========================
+       ANIMATIONS
+    ========================== */
+
+    @keyframes heroEnter {
+      from {
+        opacity: 0;
+        transform: translateY(14px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(15px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes floatIcon {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-7px) rotate(1.5deg); }
+    }
+
+    @keyframes orbit {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    /* =========================
+       TABLETS
+    ========================== */
+
+    @media (max-width: 900px) {
+      .content-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .right-column {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        align-items: stretch;
+      }
+
+      .right-column .card {
+        height: 100%;
+      }
+
+      .hero {
+        min-height: 220px;
+      }
+    }
+
+    /* =========================
+       MOBILE
+    ========================== */
+
+    @media (max-width: 600px) {
+      .topbar {
+        min-height: 66px;
+        padding: 12px 14px;
+        gap: 10px;
+      }
+
+      .brand {
+        gap: 9px;
+      }
+
+      .brand-mark {
+        width: 37px;
+        height: 37px;
+        flex-basis: 37px;
+        border-radius: 11px;
+      }
+
+      .brand-mark svg {
+        width: 22px;
+        height: 22px;
+      }
+
+      .brand-name {
+        font-size: 12px;
+        letter-spacing: .5px;
+      }
+
+      .brand-subtitle {
+        font-size: 9px;
+      }
+
+      .nav-link {
+        min-height: 38px;
+        padding: 9px 10px;
+        gap: 5px;
+        font-size: 11px;
+      }
+
+      .page {
+        padding: 20px 12px 32px;
+      }
+
+      .hero {
+        grid-template-columns: minmax(0, 1fr) 72px;
+        gap: 12px;
+        min-height: 0;
+        padding: 24px 19px;
+        margin-bottom: 18px;
+        border-radius: 19px;
+      }
+
+      .eyebrow {
+        padding: 7px 9px;
+        margin-bottom: 14px;
+        font-size: 9px;
+        letter-spacing: .7px;
+      }
+
+      .hero h1 {
+        font-size: clamp(27px, 7vw, 39px);
+        letter-spacing: -1px;
+      }
+
+      .hero-description {
+        margin-top: 12px;
+        font-size: 12px;
+        line-height: 1.75;
+      }
+
+      .hero-visual {
+        width: 67px;
+        border-radius: 22px;
+      }
+
+      .hero-visual::before {
+        inset: -6px;
+      }
+
+      .message {
+        padding: 12px;
+        gap: 9px;
+        margin-bottom: 17px;
+        font-size: 12px;
+      }
+
+      .message-icon {
+        flex-basis: 27px;
+        width: 27px;
+        height: 27px;
+      }
+
+      .content-grid,
+      .left-column,
+      .right-column {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 16px;
+      }
+
+      .card {
+        padding: 19px 15px;
+        border-radius: 17px;
+      }
+
+      .card:hover {
+        transform: translateY(-2px);
+      }
+
+      .card-heading {
+        gap: 10px;
+        margin-bottom: 18px;
+      }
+
+      .heading-icon {
+        flex-basis: 38px;
+        width: 38px;
+        height: 38px;
+        border-radius: 11px;
+      }
+
+      .heading-icon svg {
+        width: 19px;
+        height: 19px;
+      }
+
+      .heading-copy h2 {
+        font-size: 17px;
+      }
+
+      .heading-copy p {
+        font-size: 11px;
+      }
+
+      .details {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 9px;
+      }
+
+      .detail {
+        padding: 14px;
+      }
+
+      .detail-label {
+        margin-bottom: 6px;
+        font-size: 9px;
+      }
+
+      .detail strong {
+        font-size: 13px;
+      }
+
+      .section-divider {
+        margin: 21px 0;
+      }
+
+      .link-field input {
+        padding: 12px 10px;
+        font-size: 11px;
+      }
+
+      .actions {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        gap: 9px;
+      }
+
+      .actions .button {
+        width: 100%;
+      }
+
+      .qr-stage {
+        padding: 18px 10px;
+        margin: 16px 0;
+      }
+
+      #qrCode {
+        padding: 10px;
+      }
+
+      #qrCode img,
+      #qrCode canvas {
+        width: min(220px, 100%);
+      }
+
+      .qr-actions {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .footer {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 19px 15px;
+        gap: 5px;
+      }
+    }
+
+    /* Extra-small screens */
+    @media (max-width: 360px) {
+      .topbar {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .nav-link {
+        align-self: flex-start;
+      }
+
+      .hero {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .hero-visual {
+        display: none;
+      }
+
+      .hero h1 {
+        font-size: 29px;
+      }
+
+      .card {
+        padding: 15px 12px;
+      }
+
+      .button {
+        width: 100%;
+        padding: 12px 10px;
+        font-size: 11px;
+        overflow-wrap: anywhere;
+      }
+
+      .qr-actions .button {
+        width: 100%;
+      }
+    }
+
+    /* Accessibility */
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+      }
+    }
+
+    /* Print */
+    @media print {
+      body {
+        color: #111;
+        background: white;
+      }
+
+      .topbar,
+      .hero,
+      .message,
+      .no-print,
+      .footer {
+        display: none !important;
+      }
+
+      .page {
+        max-width: 100%;
+        padding: 0;
+      }
+
+      .content-grid {
+        display: block;
+      }
+
+      .left-column,
+      .right-column {
+        display: block;
+      }
+
+      .card {
+        margin-bottom: 15px;
+        border: 1px solid #ddd;
+        box-shadow: none;
+        animation: none;
+        break-inside: avoid;
+      }
+
+      .qr-stage {
+        border: 0;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Navigation -->
+  <header class="topbar">
+    <a class="brand" href="../index.html" aria-label="NITRIXA Technologies home">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none">
+          <path d="M5 18V6l7 8V6l7 12V6"
+            stroke="currentColor" stroke-width="2.2"
+            stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
+
+      <span class="brand-copy">
+        <span class="brand-name">NITRIXA TECHNOLOGIES</span>
+        <span class="brand-subtitle">Internship & Career Portal</span>
+      </span>
+    </a>
+
+    <a class="nav-link" href="../intern-dashboard.html">
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M15 18l-6-6 6-6M9 12h12"
+          stroke="currentColor" stroke-width="1.8"
+          stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      Back to Dashboard
+    </a>
+  </header>
+
+  <main class="page">
+    <!-- Hero -->
+    <section class="hero">
+      <div class="hero-content">
+        <div class="eyebrow">
+          <span class="live-dot"></span>
+          YOUR OFFICIAL PROFILE
+        </div>
+
+        <h1>
+          Your Journey.<br>
+          Your <span>Identity.</span>
+        </h1>
+
+        <p class="hero-description">
+          Share your official NITRIXA internship profile with recruiters
+          and employers. One link is all they need to check your recorded
+          internship details.
+        </p>
+      </div>
+
+      <div class="hero-visual" aria-hidden="true">
+        <svg viewBox="0 0 64 64" fill="none">
+          <path d="M32 5L53 13V29C53 43 44 53 32 59C20 53 11 43 11 29V13L32 5Z"
+            stroke="currentColor" stroke-width="2.7" stroke-linejoin="round"/>
+          <path d="M21 32L28 39L43 23"
+            stroke="currentColor" stroke-width="3.2"
+            stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+    </section>
+
+    <!-- Dynamic message -->
+    <div id="message" class="message info" role="status" aria-live="polite">
+      <span class="message-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none">
+          <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/>
+          <path d="M12 11v5M12 7.5h.01"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </span>
+      <span class="message-copy">
+        <span class="message-title">Preparing your profile</span>
+        <span id="messageText">Loading your official verification details...</span>
+      </span>
+    </div>
+
+    <div class="content-grid">
+      <!-- Left column -->
+      <div class="left-column">
+
+        <!-- Intern details -->
+        <section id="profileCard" class="card hidden">
+          <div class="card-heading">
+            <span class="heading-icon">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <circle cx="12" cy="8" r="4"
+                  stroke="currentColor" stroke-width="1.8"/>
+                <path d="M4 20c.7-4 3.4-6 8-6s7.3 2 8 6"
+                  stroke="currentColor" stroke-width="1.8"
+                  stroke-linecap="round"/>
+              </svg>
+            </span>
+
+            <div class="heading-copy">
+              <h2>Your Verification Profile</h2>
+              <p>Your internship information retrieved from the official system.</p>
+            </div>
+          </div>
+
+          <div class="details">
+            <div class="detail">
+              <span class="detail-label">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M5 5h14v14H5zM9 9h6M9 13h6M9 17h3"
+                    stroke="currentColor" stroke-width="1.7"
+                    stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Intern ID
+              </span>
+              <strong id="internId">Loading...</strong>
+            </div>
+
+            <div class="detail">
+              <span class="detail-label">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M4 19V7l8-4 8 4v12M2 20h20M9 20v-6h6v6"
+                    stroke="currentColor" stroke-width="1.7"
+                    stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Internship Program
+              </span>
+              <strong id="programName">Loading...</strong>
+            </div>
+
+            <div class="detail">
+              <span class="detail-label">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <circle cx="12" cy="12" r="9"
+                    stroke="currentColor" stroke-width="1.7"/>
+                  <path d="M8 12l2.5 2.5L16 9"
+                    stroke="currentColor" stroke-width="1.7"
+                    stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Intern Status
+              </span>
+              <strong id="internStatus">Loading...</strong>
+            </div>
+
+            <div class="detail">
+              <span class="detail-label">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <rect x="3" y="5" width="18" height="14" rx="2"
+                    stroke="currentColor" stroke-width="1.7"/>
+                  <path d="M7 9h10M7 13h6"
+                    stroke="currentColor" stroke-width="1.7"
+                    stroke-linecap="round"/>
+                </svg>
+                Enrollment Status
+              </span>
+              <strong id="enrollmentStatus">Loading...</strong>
+            </div>
+          </div>
+
+          <div class="section-divider"></div>
+
+          <div class="heading-copy">
+            <h3 class="subheading">Share Your Verification Link</h3>
+            <p class="subtext">
+              Share this unique link with a recruiter or employer to open
+              your public verification profile.
+            </p>
+          </div>
+
+          <div class="link-field">
+            <input
+              id="verificationLink"
+              type="text"
+              readonly
+              aria-label="Your public verification link"
+              placeholder="Your verification link will appear here"
+            >
+          </div>
+
+          <div class="actions">
+            <button id="copyButton" class="button" type="button">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <rect x="8" y="8" width="12" height="12" rx="2"
+                  stroke="currentColor" stroke-width="1.8"/>
+                <path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"
+                  stroke="currentColor" stroke-width="1.8"
+                  stroke-linecap="round"/>
+              </svg>
+              Copy Verification Link
+            </button>
+
+            <a
+              id="openButton"
+              class="button secondary"
+              href="#"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M14 4h6v6M20 4l-9 9"
+                  stroke="currentColor" stroke-width="1.8"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"
+                  stroke="currentColor" stroke-width="1.8"
+                  stroke-linecap="round"/>
+              </svg>
+              Preview Public Profile
+            </a>
+          </div>
+        </section>
+
+        <!-- Trust information -->
+        <section class="trust-panel">
+          <span class="trust-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M12 3l8 3v5c0 5-3.3 8-8 10-4.7-2-8-5-8-10V6l8-3Z"
+                stroke="currentColor" stroke-width="1.8"
+                stroke-linejoin="round"/>
+              <path d="M8.5 12l2.2 2.2 4.8-4.8"
+                stroke="currentColor" stroke-width="1.8"
+                stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+
+          <div class="trust-copy">
+            <strong>Share with confidence</strong>
+            <p>
+              The public verification page is designed to show approved
+              internship details, not your login credentials, payment
+              information, email or phone number.
+            </p>
+          </div>
+        </section>
+      </div>
+
+      <!-- Right column -->
+      <div class="right-column">
+        <section id="qrCard" class="card qr-card hidden">
+          <div class="card-heading">
+            <span class="heading-icon cyan">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <rect x="3" y="3" width="7" height="7" rx="1"
+                  stroke="currentColor" stroke-width="1.8"/>
+                <rect x="14" y="3" width="7" height="7" rx="1"
+                  stroke="currentColor" stroke-width="1.8"/>
+                <rect x="3" y="14" width="7" height="7" rx="1"
+                  stroke="currentColor" stroke-width="1.8"/>
+                <path d="M14 14h3v3h-3zM20 14v3M14 20h3M20 20h.01"
+                  stroke="currentColor" stroke-width="1.8"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+
+            <div class="heading-copy">
+              <h2>Your Verification QR</h2>
+              <p>One scan takes recruiters to your public profile.</p>
+            </div>
+          </div>
+
+          <div class="qr-stage">
+            <div id="qrCode" aria-label="Your verification QR code"></div>
+          </div>
+
+          <div class="qr-caption">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <circle cx="12" cy="12" r="9"
+                stroke="currentColor" stroke-width="1.8"/>
+              <path d="M8 12l2.5 2.5L16 9"
+                stroke="currentColor" stroke-width="1.8"
+                stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Scan to open your unique verification link
+          </div>
+
+          <div class="section-divider"></div>
+
+          <div class="qr-actions">
+            <button id="downloadQrButton" class="button" type="button">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M12 3v12M7 10l5 5 5-5M4 17v3h16v-3"
+                  stroke="currentColor" stroke-width="1.8"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Download QR
+            </button>
+
+            <button id="printButton" class="button secondary" type="button">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M7 8V3h10v5M7 17H5a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2"
+                  stroke="currentColor" stroke-width="1.8"
+                  stroke-linejoin="round"/>
+                <path d="M7 14h10v7H7zM17 11h.01"
+                  stroke="currentColor" stroke-width="1.8"
+                  stroke-linejoin="round" stroke-linecap="round"/>
+              </svg>
+              Print Profile
+            </button>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="card-heading">
+            <span class="heading-icon">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M12 3l8 4v5c0 4.5-3.2 7.5-8 9-4.8-1.5-8-4.5-8-9V7l8-4Z"
+                  stroke="currentColor" stroke-width="1.8"
+                  stroke-linejoin="round"/>
+                <path d="M8.5 12l2.2 2.2 4.8-4.8"
+                  stroke="currentColor" stroke-width="1.8"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+
+            <div class="heading-copy">
+              <h2>How Verification Works</h2>
+              <p>A simple way to share your internship record.</p>
+            </div>
+          </div>
+
+          <div class="detail">
+            <span class="detail-label">01 — Share</span>
+            <strong>Send your unique verification link or QR code.</strong>
+          </div>
+
+          <div class="detail" style="margin-top:10px">
+            <span class="detail-label">02 — Verify</span>
+            <strong>The recruiter opens the public verification page.</strong>
+          </div>
+
+          <div class="detail" style="margin-top:10px">
+            <span class="detail-label">03 — Confirm</span>
+            <strong>The system displays the recorded intern and enrollment status.</strong>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <span>© <span id="year"></span> <strong>NITRIXA TECHNOLOGIES</strong></span>
+    <span>Intern Verification Portal · Built for professional verification</span>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../js/supabase.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+  <script>
+    (() => {
+      "use strict";
+
+      const $ = id => document.getElementById(id);
+
+      $("year").textContent = new Date().getFullYear();
+
+      function showMessage(message, type = "info") {
+        const box = $("message");
+
+        const icons = {
+          info: `
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/>
+              <path d="M12 11v5M12 7.5h.01"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>`,
+          success: `
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/>
+              <path d="M8 12l2.5 2.5L16 9"
+                stroke="currentColor" stroke-width="1.8"
+                stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>`,
+          error: `
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/>
+              <path d="M9 9l6 6m0-6l-6 6"
+                stroke="currentColor" stroke-width="1.8"
+                stroke-linecap="round"/>
+            </svg>`
+        };
+
+        const titles = {
+          info: "Profile information",
+          success: "You're all set!",
+          error: "Something needs attention"
+        };
+
+        box.className = "message " + type;
+
+        box.innerHTML = `
+          <span class="message-icon">${icons[type] || icons.info}</span>
+          <span class="message-copy">
+            <span class="message-title">${titles[type] || titles.info}</span>
+            <span id="messageText"></span>
+          </span>
+        `;
+
+        $("messageText").textContent = message;
+      }
+
+      async function loadProfile() {
+        const db = window.supabaseClient;
+
+        if (!db) {
+          throw new Error(
+            "Supabase client was not initialized. Check ../js/supabase.js."
+          );
+        }
+
+        const { data: sessionData, error: sessionError } =
+          await db.auth.getSession();
+
+        if (sessionError) throw sessionError;
+
+        const user = sessionData?.session?.user;
+
+        if (!user) {
+          window.location.href = "../login.html";
+          return;
+        }
+
+        // Keep the existing authenticated-user query and rely on RLS.
+        const { data: intern, error: internError } = await db
+          .from("interns")
+          .select("intern_id,status,enrollment_id,verification_token")
+          .eq("user_id", user.id)
+          .maybeSingle();
+
+        if (internError) throw internError;
+
+        if (!intern) {
+          showMessage(
+            "No intern profile was found for this account. Contact NITRIXA support if you believe this is an error.",
+            "error"
+          );
+          return;
+        }
+
+        if (!intern.verification_token) {
+          throw new Error(
+            "Your verification token is missing. Contact the administrator to repair your verification record."
+          );
+        }
+
+        const { data: enrollment, error: enrollmentError } = await db
+          .from("enrollments")
+          .select("status,program_id")
+          .eq("id", intern.enrollment_id)
+          .eq("user_id", user.id)
+          .maybeSingle();
+
+        if (enrollmentError) throw enrollmentError;
+
+        let program = null;
+
+        if (enrollment?.program_id) {
+          const { data, error } = await db
+            .from("programs")
+            .select("name")
+            .eq("id", enrollment.program_id)
+            .maybeSingle();
+
+          if (error) throw error;
+          program = data;
+        }
+
+        $("internId").textContent = intern.intern_id || "Not assigned";
+        $("programName").textContent = program?.name || "Not available";
+        $("internStatus").textContent = intern.status || "Not available";
+        $("enrollmentStatus").textContent = enrollment?.status || "Not available";
+
+        const publicUrl = new URL("../verify-intern.html", window.location.href);
+        publicUrl.searchParams.set("token", intern.verification_token);
+
+        const link = publicUrl.href;
+
+        $("verificationLink").value = link;
+        $("openButton").href = link;
+
+        $("profileCard").classList.remove("hidden");
+        $("qrCard").classList.remove("hidden");
+
+        if (typeof QRCode === "undefined") {
+          $("qrCode").textContent =
+            "The QR library could not load. You can still copy and share your verification link.";
+          $("downloadQrButton").disabled = true;
+        } else {
+          $("qrCode").innerHTML = "";
+
+          new QRCode($("qrCode"), {
+            text: link,
+            width: 220,
+            height: 220,
+            colorDark: "#111638",
+            colorLight: "#ffffff",
+            correctLevel: QRCode.CorrectLevel.H
+          });
+        }
+
+        showMessage(
+          "Your verification profile is ready. Copy the link or share the QR code with recruiters.",
+          "success"
+        );
+      }
+
+      $("copyButton").addEventListener("click", async () => {
+        const link = $("verificationLink").value;
+        if (!link) return;
+
+        try {
+          await navigator.clipboard.writeText(link);
+          showMessage("Verification link copied successfully.", "success");
+        } catch {
+          $("verificationLink").select();
+          const copied = document.execCommand("copy");
+
+          showMessage(
+            copied
+              ? "Verification link copied successfully."
+              : "Copy was blocked by your browser. Select the link and copy it manually.",
+            copied ? "success" : "error"
+          );
+        }
+      });
+
+      $("downloadQrButton").addEventListener("click", () => {
+        const canvas = $("qrCode").querySelector("canvas");
+        const image = $("qrCode").querySelector("img");
+
+        let dataUrl = null;
+
+        if (canvas) {
+          dataUrl = canvas.toDataURL("image/png");
+        } else if (image?.src) {
+          dataUrl = image.src;
+        }
+
+        if (!dataUrl) {
+          showMessage("The QR code is not ready to download.", "error");
+          return;
+        }
+
+        const downloadLink = document.createElement("a");
+        downloadLink.href = dataUrl;
+        downloadLink.download = "NITRIXA-Intern-Verification-QR.png";
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        downloadLink.remove();
+      });
+
+      $("printButton").addEventListener("click", () => {
+        window.print();
+      });
+
+      loadProfile().catch(error => {
+        console.error(error);
+
+        showMessage(
+          error.message || "Unable to load your verification profile.",
+          "error"
+        );
+      });
+    })();
+  </script>
+</body>
+</html>
