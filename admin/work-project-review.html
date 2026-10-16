@@ -1,0 +1,331 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Project Submission Review | NITRIXA Admin</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../js/supabase.js"></script>
+<style>
+:root{--bg:#f5f7fb;--card:#fff;--text:#172033;--muted:#667085;--border:#e4e8f0;--primary:#4f46e5;--green:#15803d;--red:#b91c1c;--amber:#a16207}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:14px Arial,sans-serif}
+header{background:#111827;color:white;padding:21px 25px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+header h1{margin:0;font-size:22px}header p{margin:6px 0 0;color:#cbd5e1;font-size:12px}
+a{color:var(--primary);overflow-wrap:anywhere}
+.button,button{display:inline-flex;align-items:center;justify-content:center;text-decoration:none;border:0;border-radius:9px;padding:10px 13px;font-size:12px;font-weight:700;background:var(--primary);color:white;cursor:pointer}
+.button.secondary,button.secondary{background:white;color:#344054;border:1px solid #d0d5dd}
+button:disabled{opacity:.55;cursor:wait}
+main{max-width:1200px;margin:auto;padding:23px}
+.notice{display:none;padding:12px 14px;border-radius:9px;margin-bottom:15px;line-height:1.5;overflow-wrap:anywhere}
+.notice.show{display:block}.notice.success{background:#dcfce7;color:#166534}.notice.error{background:#fee2e2;color:#991b1b}.notice.info{background:#dbeafe;color:#1d4ed8}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:11px;margin-bottom:17px}
+.stat,.panel,.review-card{background:var(--card);border:1px solid var(--border);border-radius:13px}
+.stat{padding:15px}.stat strong{font-size:24px;display:block}.stat span{font-size:12px;color:var(--muted)}
+.panel{padding:19px;margin-bottom:17px}
+h2{font-size:17px;margin:0 0 6px}.sub{font-size:12px;line-height:1.6;color:var(--muted);margin:0 0 16px}
+.filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:15px}
+.filters input,.filters select{flex:1;min-width:180px}
+input,select,textarea{width:100%;padding:11px 12px;border:1px solid #d0d5dd;border-radius:9px;font:inherit;background:#fff;color:var(--text)}
+textarea{min-height:90px;resize:vertical}
+.review-list{display:grid;gap:14px}
+.review-card{padding:17px;min-width:0}
+.card-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.card-head h3{font-size:16px;margin:0;overflow-wrap:anywhere}
+.pill{display:inline-block;padding:5px 9px;border-radius:99px;font-size:10px;font-weight:700;background:#eef2ff;color:#4338ca;white-space:nowrap}
+.pill.green{background:#dcfce7;color:#166534}.pill.amber{background:#fef3c7;color:#92400e}.pill.blue{background:#dbeafe;color:#1d4ed8}
+.meta{font-size:12px;color:var(--muted);line-height:1.9;margin:12px 0}
+.description{white-space:pre-wrap;line-height:1.6;overflow-wrap:anywhere}
+.submission{border-top:1px solid var(--border);margin-top:13px;padding-top:13px}
+.submission h4{font-size:13px;margin:0 0 10px}
+.submission p{line-height:1.6;overflow-wrap:anywhere}
+.review-form{border-top:1px solid var(--border);margin-top:15px;padding-top:14px}
+label{display:block;font-size:12px;font-weight:700;margin:12px 0 6px}
+.hint{font-size:11px;color:var(--muted);line-height:1.6;margin-top:5px}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+button.rework{background:#a16207}button.approve{background:#15803d}
+.history{margin-top:13px;padding-top:12px;border-top:1px dashed var(--border)}
+.history details summary{cursor:pointer;font-weight:700;font-size:12px}
+.history-item{padding:10px 0;border-bottom:1px solid #eef0f5;line-height:1.6;overflow-wrap:anywhere}
+.history-item:last-child{border-bottom:0}
+.empty{padding:28px;text-align:center;border:1px dashed #cbd5e1;border-radius:10px;color:var(--muted);line-height:1.7}
+@media(max-width:600px){main{padding:12px}header{padding:17px}.panel,.review-card{padding:13px}.stats{gap:6px}.stat{padding:10px}.stat strong{font-size:20px}}
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <h1>Project Submission Review</h1>
+    <p>Review work, assign marks out of 100, provide feedback, and approve or request rework.</p>
+  </div>
+  <div style="display:flex;gap:8px;flex-wrap:wrap">
+    <a class="button secondary" href="work-projects.html">Manage Projects</a>
+    <a class="button secondary" href="dashboard.html">Admin Dashboard</a>
+  </div>
+</header>
+
+<main>
+  <div id="notice" class="notice" role="status" aria-live="polite"></div>
+
+  <div class="stats">
+    <div class="stat"><strong id="pendingCount">0</strong><span>Awaiting review</span></div>
+    <div class="stat"><strong id="approvedCount">0</strong><span>Approved assignments</span></div>
+    <div class="stat"><strong id="reworkCount">0</strong><span>Rework requested</span></div>
+  </div>
+
+  <section class="panel">
+    <h2>Submissions</h2>
+    <p class="sub">The latest attempt can be reviewed. Earlier attempts and reviews remain available as history.</p>
+    <div class="filters">
+      <input id="search" placeholder="Search project title or intern ID">
+      <select id="statusFilter">
+        <option value="ALL">All statuses</option>
+        <option value="SUBMITTED">Submitted</option>
+        <option value="UNDER_REVIEW">Under review</option>
+        <option value="REWORK_REQUIRED">Rework required</option>
+        <option value="APPROVED">Approved</option>
+        <option value="ASSIGNED">Not submitted</option>
+      </select>
+      <button type="button" class="secondary" id="refreshBtn">Refresh</button>
+    </div>
+    <div id="reviewList"><div class="empty">Loading submissions...</div></div>
+  </section>
+</main>
+
+<script>
+(() => {
+  "use strict";
+  const $=id=>document.getElementById(id);
+  const state={db:null,user:null,projects:[],assignments:[],submissions:[],reviews:[],interns:[],busy:false};
+
+  function esc(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+  function notify(message,type="info"){
+    const el=$("notice");el.textContent=message;el.className="notice show "+type;
+    el.scrollIntoView({behavior:"smooth",block:"nearest"});
+  }
+  function fail(prefix,error){console.error(prefix,error);notify(prefix+": "+(error?.message||String(error)),"error");}
+  function dateLabel(v){if(!v)return "—";const d=new Date(v);return Number.isNaN(d.getTime())?"—":d.toLocaleString();}
+  function urlValue(v){
+    if(!v)return null;
+    try{const u=new URL(v);return ["https:","http:"].includes(u.protocol)?u.href:null;}catch(_){return null;}
+  }
+  function pill(status){
+    const cls=status==="APPROVED"?"green":status==="REWORK_REQUIRED"?"amber":["SUBMITTED","UNDER_REVIEW"].includes(status)?"blue":"";
+    return `<span class="pill ${cls}">${esc(String(status||"").replaceAll("_"," "))}</span>`;
+  }
+  function setBusy(value){
+    state.busy=value;$("refreshBtn").disabled=value;
+    document.querySelectorAll(".review-form button").forEach(b=>b.disabled=value);
+  }
+
+  async function auth(){
+    state.db=window.supabaseClient;
+    if(!state.db)throw new Error("Supabase client not initialized. Check ../js/supabase.js.");
+    const {data,error}=await state.db.auth.getSession();if(error)throw error;
+    if(!data?.session?.user){window.location.href="../login.html";return false;}
+    state.user=data.session.user;
+    const {data:isAdmin,error:adminError}=await state.db.rpc("is_admin");
+    if(adminError)throw adminError;
+    if(isAdmin!==true){
+      document.body.innerHTML="<main><h2>Access denied</h2><p>This page is for authorized administrators only.</p></main>";
+      return false;
+    }
+    return true;
+  }
+
+  async function load(){
+    const db=state.db;
+    const [projectRes,assignmentRes,submissionRes,internRes]=await Promise.all([
+      db.from("work_projects").select("id,title,description,instructions,due_date,status").order("created_at",{ascending:false}),
+      db.from("work_project_assignments").select("id,project_id,enrollment_id,status,assigned_at,updated_at").order("assigned_at",{ascending:false}),
+      db.from("work_project_submissions").select("id,assignment_id,attempt_number,submission_url,file_urls,comments,submitted_at").order("attempt_number",{ascending:false}),
+      db.from("interns").select("enrollment_id,intern_id,status")
+    ]);
+    if(projectRes.error)throw projectRes.error;
+    if(assignmentRes.error)throw assignmentRes.error;
+    if(submissionRes.error)throw submissionRes.error;
+    if(internRes.error)throw internRes.error;
+
+    state.projects=projectRes.data||[];
+    state.assignments=assignmentRes.data||[];
+    state.submissions=submissionRes.data||[];
+    state.interns=internRes.data||[];
+
+    const submissionIds=state.submissions.map(s=>s.id);
+    state.reviews=[];
+    if(submissionIds.length){
+      const {data,error}=await db.from("work_project_reviews")
+        .select("id,submission_id,reviewed_by,marks,feedback,decision,created_at")
+        .in("submission_id",submissionIds).order("created_at",{ascending:false});
+      if(error)throw error;
+      state.reviews=data||[];
+    }
+    render();
+  }
+
+  function latestSubmission(assignmentId){
+    return state.submissions.filter(s=>s.assignment_id===assignmentId)
+      .sort((a,b)=>b.attempt_number-a.attempt_number)[0]||null;
+  }
+  function reviewsFor(submissionId){
+    return state.reviews.filter(r=>r.submission_id===submissionId)
+      .sort((a,b)=>new Date(b.created_at)-new Date(a.created_at));
+  }
+  function internLabel(assignment){
+    const intern=state.interns.find(i=>i.enrollment_id===assignment.enrollment_id);
+    return intern?.intern_id||assignment.enrollment_id;
+  }
+  function historyHtml(assignment){
+    const history=state.submissions.filter(s=>s.assignment_id===assignment.id)
+      .sort((a,b)=>b.attempt_number-a.attempt_number);
+    if(!history.length)return "";
+    return `<div class="history"><details><summary>Submission history (${history.length} attempt${history.length===1?"":"s"})</summary>
+      ${history.map(s=>{
+        const link=urlValue(s.submission_url);
+        const files=Array.isArray(s.file_urls)?s.file_urls:[];
+        const reviews=reviewsFor(s.id);
+        return `<div class="history-item">
+          <strong>Attempt ${esc(s.attempt_number)}</strong> · ${esc(dateLabel(s.submitted_at))}
+          ${link?`<p><a href="${esc(link)}" target="_blank" rel="noopener noreferrer">Open submitted work</a></p>`:""}
+          ${files.map((f,i)=>{const u=urlValue(typeof f==="string"?f:f?.url);return u?`<p><a href="${esc(u)}" target="_blank" rel="noopener noreferrer">Open file ${i+1}</a></p>`:"";}).join("")}
+          ${s.comments?`<p><strong>Intern comments:</strong> ${esc(s.comments)}</p>`:""}
+          ${reviews.map(r=>`<p>${pill(r.decision)} <strong>${esc(r.marks)}/100</strong><br>${esc(r.feedback||"No feedback") }<br><span class="hint">${esc(dateLabel(r.created_at))}</span></p>`).join("")}
+        </div>`;
+      }).join("")}
+    </details></div>`;
+  }
+
+  function renderCard(assignment,project){
+    const latest=latestSubmission(assignment.id);
+    const latestReview=latest?reviewsFor(latest.id)[0]:null;
+    const canReview=!!latest&&["SUBMITTED","UNDER_REVIEW"].includes(assignment.status);
+    const url=latest?urlValue(latest.submission_url):null;
+    const files=latest&&Array.isArray(latest.file_urls)?latest.file_urls:[];
+    return `<article class="review-card">
+      <div class="card-head">
+        <h3>${esc(project.title)}</h3>${pill(assignment.status)}
+      </div>
+      <div class="meta">
+        <div><strong>Intern ID:</strong> ${esc(internLabel(assignment))}</div>
+        <div><strong>Enrollment:</strong> ${esc(assignment.enrollment_id)}</div>
+        <div><strong>Deadline:</strong> ${esc(dateLabel(project.due_date))}</div>
+        <div><strong>Assigned:</strong> ${esc(dateLabel(assignment.assigned_at))}</div>
+      </div>
+      <p class="description">${esc(project.description||"")}</p>
+      ${latest?`<div class="submission">
+        <h4>Latest submission — Attempt ${esc(latest.attempt_number)}</h4>
+        <p><strong>Submitted:</strong> ${esc(dateLabel(latest.submitted_at))}</p>
+        ${url?`<p><a href="${esc(url)}" target="_blank" rel="noopener noreferrer">Open submitted work</a></p>`:""}
+        ${files.map((f,i)=>{const u=urlValue(typeof f==="string"?f:f?.url);return u?`<p><a href="${esc(u)}" target="_blank" rel="noopener noreferrer">Open file ${i+1}</a></p>`:"";}).join("")}
+        ${latest.comments?`<p><strong>Intern comments:</strong><br>${esc(latest.comments)}</p>`:""}
+        ${latestReview?`<p>Latest review: ${pill(latestReview.decision)} <strong>${esc(latestReview.marks)}/100</strong></p><p>${esc(latestReview.feedback||"No feedback provided")}</p>`:""}
+      </div>`:`<p class="hint">No submission has been made for this assignment yet.</p>`}
+      ${canReview?`<form class="review-form" data-submission="${esc(latest.id)}">
+        <label>Marks out of 100 *</label>
+        <input name="marks" type="number" min="0" max="100" step="1" required placeholder="e.g. 85">
+        <label>Feedback *</label>
+        <textarea name="feedback" required placeholder="Provide clear feedback for the intern."></textarea>
+        <div class="hint">Approve closes submissions. Request Rework allows another attempt while preserving history.</div>
+        <div class="actions">
+          <button type="submit" class="approve" data-decision="APPROVED">Approve</button>
+          <button type="submit" class="rework" data-decision="REWORK_REQUIRED">Request Rework</button>
+        </div>
+      </form>`:""}
+      ${historyHtml(assignment)}
+    </article>`;
+  }
+
+  function render(){
+    const projects=new Map(state.projects.map(p=>[p.id,p]));
+    const all=state.assignments.map(a=>({assignment:a,project:projects.get(a.project_id)})).filter(x=>x.project);
+    const pending=all.filter(x=>["SUBMITTED","UNDER_REVIEW"].includes(x.assignment.status)).length;
+    $("pendingCount").textContent=pending;
+    $("approvedCount").textContent=all.filter(x=>x.assignment.status==="APPROVED").length;
+    $("reworkCount").textContent=all.filter(x=>x.assignment.status==="REWORK_REQUIRED").length;
+
+    const query=$("search").value.trim().toLowerCase();
+    const status=$("statusFilter").value;
+    const rows=all.filter(({assignment,project})=>{
+      const latest=latestSubmission(assignment.id);
+      const text=[project.title,internLabel(assignment),assignment.enrollment_id].join(" ").toLowerCase();
+      const statusMatch=status==="ALL"||assignment.status===status;
+      const queryMatch=!query||text.includes(query);
+      return statusMatch&&queryMatch;
+    });
+
+    if(!rows.length){
+      $("reviewList").innerHTML='<div class="empty">No assignments match this filter.</div>';
+      return;
+    }
+    $("reviewList").innerHTML=rows.map(x=>renderCard(x.assignment,x.project)).join("");
+    $("reviewList").querySelectorAll(".review-form").forEach(form=>{
+      form.addEventListener("submit",reviewSubmission);
+    });
+  }
+
+  async function reviewSubmission(event){
+    event.preventDefault();
+    if(state.busy)return;
+    const form=event.currentTarget;
+    const submitter=event.submitter;
+    const decision=submitter?.dataset?.decision;
+    if(!["APPROVED","REWORK_REQUIRED"].includes(decision)){
+      notify("Choose Approve or Request Rework.","error");return;
+    }
+
+    const fd=new FormData(form);
+    const marks=Number(fd.get("marks"));
+    const feedback=String(fd.get("feedback")||"").trim();
+    const submissionId=form.dataset.submission;
+
+    if(!Number.isInteger(marks)||marks<0||marks>100){
+      notify("Marks must be a whole number from 0 to 100.","error");return;
+    }
+    if(!feedback){notify("Feedback is required.","error");return;}
+
+    const actionLabel=decision==="APPROVED"?"approve this submission":"request rework";
+    if(!window.confirm("Confirm: "+actionLabel+" with "+marks+"/100 marks?"))return;
+
+    setBusy(true);
+    try{
+      const {data,error}=await state.db.rpc("review_work_project_submission",{
+        p_submission_id:submissionId,
+        p_marks:marks,
+        p_feedback:feedback,
+        p_decision:decision
+      });
+      if(error)throw error;
+      notify("Review saved successfully. Review reference: "+data,"success");
+      await load();
+    }catch(error){
+      fail("Unable to save review",error);
+    }finally{
+      setBusy(false);
+    }
+  }
+
+  $("search").addEventListener("input",render);
+  $("statusFilter").addEventListener("change",render);
+  $("refreshBtn").addEventListener("click",async()=>{
+    if(state.busy)return;
+    setBusy(true);
+    try{await load();notify("Submissions refreshed.","success");}
+    catch(error){fail("Unable to refresh submissions",error);}
+    finally{setBusy(false);}
+  });
+
+  (async()=>{
+    try{
+      const allowed=await auth();
+      if(!allowed)return;
+      await load();
+    }catch(error){
+      fail("Admin review page failed to load",error);
+      $("reviewList").innerHTML='<div class="empty">Unable to load submissions. Check the error above.</div>';
+    }
+  })();
+})();
+</script>
+</body>
+</html>

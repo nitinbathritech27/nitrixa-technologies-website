@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -825,11 +824,17 @@
                     <span>Task Notifications</span>
                 </a>
 
-                <span class="nx-admin-nav-link disabled" aria-disabled="true">
+                <!-- ADDED: Projects & Submissions navigation -->
+                <a href="work-projects.html" class="nx-admin-nav-link">
                     <span class="nx-admin-nav-icon">▧</span>
                     <span>Projects &amp; Submissions</span>
-                    <span class="nx-coming-soon">PLANNED</span>
-                </span>
+                </a>
+
+                <!-- ADDED: Separate project review navigation -->
+                <a href="work-project-review.html" class="nx-admin-nav-link">
+                    <span class="nx-admin-nav-icon">✓</span>
+                    <span>Project Submission Review</span>
+                </a>
             </div>
 
             <div class="nx-admin-nav-group">
@@ -986,13 +991,23 @@
                         </span>
                     </a>
 
-                    <div class="nx-admin-module-card disabled" aria-disabled="true">
+                    <!-- ADDED: Projects & Submissions module card -->
+                    <a href="work-projects.html" class="nx-admin-module-card">
                         <span class="nx-admin-module-icon">▧</span>
                         <span>
                             <strong>Projects &amp; Submissions</strong>
-                            <small>Project workflow · Planned module</small>
+                            <small>Create projects and assign them to individual interns or batches.</small>
                         </span>
-                    </div>
+                    </a>
+
+                    <!-- ADDED: Project Submission Review module card -->
+                    <a href="work-project-review.html" class="nx-admin-module-card">
+                        <span class="nx-admin-module-icon">✓</span>
+                        <span>
+                            <strong>Project Submission Review</strong>
+                            <small>Review submissions, provide feedback, award marks and approve or request rework.</small>
+                        </span>
+                    </a>
 
                     <div class="nx-admin-module-card disabled" aria-disabled="true">
                         <span class="nx-admin-module-icon">✓</span>

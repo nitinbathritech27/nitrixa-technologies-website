@@ -1,0 +1,378 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>My Projects & Submissions | NITRIXA</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../js/supabase.js"></script>
+<style>
+:root{--bg:#f5f7fb;--card:#fff;--text:#172033;--muted:#667085;--border:#e4e8f0;--primary:#4f46e5;--green:#15803d;--red:#b91c1c;--amber:#a16207}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:14px Arial,sans-serif}
+header{background:#111827;color:#fff;padding:22px 26px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+header h1{font-size:22px;margin:0}
+header p{font-size:12px;color:#cbd5e1;margin:6px 0 0}
+a{color:var(--primary)}
+main{max-width:1100px;margin:auto;padding:24px}
+.notice{display:none;margin-bottom:16px;padding:12px 14px;border-radius:9px;line-height:1.5;overflow-wrap:anywhere}
+.notice.show{display:block}.notice.success{background:#dcfce7;color:#166534}.notice.error{background:#fee2e2;color:#991b1b}.notice.info{background:#dbeafe;color:#1d4ed8}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-bottom:18px}
+.stat,.panel,.project{background:var(--card);border:1px solid var(--border);border-radius:13px}
+.stat{padding:15px}.stat strong{font-size:24px;display:block}.stat span{color:var(--muted);font-size:12px}
+.panel{padding:20px;margin-bottom:18px}
+h2{font-size:17px;margin:0 0 6px}
+.sub{color:var(--muted);font-size:12px;line-height:1.6;margin:0 0 16px}
+.project{padding:18px;margin-bottom:14px;min-width:0}
+.project:last-child{margin-bottom:0}
+.project-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.project h3{font-size:16px;margin:0;overflow-wrap:anywhere}
+.description{white-space:pre-wrap;line-height:1.65;overflow-wrap:anywhere}
+.meta{font-size:12px;color:var(--muted);line-height:1.9;margin:12px 0}
+.pill{display:inline-block;border-radius:99px;padding:5px 9px;background:#eef2ff;color:#4338ca;font-size:10px;font-weight:700;white-space:nowrap}
+.pill.success{background:#dcfce7;color:#166534}.pill.warning{background:#fef3c7;color:#92400e}.pill.info{background:#dbeafe;color:#1d4ed8}
+label{display:block;font-size:12px;font-weight:700;margin:13px 0 6px}
+input,textarea{width:100%;padding:11px 12px;border:1px solid #d0d5dd;border-radius:9px;font:inherit;background:#fff;color:var(--text)}
+textarea{min-height:75px;resize:vertical}
+button,.button{border:0;border-radius:9px;background:var(--primary);color:#fff;padding:10px 14px;font-weight:700;font-size:12px;cursor:pointer;text-decoration:none;display:inline-flex;justify-content:center;align-items:center}
+button.secondary,.button.secondary{background:#fff;color:#344054;border:1px solid #d0d5dd}
+button:disabled{opacity:.55;cursor:wait}
+.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:14px}
+.hint{font-size:11px;color:var(--muted);line-height:1.6;margin-top:5px}
+.history{border-top:1px solid var(--border);margin-top:16px;padding-top:13px}
+.history-item{padding:12px 0;border-bottom:1px solid #eef0f5;overflow-wrap:anywhere}
+.history-item:last-child{border-bottom:0}
+.history-item p{white-space:pre-wrap;line-height:1.6;margin:7px 0}
+.history-item a{overflow-wrap:anywhere}
+.empty{padding:26px;text-align:center;border:1px dashed #cbd5e1;border-radius:10px;color:var(--muted);line-height:1.7}
+.loading{padding:18px;color:var(--muted)}
+@media(max-width:600px){main{padding:13px}header{padding:17px}.panel{padding:14px}.stats{gap:7px}.stat{padding:10px}.stat strong{font-size:20px}.project{padding:13px}}
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <h1>My Projects &amp; Submissions</h1>
+    <p>View assigned projects, submit your work, and track review feedback.</p>
+  </div>
+  <a class="button secondary" href="../intern-dashboard.html">Intern Dashboard</a>
+</header>
+
+<main>
+  <div id="notice" class="notice" role="status" aria-live="polite"></div>
+
+  <div class="stats">
+    <div class="stat"><strong id="totalCount">0</strong><span>Assigned projects</span></div>
+    <div class="stat"><strong id="pendingCount">0</strong><span>Awaiting submission</span></div>
+    <div class="stat"><strong id="reviewCount">0</strong><span>Submitted / in review</span></div>
+  </div>
+
+  <section class="panel">
+    <h2>My Assigned Projects</h2>
+    <p class="sub">Only projects assigned to your enrollment are shown here.</p>
+    <div id="projectList"><div class="loading">Loading your projects...</div></div>
+  </section>
+</main>
+
+<script>
+(() => {
+  "use strict";
+
+  const $ = id => document.getElementById(id);
+  const state = { db:null, user:null, enrollmentIds:[], assignments:[], projects:[], submissions:[], reviews:[], busy:false };
+
+  function esc(value) {
+    return String(value ?? "").replace(/[&<>"']/g, c => ({
+      "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+    })[c]);
+  }
+
+  function notify(message,type="info") {
+    const el=$("notice");
+    el.textContent=message;
+    el.className="notice show "+type;
+    el.scrollIntoView({behavior:"smooth",block:"nearest"});
+  }
+
+  function showError(prefix,error) {
+    console.error(prefix,error);
+    notify(prefix+": "+(error?.message||String(error)),"error");
+  }
+
+  function dateLabel(value) {
+    if(!value) return "No deadline";
+    const d=new Date(value);
+    return Number.isNaN(d.getTime())?"Date unavailable":d.toLocaleString();
+  }
+
+  function safeUrl(value) {
+    if(!value) return null;
+    try {
+      const u=new URL(value);
+      return ["https:","http:"].includes(u.protocol)?u.href:null;
+    } catch (_) { return null; }
+  }
+
+  function statusClass(status) {
+    if(status==="APPROVED") return "success";
+    if(status==="REWORK_REQUIRED") return "warning";
+    if(["SUBMITTED","UNDER_REVIEW"].includes(status)) return "info";
+    return "";
+  }
+
+  function statusLabel(status) {
+    return String(status||"ASSIGNED").replaceAll("_"," ").toLowerCase()
+      .replace(/\b\w/g,c=>c.toUpperCase());
+  }
+
+  async function initAuth() {
+    state.db=window.supabaseClient;
+    if(!state.db) throw new Error("Supabase client is unavailable. Check ../js/supabase.js.");
+
+    const {data,error}=await state.db.auth.getSession();
+    if(error) throw error;
+
+    if(!data?.session?.user) {
+      window.location.href="../login.html";
+      return false;
+    }
+    state.user=data.session.user;
+    return true;
+  }
+
+  async function loadData() {
+    const db=state.db;
+
+    const {data:enrollments,error:enrollmentError}=await db
+      .from("enrollments")
+      .select("id")
+      .eq("user_id",state.user.id);
+    if(enrollmentError) throw enrollmentError;
+
+    state.enrollmentIds=(enrollments||[]).map(row=>row.id);
+
+    state.assignments=[];
+    state.projects=[];
+    state.submissions=[];
+    state.reviews=[];
+
+    if(!state.enrollmentIds.length) {
+      render();
+      return;
+    }
+
+    const {data:assignments,error:assignmentError}=await db
+      .from("work_project_assignments")
+      .select("id,project_id,enrollment_id,status,assigned_at,updated_at")
+      .in("enrollment_id",state.enrollmentIds)
+      .order("assigned_at",{ascending:false});
+    if(assignmentError) throw assignmentError;
+
+    state.assignments=assignments||[];
+    if(!state.assignments.length) {
+      render();
+      return;
+    }
+
+    const projectIds=[...new Set(state.assignments.map(a=>a.project_id))];
+    const assignmentIds=state.assignments.map(a=>a.id);
+
+    const [projectResult,submissionResult]=await Promise.all([
+      db.from("work_projects")
+        .select("id,title,description,instructions,assignment_type,batch_id,due_date,status,created_at")
+        .in("id",projectIds)
+        .eq("status","PUBLISHED"),
+
+      db.from("work_project_submissions")
+        .select("id,assignment_id,attempt_number,submission_url,file_urls,comments,submitted_at")
+        .in("assignment_id",assignmentIds)
+        .order("attempt_number",{ascending:false})
+    ]);
+
+    if(projectResult.error) throw projectResult.error;
+    if(submissionResult.error) throw submissionResult.error;
+
+    state.projects=projectResult.data||[];
+    state.submissions=submissionResult.data||[];
+
+    const submissionIds=state.submissions.map(s=>s.id);
+    if(submissionIds.length) {
+      const {data:reviews,error:reviewError}=await db
+        .from("work_project_reviews")
+        .select("id,submission_id,marks,feedback,decision,created_at")
+        .in("submission_id",submissionIds)
+        .order("created_at",{ascending:false});
+      if(reviewError) throw reviewError;
+      state.reviews=reviews||[];
+    }
+
+    render();
+  }
+
+  function latestSubmission(assignmentId) {
+    return state.submissions
+      .filter(s=>s.assignment_id===assignmentId)
+      .sort((a,b)=>b.attempt_number-a.attempt_number)[0]||null;
+  }
+
+  function reviewsFor(submissionId) {
+    return state.reviews.filter(r=>r.submission_id===submissionId);
+  }
+
+  function renderHistory(assignment) {
+    const history=state.submissions
+      .filter(s=>s.assignment_id===assignment.id)
+      .sort((a,b)=>b.attempt_number-a.attempt_number);
+
+    if(!history.length) return '<div class="hint">No submissions yet.</div>';
+
+    return `<div class="history"><strong>Submission history</strong>${
+      history.map(s=>{
+        const review=reviewsFor(s.id)[0];
+        const link=safeUrl(s.submission_url);
+        const files=Array.isArray(s.file_urls)?s.file_urls:[];
+        return `<div class="history-item">
+          <div><strong>Attempt ${esc(s.attempt_number)}</strong> · ${esc(dateLabel(s.submitted_at))}</div>
+          ${link?`<p>Submission: <a href="${esc(link)}" target="_blank" rel="noopener noreferrer">Open submitted work</a></p>`:""}
+          ${files.length?`<p>Files: ${files.map((f,i)=>{
+            const u=safeUrl(typeof f==="string"?f:f?.url);
+            return u?`<a href="${esc(u)}" target="_blank" rel="noopener noreferrer">File ${i+1}</a>`:`File ${i+1} URL unavailable`;
+          }).join(" · ")}</p>`:""}
+          ${s.comments?`<p><strong>Your comments:</strong> ${esc(s.comments)}</p>`:""}
+          ${review?`<p><span class="pill ${statusClass(review.decision)}">${esc(statusLabel(review.decision))}</span>
+            <strong>Marks: ${esc(review.marks)}/100</strong></p>
+            ${review.feedback?`<p><strong>Reviewer feedback:</strong> ${esc(review.feedback)}</p>`:""}
+            <div class="hint">Reviewed: ${esc(dateLabel(review.created_at))}</div>`:"<div class='hint'>Review pending.</div>"}
+        </div>`;
+      }).join("")
+    }</div>`;
+  }
+
+  function renderProject(project,assignment) {
+    const latest=latestSubmission(assignment.id);
+    const canSubmit=["ASSIGNED","REWORK_REQUIRED"].includes(assignment.status);
+    const instruction=project.instructions
+      ?`<div class="meta"><strong>Instructions:</strong><br>${esc(project.instructions)}</div>`:"";
+
+    return `<article class="project">
+      <div class="project-head">
+        <h3>${esc(project.title)}</h3>
+        <span class="pill ${statusClass(assignment.status)}">${esc(statusLabel(assignment.status))}</span>
+      </div>
+      <p class="description">${esc(project.description)}</p>
+      ${instruction}
+      <div class="meta">
+        <div><strong>Deadline:</strong> ${esc(dateLabel(project.due_date))}</div>
+        <div><strong>Assigned:</strong> ${esc(dateLabel(assignment.assigned_at))}</div>
+        ${latest?`<div><strong>Latest attempt:</strong> ${esc(latest.attempt_number)}</div>`:""}
+      </div>
+      ${canSubmit?`
+        <form class="submission-form" data-assignment="${esc(assignment.id)}">
+          <label>Submission URL</label>
+          <input name="submission_url" type="url" placeholder="https://...">
+          <label>File URLs (optional)</label>
+          <textarea name="file_urls" placeholder="Paste one publicly accessible file URL per line."></textarea>
+          <div class="hint">This field accepts URLs, not local files. Use a shareable link from your approved file storage.</div>
+          <label>Comments</label>
+          <textarea name="comments" placeholder="Describe your work or add a note for the reviewer."></textarea>
+          <div class="actions">
+            <button type="submit">Submit Work</button>
+          </div>
+        </form>`:
+        `<p class="hint">${assignment.status==="APPROVED"?"This project has been approved; further submissions are closed.":"Your submission is awaiting review. You can submit again if the reviewer requests rework."}</p>`
+      }
+      ${renderHistory(assignment)}
+    </article>`;
+  }
+
+  function render() {
+    const projectMap=new Map(state.projects.map(p=>[p.id,p]));
+    const visible=state.assignments.filter(a=>projectMap.has(a.project_id));
+
+    $("totalCount").textContent=visible.length;
+    $("pendingCount").textContent=visible.filter(a=>["ASSIGNED","REWORK_REQUIRED"].includes(a.status)).length;
+    $("reviewCount").textContent=visible.filter(a=>["SUBMITTED","UNDER_REVIEW"].includes(a.status)).length;
+
+    if(!visible.length) {
+      $("projectList").innerHTML='<div class="empty">No published projects are assigned to your account yet.<br>Check again after your administrator assigns a project.</div>';
+      return;
+    }
+
+    $("projectList").innerHTML=visible.map(a=>renderProject(projectMap.get(a.project_id),a)).join("");
+
+    $("projectList").querySelectorAll(".submission-form").forEach(form=>{
+      form.addEventListener("submit",submitWork);
+    });
+  }
+
+  async function submitWork(event) {
+    event.preventDefault();
+    if(state.busy) return;
+
+    const form=event.currentTarget;
+    const assignmentId=form.dataset.assignment;
+    const fd=new FormData(form);
+    const submissionUrl=String(fd.get("submission_url")||"").trim();
+    const comments=String(fd.get("comments")||"").trim();
+    const rawFiles=String(fd.get("file_urls")||"").trim();
+
+    const fileUrls=rawFiles
+      ?rawFiles.split(/\r?\n/).map(s=>s.trim()).filter(Boolean)
+      :[];
+
+    if(!submissionUrl&&!fileUrls.length) {
+      notify("Add a submission URL or at least one file URL.","error");
+      return;
+    }
+
+    if(submissionUrl&&!safeUrl(submissionUrl)) {
+      notify("Submission URL must be a valid HTTP or HTTPS URL.","error");
+      return;
+    }
+
+    for(const url of fileUrls) {
+      if(!safeUrl(url)) {
+        notify("Every file URL must be a valid HTTP or HTTPS URL.","error");
+        return;
+      }
+    }
+
+    if(!window.confirm("Submit this work now? You can submit again only if rework is requested.")) return;
+
+    state.busy=true;
+    form.querySelectorAll("button,input,textarea").forEach(el=>el.disabled=true);
+
+    try {
+      const {data,error}=await state.db.rpc("submit_work_project",{
+        p_assignment_id:assignmentId,
+        p_submission_url:submissionUrl||null,
+        p_file_urls:fileUrls,
+        p_comments:comments||null
+      });
+      if(error) throw error;
+
+      notify("Work submitted successfully. Submission reference: "+data,"success");
+      await loadData();
+    } catch(error) {
+      showError("Unable to submit work",error);
+      form.querySelectorAll("button,input,textarea").forEach(el=>el.disabled=false);
+    } finally {
+      state.busy=false;
+    }
+  }
+
+  (async function start() {
+    try {
+      const ok=await initAuth();
+      if(!ok) return;
+      await loadData();
+    } catch(error) {
+      showError("Unable to load projects",error);
+      $("projectList").innerHTML='<div class="empty">Could not load projects. Check the error message above.</div>';
+    }
+  })();
+})();
+</script>
+</body>
+</html>
