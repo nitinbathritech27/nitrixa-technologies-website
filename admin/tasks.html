@@ -1,0 +1,1000 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Task & Assignments | Admin</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../js/supabase.js"></script>
+
+  <style>
+    :root {
+      --primary: #4f46e5;
+      --primary-dark: #3730a3;
+      --bg: #f5f7fb;
+      --surface: #fff;
+      --text: #172033;
+      --muted: #667085;
+      --border: #e5e7eb;
+      --success: #15803d;
+      --danger: #b91c1c;
+      --warning: #a16207;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, Arial, sans-serif;
+      font-size: 14px;
+    }
+
+    header {
+      background: #111827;
+      color: #fff;
+      padding: 18px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    header h1 { margin: 0; font-size: 21px; }
+    header p { margin: 5px 0 0; color: #d1d5db; }
+
+    main {
+      max-width: 1250px;
+      padding: 24px;
+      margin: auto;
+    }
+
+    .topbar, .section-heading, .actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+      margin: 20px 0;
+    }
+
+    .stat, .panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 2px 8px rgba(16, 24, 40, .03);
+    }
+
+    .stat-label { color: var(--muted); margin-bottom: 8px; }
+    .stat-value { font-size: 27px; font-weight: 750; }
+
+    .panel { margin-bottom: 20px; }
+    h2 { margin: 0 0 16px; font-size: 18px; }
+    h3 { margin: 0 0 14px; font-size: 15px; }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 15px;
+    }
+
+    .field { min-width: 0; }
+    .field.full { grid-column: 1 / -1; }
+
+    label {
+      display: block;
+      font-weight: 650;
+      margin-bottom: 7px;
+    }
+
+    input, select, textarea {
+      display: block;
+      width: 100%;
+      padding: 11px 12px;
+      border: 1px solid #d0d5dd;
+      border-radius: 8px;
+      font: inherit;
+      color: var(--text);
+      background: #fff;
+      outline: none;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, .12);
+    }
+
+    textarea { min-height: 95px; resize: vertical; }
+    .hint { color: var(--muted); font-size: 12px; margin-top: 6px; }
+
+    button, .link-button {
+      border: 0;
+      border-radius: 8px;
+      padding: 10px 14px;
+      font: inherit;
+      font-weight: 650;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      gap: 6px;
+    }
+
+    button:disabled { opacity: .55; cursor: not-allowed; }
+    .btn-primary { color: white; background: var(--primary); }
+    .btn-primary:hover:not(:disabled) { background: var(--primary-dark); }
+    .btn-secondary { color: #344054; background: #f2f4f7; }
+    .btn-success { color: white; background: var(--success); }
+    .btn-danger { color: white; background: var(--danger); }
+    .btn-small { padding: 7px 10px; font-size: 12px; }
+
+    .status-line {
+      padding: 11px 14px;
+      border-radius: 8px;
+      margin: 12px 0;
+      background: #eef2ff;
+      color: #3730a3;
+      overflow-wrap: anywhere;
+    }
+
+    .status-line.error { background: #fef2f2; color: var(--danger); }
+    .status-line.success { background: #f0fdf4; color: var(--success); }
+    .status-line.warning { background: #fffbeb; color: var(--warning); }
+
+    .hidden { display: none !important; }
+
+    .table-wrap { overflow-x: auto; }
+    table { border-collapse: collapse; width: 100%; min-width: 900px; }
+    th, td {
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+      vertical-align: top;
+      padding: 13px 10px;
+    }
+    th { background: #f9fafb; color: #475467; font-size: 12px; }
+    td { line-height: 1.5; }
+    .task-title { font-weight: 750; margin-bottom: 4px; }
+    .muted { color: var(--muted); }
+    .badges { display: flex; flex-wrap: wrap; gap: 5px; }
+
+    .badge {
+      display: inline-block;
+      border-radius: 20px;
+      padding: 4px 8px;
+      font-size: 11px;
+      font-weight: 750;
+      background: #f2f4f7;
+      color: #344054;
+      white-space: nowrap;
+    }
+
+    .badge-draft { background: #fef3c7; color: #92400e; }
+    .badge-published { background: #dcfce7; color: #166534; }
+    .badge-archived { background: #e5e7eb; color: #374151; }
+
+    .row-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+    .empty { text-align: center; padding: 28px; color: var(--muted); }
+
+    @media (max-width: 760px) {
+      main { padding: 14px; }
+      header { padding: 16px; }
+      .grid { grid-template-columns: 1fr; gap: 10px; }
+      .form-grid { grid-template-columns: 1fr; }
+      .field.full { grid-column: auto; }
+      .panel { padding: 15px; }
+    }
+  </style>
+</head>
+
+<body>
+<header>
+  <div>
+    <h1>Task & Assignments</h1>
+    <p>Create tasks, assign eligible interns and publish assignments.</p>
+  </div>
+  <div class="actions">
+    <a class="link-button btn-secondary" href="dashboard.html">Admin Dashboard</a>
+    <button class="btn-secondary" id="refreshBtn" type="button">Refresh</button>
+  </div>
+</header>
+
+<main>
+  <div id="pageStatus" class="status-line">Connecting to Supabase...</div>
+
+  <div id="application" class="hidden">
+    <div class="grid">
+      <div class="stat">
+        <div class="stat-label">Total Tasks</div>
+        <div class="stat-value" id="totalCount">0</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">Draft Tasks</div>
+        <div class="stat-value" id="draftCount">0</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">Published Tasks</div>
+        <div class="stat-value" id="publishedCount">0</div>
+      </div>
+    </div>
+
+    <section class="panel" id="formPanel">
+      <div class="section-heading">
+        <h2 id="formHeading">Create New Task</h2>
+        <button id="cancelEditBtn" class="btn-secondary hidden" type="button">
+          Cancel Edit
+        </button>
+      </div>
+
+      <div class="hint" style="margin-bottom:16px">
+        New tasks are saved as drafts. Publishing creates assignments for eligible enrollments.
+      </div>
+
+      <form id="taskForm">
+        <input type="hidden" id="taskId">
+
+        <div class="form-grid">
+          <div class="field full">
+            <label for="title">Task Title *</label>
+            <input id="title" maxlength="200" required
+                   placeholder="e.g. Employee Management System">
+          </div>
+
+          <div class="field full">
+            <label for="description">Description *</label>
+            <textarea id="description" required
+                      placeholder="Explain the task and its expected outcome"></textarea>
+          </div>
+
+          <div class="field full">
+            <label for="instructions">Instructions (optional)</label>
+            <textarea id="instructions"
+                      placeholder="Requirements, steps, technologies, submission instructions..."></textarea>
+          </div>
+
+          <div class="field">
+            <label for="assignmentType">Assignment Type *</label>
+            <select id="assignmentType" required>
+              <option value="BATCH">Batch-wise</option>
+              <option value="INDIVIDUAL">Individual interns</option>
+              <option value="ALL">All eligible interns</option>
+            </select>
+          </div>
+
+          <div class="field hidden" id="batchField">
+            <label for="batchId">Active Batch *</label>
+            <select id="batchId">
+              <option value="">Loading batches...</option>
+            </select>
+            <div class="hint">Only active batches are available for selection.</div>
+          </div>
+
+          <div class="field full hidden" id="individualField">
+            <label for="internSearch">Search Interns</label>
+            <input id="internSearch" placeholder="Search by name, email or enrollment ID">
+            <div class="hint" id="internCount">0 interns available</div>
+            <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
+              <button type="button" class="btn-secondary btn-small" id="selectVisibleBtn">
+                Select Visible
+              </button>
+              <button type="button" class="btn-secondary btn-small" id="clearSelectionBtn">
+                Clear Selection
+              </button>
+            </div>
+            <div id="internList"
+                 style="margin-top:12px;max-height:240px;overflow:auto;border:1px solid var(--border);border-radius:8px;padding:10px">
+              Loading interns...
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="dueDate">Deadline (optional)</label>
+            <input id="dueDate" type="datetime-local">
+            <div class="hint">Deadline is stored in the database as a timestamp.</div>
+          </div>
+        </div>
+
+        <div class="actions" style="margin-top:20px">
+          <button id="saveBtn" type="submit" class="btn-primary">Save Draft</button>
+          <span class="hint" id="formModeHint">Drafts can be edited or deleted until published.</span>
+        </div>
+      </form>
+    </section>
+
+    <section class="panel">
+      <div class="section-heading">
+        <h2>Tasks List</h2>
+        <div style="min-width:190px">
+          <select id="statusFilter" aria-label="Filter tasks by status">
+            <option value="ALL">All statuses</option>
+            <option value="DRAFT">Draft</option>
+            <option value="PUBLISHED">Published</option>
+            <option value="ARCHIVED">Archived</option>
+          </select>
+        </div>
+      </div>
+
+      <div id="listStatus" class="hint">Loading tasks...</div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Task</th>
+              <th>Target</th>
+              <th>Deadline</th>
+              <th>Status</th>
+              <th>Created</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="tasksTable">
+            <tr><td colspan="6" class="empty">Loading...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+</main>
+
+<script>
+(() => {
+  "use strict";
+
+  const $ = (id) => document.getElementById(id);
+
+  let db = null;
+  let tasks = [];
+  let batches = [];
+  let interns = [];
+  let selectedInternIds = new Set();
+  let busy = false;
+
+  function setPageStatus(message, type = "") {
+    const el = $("pageStatus");
+    el.textContent = message;
+    el.className = "status-line" + (type ? " " + type : "");
+  }
+
+  function setListStatus(message) {
+    $("listStatus").textContent = message;
+  }
+
+  function escapeHtml(value) {
+    return String(value ?? "").replace(/[&<>"']/g, (char) => ({
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#39;"
+    })[char]);
+  }
+
+  function formatDate(value) {
+    if (!value) return "—";
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return "—";
+    return date.toLocaleString();
+  }
+
+  function localDateTimeValue(value) {
+    if (!value) return "";
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return "";
+
+    const offset = date.getTimezoneOffset();
+    const local = new Date(date.getTime() - offset * 60000);
+    return local.toISOString().slice(0, 16);
+  }
+
+  function showError(error, prefix = "Error") {
+    console.error(prefix, error);
+    const message = error?.message || String(error || "Unknown error");
+    setPageStatus(prefix + ": " + message, "error");
+  }
+
+  function setBusy(value) {
+    busy = value;
+    $("saveBtn").disabled = value;
+    $("refreshBtn").disabled = value;
+  }
+
+  async function verifyAdmin() {
+    const { data: sessionData, error: sessionError } =
+      await db.auth.getSession();
+
+    if (sessionError) throw sessionError;
+
+    if (!sessionData?.session) {
+      window.location.href = "../login.html";
+      return false;
+    }
+
+    const { data, error } = await db.rpc("is_admin");
+    if (error) throw error;
+
+    if (data !== true) {
+      setPageStatus("Access denied. Admin privileges are required.", "error");
+      $("application").classList.add("hidden");
+      return false;
+    }
+
+    return true;
+  }
+
+  async function loadBatches() {
+    const { data, error } = await db
+      .from("batches")
+      .select("id,name,batch_code,status")
+      .eq("status", "ACTIVE")
+      .order("name", { ascending: true });
+
+    if (error) throw error;
+    batches = data || [];
+
+    const select = $("batchId");
+    const previousValue = select.value;
+
+    select.innerHTML = '<option value="">Select an active batch</option>';
+
+    batches.forEach((batch) => {
+      const option = document.createElement("option");
+      option.value = batch.id;
+      option.textContent = batch.name +
+        (batch.batch_code ? " (" + batch.batch_code + ")" : "");
+      select.appendChild(option);
+    });
+
+    if (batches.some((batch) => batch.id === previousValue)) {
+      select.value = previousValue;
+    }
+
+    if (!batches.length) {
+      select.innerHTML = '<option value="">No active batches available</option>';
+    }
+  }
+
+  async function loadInterns() {
+    const { data: enrollmentData, error: enrollmentError } = await db
+      .from("enrollments")
+      .select("id,batch_id,status,created_at")
+      .in("status", ["ACTIVE", "PAYMENT_VERIFIED"])
+      .order("created_at", { ascending: false });
+
+    if (enrollmentError) throw enrollmentError;
+
+    const enrollmentRows = enrollmentData || [];
+    if (!enrollmentRows.length) {
+      interns = [];
+      renderInterns();
+      return;
+    }
+
+    const enrollmentIds = enrollmentRows.map((row) => row.id);
+
+    const { data: internData, error: internError } = await db
+      .from("interns")
+      .select("enrollment_id,intern_id,status")
+      .in("enrollment_id", enrollmentIds)
+      .eq("status", "ACTIVE");
+
+    if (internError) throw internError;
+
+    const internByEnrollment = new Map(
+      (internData || []).map((row) => [row.enrollment_id, row])
+    );
+
+    interns = enrollmentRows
+      .filter((enrollment) => internByEnrollment.has(enrollment.id))
+      .map((enrollment) => ({
+        ...enrollment,
+        intern: internByEnrollment.get(enrollment.id)
+      }));
+
+    renderInterns();
+  }
+
+  function internLabel(row) {
+    const intern = row.intern || {};
+    return intern.intern_id || row.id;
+  }
+
+  function renderInterns() {
+    const query = $("internSearch").value.trim().toLowerCase();
+    const filtered = interns.filter((row) => {
+      const intern = row.intern || {};
+      const haystack = [
+        row.id,
+        intern.intern_id,
+        row.status,
+        row.batch_id
+      ].join(" ").toLowerCase();
+
+      return haystack.includes(query);
+    });
+
+    $("internCount").textContent =
+      filtered.length + " visible / " + interns.length + " eligible interns";
+
+    if (!filtered.length) {
+      $("internList").innerHTML =
+        '<div class="empty">No eligible interns found.</div>';
+      return;
+    }
+
+    $("internList").innerHTML = filtered.map((row) => {
+      const id = escapeHtml(row.id);
+      const checked = selectedInternIds.has(row.id) ? "checked" : "";
+      const label = escapeHtml(internLabel(row));
+
+      return `
+        <label style="display:flex;gap:9px;align-items:flex-start;padding:8px 2px;font-weight:400;border-bottom:1px solid #f2f4f7">
+          <input type="checkbox" class="intern-checkbox" value="${id}" ${checked}
+                 style="width:auto;margin-top:3px">
+          <span>
+            <strong>${label}</strong>
+            <span class="muted" style="display:block;font-size:11px;overflow-wrap:anywhere">
+              Enrollment: ${id}
+            </span>
+            <span class="muted" style="display:block;font-size:11px">
+              ${escapeHtml(row.status)}
+            </span>
+          </span>
+        </label>`;
+    }).join("");
+
+    $("internList").querySelectorAll(".intern-checkbox").forEach((checkbox) => {
+      checkbox.addEventListener("change", () => {
+        if (checkbox.checked) selectedInternIds.add(checkbox.value);
+        else selectedInternIds.delete(checkbox.value);
+      });
+    });
+  }
+
+  function updateTargetFields() {
+    const type = $("assignmentType").value;
+    $("batchField").classList.toggle("hidden", type !== "BATCH");
+    $("individualField").classList.toggle("hidden", type !== "INDIVIDUAL");
+
+    $("batchId").required = type === "BATCH";
+
+    if (type !== "INDIVIDUAL") {
+      $("internSearch").value = "";
+    }
+
+    renderInterns();
+  }
+
+  function targetDescription(task) {
+    if (task.assignment_type === "ALL") return "All eligible interns";
+
+    if (task.assignment_type === "BATCH") {
+      const batch = batches.find((item) => item.id === task.batch_id);
+      return "Batch: " + (batch?.name || "Selected batch");
+    }
+
+    const ids = Array.isArray(task.target_enrollment_ids)
+      ? task.target_enrollment_ids
+      : [];
+
+    return "Individual: " + ids.length + " selected";
+  }
+
+  function updateCounts() {
+    $("totalCount").textContent = tasks.length;
+    $("draftCount").textContent =
+      tasks.filter((task) => task.status === "DRAFT").length;
+    $("publishedCount").textContent =
+      tasks.filter((task) => task.status === "PUBLISHED").length;
+  }
+
+  function renderTasks() {
+    updateCounts();
+
+    const filter = $("statusFilter").value;
+    const filtered = tasks.filter((task) =>
+      filter === "ALL" || task.status === filter
+    );
+
+    if (!filtered.length) {
+      $("tasksTable").innerHTML =
+        '<tr><td colspan="6" class="empty">No tasks found.</td></tr>';
+      setListStatus("Showing 0 tasks.");
+      return;
+    }
+
+    setListStatus("Showing " + filtered.length + " task(s).");
+
+    $("tasksTable").innerHTML = filtered.map((task) => {
+      const badgeClass = task.status === "DRAFT"
+        ? "badge-draft"
+        : task.status === "PUBLISHED"
+          ? "badge-published"
+          : "badge-archived";
+
+      let actions = "";
+
+      if (task.status === "DRAFT") {
+        actions = `
+          <div class="row-actions">
+            <button class="btn-secondary btn-small" data-action="edit"
+                    data-id="${escapeHtml(task.id)}">Edit</button>
+            <button class="btn-success btn-small" data-action="publish"
+                    data-id="${escapeHtml(task.id)}">Publish</button>
+            <button class="btn-danger btn-small" data-action="delete"
+                    data-id="${escapeHtml(task.id)}">Delete</button>
+          </div>`;
+      } else {
+        actions = '<span class="muted">Locked after publishing</span>';
+      }
+
+      return `
+        <tr>
+          <td>
+            <div class="task-title">${escapeHtml(task.title)}</div>
+            <div class="muted">${escapeHtml(task.description || "")}</div>
+            ${task.instructions
+              ? '<div class="hint">Instructions provided</div>'
+              : ""}
+          </td>
+          <td>${escapeHtml(targetDescription(task))}</td>
+          <td>${escapeHtml(formatDate(task.due_date))}</td>
+          <td><span class="badge ${badgeClass}">${escapeHtml(task.status)}</span></td>
+          <td>${escapeHtml(formatDate(task.created_at))}</td>
+          <td>${actions}</td>
+        </tr>`;
+    }).join("");
+  }
+
+  async function loadTasks() {
+    setListStatus("Loading tasks...");
+
+    const { data, error } = await db
+      .from("projects")
+      .select(
+        "id,title,description,instructions,assignment_type,batch_id,target_enrollment_ids,due_date,status,created_at,updated_at"
+      )
+      .order("created_at", { ascending: false });
+
+    if (error) throw error;
+
+    tasks = data || [];
+    renderTasks();
+  }
+
+  async function refreshAll() {
+    setBusy(true);
+
+    try {
+      await Promise.all([loadBatches(), loadInterns()]);
+      await loadTasks();
+      setPageStatus("Ready — Supabase connected and admin verified.", "success");
+    } catch (error) {
+      showError(error, "Unable to load task data");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  function resetForm() {
+    $("taskForm").reset();
+    $("taskId").value = "";
+    selectedInternIds = new Set();
+    $("formHeading").textContent = "Create New Task";
+    $("saveBtn").textContent = "Save Draft";
+    $("cancelEditBtn").classList.add("hidden");
+    $("formModeHint").textContent =
+      "Drafts can be edited or deleted until published.";
+    updateTargetFields();
+    renderInterns();
+  }
+
+  function startEdit(taskId) {
+    const task = tasks.find((item) => item.id === taskId);
+    if (!task || task.status !== "DRAFT") {
+      setPageStatus("Only draft tasks can be edited.", "warning");
+      return;
+    }
+
+    $("taskId").value = task.id;
+    $("title").value = task.title || "";
+    $("description").value = task.description || "";
+    $("instructions").value = task.instructions || "";
+    $("assignmentType").value = task.assignment_type;
+    $("batchId").value = task.batch_id || "";
+    $("dueDate").value = localDateTimeValue(task.due_date);
+
+    selectedInternIds = new Set(
+      Array.isArray(task.target_enrollment_ids)
+        ? task.target_enrollment_ids
+        : []
+    );
+
+    $("formHeading").textContent = "Edit Draft Task";
+    $("saveBtn").textContent = "Update Draft";
+    $("cancelEditBtn").classList.remove("hidden");
+    $("formModeHint").textContent =
+      "Only draft tasks can be updated. Publishing locks this form.";
+
+    updateTargetFields();
+    renderInterns();
+    $("formPanel").scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  function getTaskPayload() {
+    const title = $("title").value.trim();
+    const description = $("description").value.trim();
+    const instructions = $("instructions").value.trim();
+    const assignmentType = $("assignmentType").value;
+
+    if (!title || !description) {
+      throw new Error("Task title and description are required.");
+    }
+
+    let batchId = null;
+    let targetIds = [];
+
+    if (assignmentType === "BATCH") {
+      batchId = $("batchId").value || null;
+
+      if (!batchId) {
+        throw new Error("Select an active batch.");
+      }
+
+      if (!batches.some((batch) => batch.id === batchId)) {
+        throw new Error("The selected batch is not active or available.");
+      }
+    } else if (assignmentType === "INDIVIDUAL") {
+      targetIds = Array.from(selectedInternIds);
+
+      if (!targetIds.length) {
+        throw new Error("Select at least one eligible intern.");
+      }
+
+      const eligibleIds = new Set(interns.map((row) => row.id));
+      if (targetIds.some((id) => !eligibleIds.has(id))) {
+        throw new Error("Your selection includes an unavailable intern. Refresh and select again.");
+      }
+    }
+
+    let dueDate = null;
+    if ($("dueDate").value) {
+      const parsed = new Date($("dueDate").value);
+      if (Number.isNaN(parsed.getTime())) {
+        throw new Error("Please select a valid deadline.");
+      }
+      dueDate = parsed.toISOString();
+    }
+
+    return {
+      title,
+      description,
+      instructions: instructions || null,
+      assignment_type: assignmentType,
+      batch_id: batchId,
+      target_enrollment_ids: targetIds,
+      due_date: dueDate
+    };
+  }
+
+  async function saveTask(event) {
+    event.preventDefault();
+    if (busy) return;
+
+    setBusy(true);
+
+    try {
+      const taskId = $("taskId").value;
+      const payload = getTaskPayload();
+
+      if (taskId) {
+        const { data, error } = await db
+          .from("projects")
+          .update(payload)
+          .eq("id", taskId)
+          .eq("status", "DRAFT")
+          .select("id");
+
+        if (error) throw error;
+        if (!data || data.length !== 1) {
+          throw new Error("Draft was not updated. It may have already been published.");
+        }
+
+        setPageStatus("Draft updated successfully.", "success");
+      } else {
+        const { data: userData, error: userError } =
+          await db.auth.getUser();
+
+        if (userError) throw userError;
+        if (!userData?.user?.id) {
+          throw new Error("Your session has expired. Please sign in again.");
+        }
+
+        const { error } = await db.from("projects").insert({
+          ...payload,
+          created_by: userData.user.id,
+          status: "DRAFT"
+        });
+
+        if (error) throw error;
+        setPageStatus("Draft saved successfully.", "success");
+      }
+
+      resetForm();
+      await loadTasks();
+    } catch (error) {
+      showError(error, "Unable to save task");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function deleteTask(taskId) {
+    const task = tasks.find((item) => item.id === taskId);
+    if (!task || task.status !== "DRAFT") {
+      setPageStatus("Only draft tasks can be deleted.", "warning");
+      return;
+    }
+
+    const confirmed = window.confirm(
+      'Delete the draft "' + task.title + '"? This action cannot be undone.'
+    );
+
+    if (!confirmed) return;
+
+    setBusy(true);
+
+    try {
+      const { data, error } = await db
+        .from("projects")
+        .delete()
+        .eq("id", taskId)
+        .eq("status", "DRAFT")
+        .select("id");
+
+      if (error) throw error;
+
+      if (!data || data.length !== 1) {
+        throw new Error("Draft was not deleted. It may already be published.");
+      }
+
+      if ($("taskId").value === taskId) resetForm();
+
+      await loadTasks();
+      setPageStatus("Draft deleted successfully.", "success");
+    } catch (error) {
+      showError(error, "Unable to delete draft");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function publishTask(taskId) {
+    const task = tasks.find((item) => item.id === taskId);
+
+    if (!task || task.status !== "DRAFT") {
+      setPageStatus("Only draft tasks can be published.", "warning");
+      return;
+    }
+
+    const target = targetDescription(task);
+    const confirmed = window.confirm(
+      'Publish "' + task.title + '"?\n\nTarget: ' + target +
+      '\n\nEligible enrollments will receive assignments. ' +
+      'This action cannot be undone from this page.'
+    );
+
+    if (!confirmed) return;
+
+    setBusy(true);
+
+    try {
+      const { data, error } = await db.rpc("admin_publish_task", {
+        p_task_id: taskId
+      });
+
+      if (error) throw error;
+
+      if (!data || data.success !== true) {
+        throw new Error("The server did not confirm successful publishing.");
+      }
+
+      await loadTasks();
+
+      setPageStatus(
+        'Task published successfully. Eligible enrollments: ' +
+        data.eligible_enrollments +
+        '; new assignments: ' + data.new_assignments +
+        '; existing assignments skipped: ' +
+        data.existing_assignments_skipped + '.',
+        "success"
+      );
+
+      if ($("taskId").value === taskId) resetForm();
+    } catch (error) {
+      showError(error, "Unable to publish task");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  function handleTableAction(event) {
+    const button = event.target.closest("button[data-action]");
+    if (!button || busy) return;
+
+    const action = button.dataset.action;
+    const taskId = button.dataset.id;
+
+    if (action === "edit") startEdit(taskId);
+    if (action === "delete") deleteTask(taskId);
+    if (action === "publish") publishTask(taskId);
+  }
+
+  async function init() {
+    try {
+      if (!window.supabaseClient) {
+        throw new Error(
+          "Supabase client not found. Check ../js/supabase.js configuration."
+        );
+      }
+
+      db = window.supabaseClient;
+
+      const isAdmin = await verifyAdmin();
+      if (!isAdmin) return;
+
+      $("application").classList.remove("hidden");
+
+      $("taskForm").addEventListener("submit", saveTask);
+      $("assignmentType").addEventListener("change", updateTargetFields);
+      $("internSearch").addEventListener("input", renderInterns);
+      $("statusFilter").addEventListener("change", renderTasks);
+      $("tasksTable").addEventListener("click", handleTableAction);
+
+      $("cancelEditBtn").addEventListener("click", resetForm);
+      $("refreshBtn").addEventListener("click", refreshAll);
+
+      $("selectVisibleBtn").addEventListener("click", () => {
+        const query = $("internSearch").value.trim().toLowerCase();
+
+        interns.forEach((row) => {
+          const haystack = [
+            row.id,
+            row.intern?.intern_id,
+            row.status,
+            row.batch_id
+          ].join(" ").toLowerCase();
+
+          if (haystack.includes(query)) selectedInternIds.add(row.id);
+        });
+
+        renderInterns();
+      });
+
+      $("clearSelectionBtn").addEventListener("click", () => {
+        selectedInternIds.clear();
+        renderInterns();
+      });
+
+      updateTargetFields();
+      await refreshAll();
+    } catch (error) {
+      showError(error, "Initialization failed");
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", init);
+})();
+</script>
+</body>
+</html>

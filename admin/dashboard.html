@@ -30,7 +30,6 @@
         }
 
         * { box-sizing: border-box; }
-
         html { scroll-behavior: smooth; }
 
         body.admin-dashboard-page {
@@ -41,9 +40,7 @@
         }
 
         button, input, select { font: inherit; }
-
         a { -webkit-tap-highlight-color: transparent; }
-
         .nx-admin-shell { min-height: 100vh; }
 
         .nx-admin-sidebar {
@@ -128,9 +125,7 @@
             cursor: not-allowed;
         }
 
-        .nx-admin-nav-link.disabled:hover {
-            background: transparent;
-        }
+        .nx-admin-nav-link.disabled:hover { background: transparent; }
 
         .nx-admin-nav-link .nx-coming-soon {
             margin-left: auto;
@@ -768,8 +763,7 @@
     <aside class="nx-admin-sidebar" id="adminSidebar" aria-label="Admin navigation">
         <div class="nx-admin-sidebar-brand">
             <a href="../index.html" aria-label="NITRIXA TECHNOLOGIES homepage">
-                <img src="../assets/images/nitrixa-name-logo.png"
-                     alt="NITRIXA TECHNOLOGIES">
+                <img src="../assets/images/nitrixa-name-logo.png" alt="NITRIXA TECHNOLOGIES">
             </a>
         </div>
 
@@ -798,12 +792,12 @@
 
                 <a href="batches.html" class="nx-admin-nav-link">
                     <span class="nx-admin-nav-icon">▣</span>
-                    <span>Batches & Enrollments</span>
+                    <span>Batches &amp; Enrollments</span>
                 </a>
             </div>
 
             <div class="nx-admin-nav-group">
-                <p class="nx-admin-nav-label">Learning & Delivery</p>
+                <p class="nx-admin-nav-label">Learning &amp; Delivery</p>
 
                 <a href="learning.html" class="nx-admin-nav-link">
                     <span class="nx-admin-nav-icon">▤</span>
@@ -821,21 +815,25 @@
                     <span class="nx-coming-soon">PLANNED</span>
                 </span>
 
-                <span class="nx-admin-nav-link disabled" aria-disabled="true">
+                <a href="tasks.html" class="nx-admin-nav-link">
                     <span class="nx-admin-nav-icon">☑</span>
-                    <span>Tasks & Assignments</span>
-                    <span class="nx-coming-soon">PLANNED</span>
-                </span>
+                    <span>Tasks &amp; Assignments</span>
+                </a>
+
+                <a href="task-notifications.html" class="nx-admin-nav-link">
+                    <span class="nx-admin-nav-icon">🔔</span>
+                    <span>Task Notifications</span>
+                </a>
 
                 <span class="nx-admin-nav-link disabled" aria-disabled="true">
                     <span class="nx-admin-nav-icon">▧</span>
-                    <span>Projects & Submissions</span>
+                    <span>Projects &amp; Submissions</span>
                     <span class="nx-coming-soon">PLANNED</span>
                 </span>
             </div>
 
             <div class="nx-admin-nav-group">
-                <p class="nx-admin-nav-label">Evaluation & Insights</p>
+                <p class="nx-admin-nav-label">Evaluation &amp; Insights</p>
 
                 <span class="nx-admin-nav-link disabled" aria-disabled="true">
                     <span class="nx-admin-nav-icon">✓</span>
@@ -851,7 +849,7 @@
 
                 <span class="nx-admin-nav-link disabled" aria-disabled="true">
                     <span class="nx-admin-nav-icon">▥</span>
-                    <span>Reports & Analytics</span>
+                    <span>Reports &amp; Analytics</span>
                     <span class="nx-coming-soon">PLANNED</span>
                 </span>
             </div>
@@ -972,18 +970,26 @@
                         </span>
                     </div>
 
-                    <div class="nx-admin-module-card disabled" aria-disabled="true">
+                    <a href="tasks.html" class="nx-admin-module-card">
                         <span class="nx-admin-module-icon">☑</span>
                         <span>
-                            <strong>Tasks & Assignments</strong>
-                            <small>Assignment management · Planned module</small>
+                            <strong>Tasks &amp; Assignments</strong>
+                            <small>Create tasks, assign interns and review progress.</small>
                         </span>
-                    </div>
+                    </a>
+
+                    <a href="task-notifications.html" class="nx-admin-module-card">
+                        <span class="nx-admin-module-icon">🔔</span>
+                        <span>
+                            <strong>Task Notifications</strong>
+                            <small>Track submissions, evaluations and certificate updates.</small>
+                        </span>
+                    </a>
 
                     <div class="nx-admin-module-card disabled" aria-disabled="true">
                         <span class="nx-admin-module-icon">▧</span>
                         <span>
-                            <strong>Projects & Submissions</strong>
+                            <strong>Projects &amp; Submissions</strong>
                             <small>Project workflow · Planned module</small>
                         </span>
                     </div>
@@ -1007,7 +1013,7 @@
                     <div class="nx-admin-module-card disabled" aria-disabled="true">
                         <span class="nx-admin-module-icon">▥</span>
                         <span>
-                            <strong>Reports & Analytics</strong>
+                            <strong>Reports &amp; Analytics</strong>
                             <small>Platform reporting · Planned module</small>
                         </span>
                     </div>

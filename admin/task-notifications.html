@@ -1,0 +1,423 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Task Notifications | NITRIXA TECHNOLOGIES</title>
+
+  <link rel="stylesheet" href="../css/global.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/responsive.css">
+
+  <style>
+    :root {
+      --bg: #f5f7fc;
+      --card: #fff;
+      --border: #e5eaf2;
+      --text: #111827;
+      --muted: #64748b;
+      --primary: #3157d5;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, -apple-system, BlinkMacSystemFont,
+        "Segoe UI", sans-serif;
+    }
+
+    .page {
+      width: min(100% - 32px, 1050px);
+      margin: 0 auto;
+      padding: 32px 0 60px;
+    }
+
+    .top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 25px;
+    }
+
+    h1 { margin: 0; font-size: clamp(25px, 4vw, 34px); }
+    .subtitle { margin: 8px 0 0; color: var(--muted); line-height: 1.6; }
+
+    .actions { display: flex; gap: 9px; flex-wrap: wrap; }
+
+    .btn, .filter {
+      min-height: 40px;
+      padding: 0 13px;
+      border: 1px solid #dce3ed;
+      border-radius: 9px;
+      background: white;
+      color: #344054;
+      font: inherit;
+      font-size: 13px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    .btn.primary { background: var(--primary); color: white; border-color: var(--primary); }
+    .btn:disabled { opacity: .55; cursor: wait; }
+
+    .summary {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-bottom: 22px;
+    }
+
+    .stat, .panel {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      box-shadow: 0 8px 30px rgba(15,23,42,.04);
+    }
+
+    .stat { padding: 19px; }
+    .stat-label { color: var(--muted); font-size: 12px; }
+    .stat-value { display: block; margin-top: 9px; font-size: 28px; font-weight: 800; }
+
+    .panel { overflow: hidden; }
+    .panel-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      padding: 19px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .panel-head h2 { margin: 0; font-size: 17px; }
+
+    #status {
+      padding: 12px 19px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    #status.error { color: #b91c1c; }
+
+    .notification {
+      padding: 18px 19px;
+      border-bottom: 1px solid #edf0f5;
+      display: flex;
+      align-items: flex-start;
+      gap: 13px;
+    }
+
+    .notification:last-child { border-bottom: 0; }
+
+    .notification-icon {
+      width: 40px;
+      height: 40px;
+      flex-shrink: 0;
+      display: grid;
+      place-items: center;
+      border-radius: 11px;
+      background: #eef3ff;
+      color: var(--primary);
+      font-size: 19px;
+    }
+
+    .notification-body { flex: 1; min-width: 0; }
+    .notification h3 { margin: 0; font-size: 14px; overflow-wrap: anywhere; }
+    .notification p { margin: 7px 0; color: #475467; font-size: 13px; line-height: 1.65; overflow-wrap: anywhere; }
+    .meta { color: var(--muted); font-size: 11px; }
+    .notification-links { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 10px; }
+    .notification-links a { color: var(--primary); font-size: 12px; font-weight: 700; text-decoration: none; }
+    .notification-links a:hover { text-decoration: underline; }
+
+    .empty { padding: 42px 20px; text-align: center; color: var(--muted); font-size: 13px; }
+
+    @media (max-width: 600px) {
+      .summary { grid-template-columns: 1fr; }
+      .page { width: min(100% - 22px, 1050px); padding-top: 22px; }
+      .notification { padding: 15px 12px; }
+      .panel-head { padding: 15px 12px; }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="page">
+    <header class="top">
+      <div>
+        <h1>Task Notifications</h1>
+        <p class="subtitle">Submission, evaluation and certificate activity.</p>
+      </div>
+      <div class="actions">
+        <a class="btn" href="dashboard.html">← Dashboard</a>
+        <button class="btn" id="refreshButton" type="button">↻ Refresh</button>
+        <button class="btn" id="logoutButton" type="button">Logout</button>
+      </div>
+    </header>
+
+    <section class="summary" aria-label="Notification summary">
+      <article class="stat">
+        <span class="stat-label">Notifications Loaded</span>
+        <strong class="stat-value" id="totalCount">—</strong>
+      </article>
+      <article class="stat">
+        <span class="stat-label">Submission Activity</span>
+        <strong class="stat-value" id="submissionCount">—</strong>
+      </article>
+      <article class="stat">
+        <span class="stat-label">Evaluation / Certificate</span>
+        <strong class="stat-value" id="evaluationCount">—</strong>
+      </article>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head">
+        <h2>Latest notifications</h2>
+        <select class="filter" id="typeFilter" aria-label="Filter notifications">
+          <option value="ALL">All notifications</option>
+          <option value="TASK_SUBMITTED">Submissions</option>
+          <option value="TASK_APPROVED">Approved</option>
+          <option value="TASK_REJECTED">Rejected</option>
+          <option value="TASK_REWORK_REQUIRED">Rework required</option>
+          <option value="CERTIFICATE_PUBLISHED">Certificates</option>
+          <option value="TASK_ASSIGNED">Task assignments</option>
+        </select>
+      </div>
+      <div id="status" role="status" aria-live="polite">Connecting to Supabase…</div>
+      <div id="notificationsList"></div>
+      <div class="empty" id="emptyState" hidden>No notifications match this filter.</div>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../js/supabase.js"></script>
+
+  <script>
+    (function () {
+      "use strict";
+
+      const $ = (id) => document.getElementById(id);
+
+      const state = {
+        notifications: [],
+        loading: false
+      };
+
+      const icons = {
+        TASK_SUBMITTED: "📥",
+        TASK_APPROVED: "✅",
+        TASK_REJECTED: "❌",
+        TASK_REWORK_REQUIRED: "📝",
+        CERTIFICATE_PUBLISHED: "🏆",
+        TASK_ASSIGNED: "📌"
+      };
+
+      function escapeHtml(value) {
+        return String(value ?? "").replace(/[&<>"']/g, function (char) {
+          return {
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            '"': "&quot;",
+            "'": "&#39;"
+          }[char];
+        });
+      }
+
+      function formatDate(value) {
+        if (!value) return "Date unavailable";
+        const date = new Date(value);
+        if (Number.isNaN(date.getTime())) return "Date unavailable";
+        return date.toLocaleString(undefined, {
+          year: "numeric",
+          month: "short",
+          day: "numeric",
+          hour: "2-digit",
+          minute: "2-digit"
+        });
+      }
+
+      function getDestination(notification) {
+        const type = notification.notification_type;
+        const projectId = notification.project_id;
+
+        if (type === "CERTIFICATE_PUBLISHED") {
+          return "task-certificates.html";
+        }
+
+        if (
+          type === "TASK_SUBMITTED" ||
+          type === "TASK_APPROVED" ||
+          type === "TASK_REJECTED" ||
+          type === "TASK_REWORK_REQUIRED"
+        ) {
+          return notification.assignment_id
+            ? "task-review.html"
+            : "tasks.html";
+        }
+
+        if (type === "TASK_ASSIGNED") {
+          return "tasks.html";
+        }
+
+        return projectId ? "tasks.html" : "dashboard.html";
+      }
+
+      function updateSummary(items) {
+        const submissionTypes = ["TASK_SUBMITTED"];
+        const evaluationTypes = [
+          "TASK_APPROVED",
+          "TASK_REJECTED",
+          "TASK_REWORK_REQUIRED",
+          "CERTIFICATE_PUBLISHED"
+        ];
+
+        $("totalCount").textContent = items.length;
+        $("submissionCount").textContent = items.filter(
+          item => submissionTypes.includes(item.notification_type)
+        ).length;
+        $("evaluationCount").textContent = items.filter(
+          item => evaluationTypes.includes(item.notification_type)
+        ).length;
+      }
+
+      function render() {
+        const filter = $("typeFilter").value;
+        const items = state.notifications.filter(item =>
+          filter === "ALL" || item.notification_type === filter
+        );
+
+        updateSummary(state.notifications);
+
+        $("notificationsList").innerHTML = items.map(item => {
+          const title = escapeHtml(item.title || "Task notification");
+          const message = escapeHtml(item.message || "");
+          const type = escapeHtml(item.notification_type || "GENERAL");
+          const date = escapeHtml(formatDate(item.created_at));
+          const icon = icons[item.notification_type] || "🔔";
+          const destination = getDestination(item);
+
+          return `
+            <article class="notification">
+              <div class="notification-icon" aria-hidden="true">${icon}</div>
+              <div class="notification-body">
+                <h3>${title}</h3>
+                <p>${message}</p>
+                <div class="meta">${date} · ${type}</div>
+                <div class="notification-links">
+                  <a href="${escapeHtml(destination)}">Open relevant page →</a>
+                </div>
+              </div>
+            </article>
+          `;
+        }).join("");
+
+        $("emptyState").hidden = items.length > 0;
+      }
+
+      async function loadNotifications() {
+        if (state.loading) return;
+
+        const db = window.supabaseClient;
+
+        if (!db) {
+          $("status").textContent =
+            "Supabase client not found. Check ../js/supabase.js.";
+          $("status").className = "error";
+          return;
+        }
+
+        state.loading = true;
+        $("refreshButton").disabled = true;
+        $("status").className = "";
+        $("status").textContent = "Loading notifications…";
+
+        try {
+          const { data: sessionData, error: sessionError } =
+            await db.auth.getSession();
+
+          if (sessionError) throw sessionError;
+
+          const session = sessionData?.session;
+
+          if (!session) {
+            window.location.href = "../login.html";
+            return;
+          }
+
+          const { data: isAdmin, error: adminError } =
+            await db.rpc("is_admin");
+
+          if (adminError) throw adminError;
+
+          if (isAdmin !== true) {
+            $("status").textContent =
+              "Administrator access required. Redirecting to login…";
+            $("status").className = "error";
+            await db.auth.signOut();
+            window.location.href = "../login.html";
+            return;
+          }
+
+          const { data, error } = await db
+            .from("project_notifications")
+            .select(
+              "id,title,message,notification_type,created_at,project_id,assignment_id,is_read"
+            )
+            .order("created_at", { ascending: false })
+            .limit(30);
+
+          if (error) throw error;
+
+          state.notifications = data || [];
+          render();
+
+          $("status").textContent =
+            `Loaded ${state.notifications.length} notification(s).`;
+        } catch (error) {
+          console.error("Task notifications error:", error);
+          $("status").className = "error";
+          $("status").textContent =
+            error.message || "Could not load notifications. Please refresh.";
+        } finally {
+          state.loading = false;
+          $("refreshButton").disabled = false;
+        }
+      }
+
+      $("refreshButton").addEventListener("click", loadNotifications);
+      $("typeFilter").addEventListener("change", render);
+
+      $("logoutButton").addEventListener("click", async function () {
+        const db = window.supabaseClient;
+        if (!db) return;
+
+        $("logoutButton").disabled = true;
+
+        try {
+          const { error } = await db.auth.signOut();
+          if (error) throw error;
+          window.location.href = "../login.html";
+        } catch (error) {
+          console.error("Logout error:", error);
+          $("status").className = "error";
+          $("status").textContent = error.message || "Logout failed.";
+          $("logoutButton").disabled = false;
+        }
+      });
+
+      loadNotifications();
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,722 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Projects & Submissions | NITRIXA Admin</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../js/supabase.js"></script>
+  <style>
+    :root {
+      --bg:#f5f7fb; --card:#fff; --text:#172033; --muted:#667085;
+      --border:#e4e8f0; --primary:#4f46e5; --dark:#111827;
+      --green:#15803d; --red:#b91c1c; --amber:#a16207;
+    }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--bg); color:var(--text); font:14px Inter,Arial,sans-serif; }
+    header { background:var(--dark); color:white; padding:20px 26px; display:flex; justify-content:space-between; align-items:center; gap:14px; flex-wrap:wrap; }
+    header h1 { margin:0; font-size:22px; }
+    header p { margin:6px 0 0; color:#cbd5e1; font-size:12px; }
+    a { color:inherit; }
+    .header-actions { display:flex; gap:9px; flex-wrap:wrap; }
+    .header-actions a { text-decoration:none; }
+    main { max-width:1400px; margin:auto; padding:24px; }
+    .notice { display:none; margin-bottom:16px; padding:12px 14px; border-radius:10px; line-height:1.5; }
+    .notice.show { display:block; }
+    .notice.success { color:#166534; background:#dcfce7; }
+    .notice.error { color:#991b1b; background:#fee2e2; }
+    .notice.info { color:#1d4ed8; background:#dbeafe; }
+    .layout { display:grid; grid-template-columns:minmax(300px, .9fr) minmax(0,1.4fr); gap:20px; align-items:start; }
+    .panel { background:var(--card); border:1px solid var(--border); border-radius:15px; padding:21px; box-shadow:0 6px 20px #17203308; min-width:0; }
+    h2 { font-size:17px; margin:0 0 6px; }
+    .sub { margin:0 0 20px; color:var(--muted); font-size:12px; line-height:1.6; }
+    label { display:block; margin:14px 0 6px; font-size:12px; font-weight:700; }
+    input, textarea, select { width:100%; padding:11px 12px; border:1px solid #d0d5dd; border-radius:9px; background:white; color:var(--text); font:inherit; }
+    textarea { min-height:90px; resize:vertical; }
+    input:focus,textarea:focus,select:focus { outline:2px solid #c7d2fe; border-color:var(--primary); }
+    .hint { margin-top:5px; font-size:11px; color:var(--muted); line-height:1.5; }
+    .field-hidden { display:none!important; }
+    .intern-box { border:1px solid var(--border); border-radius:9px; padding:10px; max-height:230px; overflow:auto; margin-top:8px; }
+    .intern-box label { display:flex; align-items:flex-start; gap:9px; margin:0; padding:9px 2px; border-bottom:1px solid #f1f3f7; font-weight:400; overflow-wrap:anywhere; }
+    .intern-box label:last-child { border-bottom:0; }
+    .intern-box input { width:auto; margin-top:3px; }
+    .intern-meta { display:block; color:var(--muted); font-size:10px; margin-top:3px; }
+    .buttons { display:flex; gap:9px; flex-wrap:wrap; margin-top:20px; }
+    button,.button { border:0; border-radius:9px; padding:10px 14px; background:var(--primary); color:white; font-weight:700; font-size:12px; cursor:pointer; text-decoration:none; display:inline-flex; justify-content:center; align-items:center; gap:6px; }
+    button.secondary,.button.secondary { background:white; color:#344054; border:1px solid #d0d5dd; }
+    button.danger { background:#b91c1c; }
+    button:disabled { opacity:.55; cursor:wait; }
+    .stats { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; margin-bottom:16px; }
+    .stat { padding:14px; background:#f8faff; border:1px solid var(--border); border-radius:11px; }
+    .stat strong { display:block; font-size:23px; }
+    .stat span { display:block; color:var(--muted); font-size:11px; margin-top:4px; }
+    .list-top { display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:14px; }
+    .list-top input { max-width:260px; }
+    .project-list { display:grid; gap:12px; }
+    .project { border:1px solid var(--border); border-radius:12px; padding:15px; min-width:0; }
+    .project-head { display:flex; justify-content:space-between; gap:12px; align-items:flex-start; }
+    .project h3 { margin:0; font-size:15px; overflow-wrap:anywhere; }
+    .project p { color:var(--muted); font-size:12px; line-height:1.6; white-space:pre-wrap; overflow-wrap:anywhere; }
+    .meta { color:var(--muted); font-size:11px; line-height:1.8; margin-top:9px; }
+    .pill { display:inline-block; padding:5px 8px; border-radius:999px; background:#eef2ff; color:#4338ca; font-size:10px; font-weight:800; white-space:nowrap; }
+    .pill.published { background:#dcfce7; color:#166534; }
+    .pill.archived { background:#f3f4f6; color:#4b5563; }
+    .project-actions { display:flex; gap:7px; flex-wrap:wrap; margin-top:13px; }
+    .project-actions button { padding:8px 10px; font-size:11px; }
+    .empty { padding:28px 12px; text-align:center; color:var(--muted); border:1px dashed #cbd5e1; border-radius:10px; line-height:1.7; }
+    .loading { color:var(--muted); padding:20px 0; }
+    @media(max-width:900px) { .layout { grid-template-columns:1fr; } }
+    @media(max-width:520px) { main { padding:13px; } header { padding:17px; } .panel { padding:15px; } .stats { gap:6px; } .stat { padding:10px; } .stat strong { font-size:19px; } }
+  </style>
+</head>
+<body>
+<header>
+  <div>
+    <h1>Projects &amp; Submissions</h1>
+    <p>Separate project workflow — individual/batch assignment and publishing</p>
+  </div>
+  <div class="header-actions">
+    <a class="button secondary" href="dashboard.html">Admin Dashboard</a>
+    <a class="button secondary" href="task-review.html">Task Reviews</a>
+  </div>
+</header>
+
+<main>
+  <div id="notice" class="notice" role="status" aria-live="polite"></div>
+
+  <div class="layout">
+    <section class="panel" id="formPanel">
+      <h2 id="formTitle">Create Project</h2>
+      <p class="sub" id="formHint">Save as draft to review the target list before publishing.</p>
+
+      <form id="projectForm">
+        <input type="hidden" id="projectId">
+
+        <label for="title">Project title *</label>
+        <input id="title" maxlength="180" required placeholder="e.g. Employee Management System">
+
+        <label for="description">Description *</label>
+        <textarea id="description" required placeholder="Describe the project and expected outcome."></textarea>
+
+        <label for="instructions">Instructions / Requirements</label>
+        <textarea id="instructions" placeholder="Add deliverables, requirements, and submission guidance."></textarea>
+
+        <label for="assignmentType">Assignment type *</label>
+        <select id="assignmentType" required>
+          <option value="INDIVIDUAL">Individual intern(s)</option>
+          <option value="BATCH">Entire batch</option>
+        </select>
+
+        <div id="batchField" class="field-hidden">
+          <label for="batchId">Active batch *</label>
+          <select id="batchId">
+            <option value="">Loading batches...</option>
+          </select>
+          <div class="hint">Eligible enrollments in the selected batch will be assigned.</div>
+        </div>
+
+        <div id="individualField">
+          <label for="internSearch">Find eligible interns</label>
+          <input id="internSearch" placeholder="Search by intern ID or enrollment ID">
+          <div class="hint" id="internCount">Loading eligible interns...</div>
+          <div class="intern-box" id="internList">
+            <div class="loading">Loading interns...</div>
+          </div>
+        </div>
+
+        <label for="dueDate">Deadline (optional)</label>
+        <input id="dueDate" type="datetime-local">
+        <div class="hint">Deadline is displayed to interns; late-submission policy can be configured separately.</div>
+
+        <div class="buttons">
+          <button type="submit" id="saveBtn">Save Draft</button>
+          <button type="button" class="secondary" id="cancelBtn">Clear Form</button>
+          <button type="button" class="secondary" id="refreshBtn">Refresh</button>
+        </div>
+      </form>
+    </section>
+
+    <section>
+      <div class="stats">
+        <div class="stat"><strong id="totalCount">0</strong><span>Total projects</span></div>
+        <div class="stat"><strong id="draftCount">0</strong><span>Drafts</span></div>
+        <div class="stat"><strong id="publishedCount">0</strong><span>Published</span></div>
+      </div>
+
+      <div class="panel">
+        <div class="list-top">
+          <div>
+            <h2>Project List</h2>
+            <p class="sub" style="margin:5px 0 0">Edit or delete drafts. Published projects are locked on this page.</p>
+          </div>
+          <input id="projectSearch" placeholder="Search projects">
+        </div>
+        <div id="projectList" class="project-list">
+          <div class="loading">Loading projects...</div>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<script>
+(() => {
+  "use strict";
+
+  const $ = id => document.getElementById(id);
+  const state = {
+    db: null,
+    user: null,
+    batches: [],
+    interns: [],
+    projects: [],
+    selectedIds: new Set(),
+    busy: false
+  };
+
+  function escapeHtml(value) {
+    return String(value ?? "").replace(/[&<>"']/g, ch => ({
+      "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;"
+    })[ch]);
+  }
+
+  function notify(message, type = "info") {
+    const el = $("notice");
+    el.textContent = message;
+    el.className = "notice show " + type;
+    el.scrollIntoView({ behavior:"smooth", block:"nearest" });
+  }
+
+  function showError(error, prefix) {
+    console.error(prefix, error);
+    notify(prefix + ": " + (error?.message || String(error)), "error");
+  }
+
+  function setBusy(value) {
+    state.busy = value;
+    $("saveBtn").disabled = value;
+    $("refreshBtn").disabled = value;
+    $("cancelBtn").disabled = value;
+  }
+
+  function formatDate(value) {
+    if (!value) return "No deadline";
+    const date = new Date(value);
+    return Number.isNaN(date.getTime()) ? "Invalid date" : date.toLocaleString();
+  }
+
+  function localDateTimeValue(value) {
+    if (!value) return "";
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return "";
+    const local = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
+    return local.toISOString().slice(0, 16);
+  }
+
+  async function verifyAdmin() {
+    state.db = window.supabaseClient;
+    if (!state.db) throw new Error("Supabase client did not initialize. Check ../js/supabase.js.");
+
+    const { data: sessionData, error: sessionError } = await state.db.auth.getSession();
+    if (sessionError) throw sessionError;
+
+    if (!sessionData?.session?.user) {
+      window.location.href = "../login.html";
+      return false;
+    }
+
+    state.user = sessionData.session.user;
+    const { data, error } = await state.db.rpc("is_admin");
+    if (error) throw error;
+
+    if (data !== true) {
+      document.body.innerHTML = "<main><h2>Access denied</h2><p>This page is restricted to authorized administrators.</p><a href='../login.html'>Return to login</a></main>";
+      return false;
+    }
+    return true;
+  }
+
+  async function loadBatches() {
+    const { data, error } = await state.db
+      .from("batches")
+      .select("id,name,batch_code,status")
+      .eq("status", "ACTIVE")
+      .order("name", { ascending:true });
+    if (error) throw error;
+
+    state.batches = data || [];
+    const select = $("batchId");
+    select.innerHTML = '<option value="">Select an active batch</option>';
+
+    state.batches.forEach(batch => {
+      const option = document.createElement("option");
+      option.value = batch.id;
+      option.textContent = batch.name + (batch.batch_code ? " (" + batch.batch_code + ")" : "");
+      select.appendChild(option);
+    });
+
+    if (!state.batches.length) {
+      select.innerHTML = '<option value="">No active batches available</option>';
+    }
+  }
+
+  async function loadInterns() {
+    const { data: enrollments, error: enrollmentError } = await state.db
+      .from("enrollments")
+      .select("id,batch_id,status,created_at")
+      .in("status", ["ACTIVE", "PAYMENT_VERIFIED"])
+      .order("created_at", { ascending:false });
+    if (enrollmentError) throw enrollmentError;
+
+    const rows = enrollments || [];
+    if (!rows.length) {
+      state.interns = [];
+      renderInterns();
+      return;
+    }
+
+    const ids = rows.map(row => row.id);
+    const { data: internData, error: internError } = await state.db
+      .from("interns")
+      .select("enrollment_id,intern_id,status")
+      .in("enrollment_id", ids)
+      .eq("status", "ACTIVE");
+    if (internError) throw internError;
+
+    const internMap = new Map((internData || []).map(row => [row.enrollment_id, row]));
+    state.interns = rows
+      .filter(row => internMap.has(row.id))
+      .map(row => ({ ...row, intern:internMap.get(row.id) }));
+    renderInterns();
+  }
+
+  function renderInterns() {
+    const query = $("internSearch").value.trim().toLowerCase();
+    const rows = state.interns.filter(row => {
+      const label = row.intern?.intern_id || "";
+      return [label, row.id, row.status, row.batch_id].join(" ").toLowerCase().includes(query);
+    });
+
+    $("internCount").textContent = rows.length + " shown / " + state.interns.length + " eligible interns";
+
+    if (!rows.length) {
+      $("internList").innerHTML = '<div class="hint">No eligible interns found.</div>';
+      return;
+    }
+
+    $("internList").innerHTML = rows.map(row => {
+      const id = escapeHtml(row.id);
+      const checked = state.selectedIds.has(row.id) ? "checked" : "";
+      const label = escapeHtml(row.intern?.intern_id || "Intern");
+      return `
+        <label>
+          <input type="checkbox" class="intern-check" value="${id}" ${checked}>
+          <span><strong>${label}</strong>
+            <span class="intern-meta">Enrollment: ${id}</span>
+            <span class="intern-meta">Status: ${escapeHtml(row.status)}</span>
+          </span>
+        </label>`;
+    }).join("");
+
+    $("internList").querySelectorAll(".intern-check").forEach(input => {
+      input.addEventListener("change", () => {
+        if (input.checked) state.selectedIds.add(input.value);
+        else state.selectedIds.delete(input.value);
+      });
+    });
+  }
+
+  function updateTargetFields() {
+    const type = $("assignmentType").value;
+    $("batchField").classList.toggle("field-hidden", type !== "BATCH");
+    $("individualField").classList.toggle("field-hidden", type !== "INDIVIDUAL");
+    $("batchId").required = type === "BATCH";
+    renderInterns();
+  }
+
+  async function loadProjects() {
+    $("projectList").innerHTML = '<div class="loading">Loading projects...</div>';
+    const { data, error } = await state.db
+      .from("work_projects")
+      .select("id,title,description,instructions,assignment_type,batch_id,due_date,status,created_at,updated_at")
+      .order("created_at", { ascending:false });
+    if (error) throw error;
+
+    state.projects = data || [];
+    renderProjects();
+    updateStats();
+  }
+
+  function targetLabel(project) {
+    if (project.assignment_type === "BATCH") {
+      const batch = state.batches.find(item => item.id === project.batch_id);
+      return "Batch: " + (batch?.name || project.batch_id || "Unknown batch");
+    }
+
+    const assigned = state.projectsAssignments?.[project.id];
+    return "Individual assignment";
+  }
+
+  function updateStats() {
+    $("totalCount").textContent = state.projects.length;
+    $("draftCount").textContent = state.projects.filter(p => p.status === "DRAFT").length;
+    $("publishedCount").textContent = state.projects.filter(p => p.status === "PUBLISHED").length;
+  }
+
+  function renderProjects() {
+    const query = $("projectSearch").value.trim().toLowerCase();
+    const projects = state.projects.filter(project =>
+      [project.title, project.description, project.assignment_type, project.status]
+        .join(" ").toLowerCase().includes(query)
+    );
+
+    if (!projects.length) {
+      $("projectList").innerHTML = '<div class="empty">No projects found.<br>Create a project using the form.</div>';
+      return;
+    }
+
+    $("projectList").innerHTML = projects.map(project => {
+      const statusClass = project.status === "PUBLISHED" ? "published" :
+        project.status === "ARCHIVED" ? "archived" : "";
+      const batch = state.batches.find(item => item.id === project.batch_id);
+      const target = project.assignment_type === "BATCH"
+        ? "Batch: " + (batch?.name || "Selected batch")
+        : "Individual intern(s)";
+      const editButton = project.status === "DRAFT"
+        ? `<button type="button" class="secondary" data-action="edit" data-id="${escapeHtml(project.id)}">Edit draft</button>
+           <button type="button" data-action="publish" data-id="${escapeHtml(project.id)}">Publish</button>
+           <button type="button" class="danger" data-action="delete" data-id="${escapeHtml(project.id)}">Delete</button>`
+        : "";
+      return `
+        <article class="project">
+          <div class="project-head">
+            <h3>${escapeHtml(project.title)}</h3>
+            <span class="pill ${statusClass}">${escapeHtml(project.status)}</span>
+          </div>
+          <p>${escapeHtml(project.description)}</p>
+          <div class="meta">
+            <div><strong>Target:</strong> ${escapeHtml(target)}</div>
+            <div><strong>Type:</strong> ${escapeHtml(project.assignment_type)}</div>
+            <div><strong>Deadline:</strong> ${escapeHtml(formatDate(project.due_date))}</div>
+            <div><strong>Created:</strong> ${escapeHtml(formatDate(project.created_at))}</div>
+          </div>
+          <div class="project-actions">
+            ${editButton}
+          </div>
+        </article>`;
+    }).join("");
+  }
+
+  function getPayload() {
+    const title = $("title").value.trim();
+    const description = $("description").value.trim();
+    const instructions = $("instructions").value.trim();
+    const assignmentType = $("assignmentType").value;
+
+    if (!title || !description) throw new Error("Project title and description are required.");
+
+    let batchId = null;
+    if (assignmentType === "BATCH") {
+      batchId = $("batchId").value || null;
+      if (!batchId || !state.batches.some(batch => batch.id === batchId)) {
+        throw new Error("Select an active batch.");
+      }
+    } else {
+      const eligible = new Set(state.interns.map(row => row.id));
+      const selected = Array.from(state.selectedIds);
+      if (!selected.length) throw new Error("Select at least one eligible intern.");
+      if (selected.some(id => !eligible.has(id))) {
+        throw new Error("Selection contains an ineligible intern. Refresh and select again.");
+      }
+    }
+
+    let dueDate = null;
+    if ($("dueDate").value) {
+      const date = new Date($("dueDate").value);
+      if (Number.isNaN(date.getTime())) throw new Error("Choose a valid deadline.");
+      dueDate = date.toISOString();
+    }
+
+    return {
+      title,
+      description,
+      instructions: instructions || null,
+      assignment_type: assignmentType,
+      batch_id: batchId,
+      due_date: dueDate
+    };
+  }
+
+  async function resolveTargetEnrollmentIds(payload) {
+    if (payload.assignment_type === "INDIVIDUAL") {
+      return Array.from(state.selectedIds);
+    }
+
+    const { data, error } = await state.db
+      .from("enrollments")
+      .select("id,batch_id,status")
+      .eq("batch_id", payload.batch_id)
+      .in("status", ["ACTIVE", "PAYMENT_VERIFIED"]);
+    if (error) throw error;
+
+    const enrollments = data || [];
+    if (!enrollments.length) throw new Error("No eligible enrollments found in the selected batch.");
+
+    const ids = enrollments.map(row => row.id);
+    const { data: activeInterns, error: internError } = await state.db
+      .from("interns")
+      .select("enrollment_id,status")
+      .in("enrollment_id", ids)
+      .eq("status", "ACTIVE");
+    if (internError) throw internError;
+
+    const eligible = new Set((activeInterns || []).map(row => row.enrollment_id));
+    const result = ids.filter(id => eligible.has(id));
+    if (!result.length) throw new Error("The selected batch has no eligible active interns.");
+    return result;
+  }
+
+  async function syncDraftAssignments(projectId, enrollmentIds) {
+    const { error: deleteError } = await state.db
+      .from("work_project_assignments")
+      .delete()
+      .eq("project_id", projectId);
+    if (deleteError) throw deleteError;
+
+    const { data: userData, error: userError } = await state.db.auth.getUser();
+    if (userError) throw userError;
+    const adminId = userData?.user?.id;
+    if (!adminId) throw new Error("Your session has expired. Please sign in again.");
+
+    const rows = enrollmentIds.map(enrollmentId => ({
+      project_id: projectId,
+      enrollment_id: enrollmentId,
+      assigned_by: adminId,
+      status: "ASSIGNED"
+    }));
+
+    const { error: insertError } = await state.db
+      .from("work_project_assignments")
+      .insert(rows);
+    if (insertError) throw insertError;
+  }
+
+  async function saveProject(event) {
+    event.preventDefault();
+    if (state.busy) return;
+    setBusy(true);
+
+    try {
+      const projectId = $("projectId").value;
+      const payload = getPayload();
+      const enrollmentIds = await resolveTargetEnrollmentIds(payload);
+
+      if (projectId) {
+        const { data, error } = await state.db
+          .from("work_projects")
+          .update(payload)
+          .eq("id", projectId)
+          .eq("status", "DRAFT")
+          .select("id");
+        if (error) throw error;
+        if (!data?.length) throw new Error("Draft could not be updated. It may already be published.");
+
+        await syncDraftAssignments(projectId, enrollmentIds);
+        notify("Draft updated and target assignments saved.", "success");
+      } else {
+        const { data, error } = await state.db
+          .from("work_projects")
+          .insert({
+            ...payload,
+            created_by: state.user.id,
+            status: "DRAFT"
+          })
+          .select("id")
+          .single();
+        if (error) throw error;
+
+        await syncDraftAssignments(data.id, enrollmentIds);
+        notify("Project draft saved successfully.", "success");
+      }
+
+      resetForm();
+      await loadProjects();
+    } catch (error) {
+      showError(error, "Unable to save project");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function editProject(projectId) {
+    const project = state.projects.find(item => item.id === projectId);
+    if (!project || project.status !== "DRAFT") {
+      notify("Only draft projects can be edited.", "error");
+      return;
+    }
+
+    setBusy(true);
+    try {
+      const { data: assignments, error } = await state.db
+        .from("work_project_assignments")
+        .select("enrollment_id")
+        .eq("project_id", projectId);
+      if (error) throw error;
+
+      $("projectId").value = project.id;
+      $("title").value = project.title || "";
+      $("description").value = project.description || "";
+      $("instructions").value = project.instructions || "";
+      $("assignmentType").value = project.assignment_type;
+      $("batchId").value = project.batch_id || "";
+      $("dueDate").value = localDateTimeValue(project.due_date);
+      state.selectedIds = new Set((assignments || []).map(row => row.enrollment_id));
+
+      $("formTitle").textContent = "Edit Project Draft";
+      $("saveBtn").textContent = "Update Draft";
+      $("formHint").textContent = "Update the project details or its target interns before publishing.";
+      updateTargetFields();
+      $("formPanel").scrollIntoView({ behavior:"smooth", block:"start" });
+    } catch (error) {
+      showError(error, "Unable to load draft");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function publishProject(projectId) {
+    const project = state.projects.find(item => item.id === projectId);
+    if (!project || project.status !== "DRAFT") {
+      notify("Only draft projects can be published.", "error");
+      return;
+    }
+
+    const { data: assignments, error: assignmentError } = await state.db
+      .from("work_project_assignments")
+      .select("id")
+      .eq("project_id", projectId);
+    if (assignmentError) {
+      showError(assignmentError, "Unable to verify target assignments");
+      return;
+    }
+    if (!assignments?.length) {
+      notify("This draft has no target assignments. Edit it and select eligible interns first.", "error");
+      return;
+    }
+
+    if (!window.confirm(
+      'Publish "' + project.title + '"?\n\n' +
+      assignments.length + ' intern assignment(s) will be activated.\n\n' +
+      'Published projects cannot be edited or deleted from this page.'
+    )) return;
+
+    setBusy(true);
+    try {
+      const { data, error } = await state.db
+        .from("work_projects")
+        .update({ status:"PUBLISHED", updated_at:new Date().toISOString() })
+        .eq("id", projectId)
+        .eq("status", "DRAFT")
+        .select("id");
+      if (error) throw error;
+      if (!data?.length) throw new Error("Publishing was not confirmed by the database.");
+
+      await loadProjects();
+      notify("Project published. Assignment count: " + assignments.length + ".", "success");
+    } catch (error) {
+      showError(error, "Unable to publish project");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function deleteProject(projectId) {
+    const project = state.projects.find(item => item.id === projectId);
+    if (!project || project.status !== "DRAFT") {
+      notify("Only draft projects can be deleted.", "error");
+      return;
+    }
+    if (!window.confirm('Delete draft "' + project.title + '"? This cannot be undone.')) return;
+
+    setBusy(true);
+    try {
+      const { error: assignmentError } = await state.db
+        .from("work_project_assignments")
+        .delete()
+        .eq("project_id", projectId);
+      if (assignmentError) throw assignmentError;
+
+      const { data, error } = await state.db
+        .from("work_projects")
+        .delete()
+        .eq("id", projectId)
+        .eq("status", "DRAFT")
+        .select("id");
+      if (error) throw error;
+      if (!data?.length) throw new Error("Draft could not be deleted.");
+
+      if ($("projectId").value === projectId) resetForm();
+      await loadProjects();
+      notify("Draft deleted successfully.", "success");
+    } catch (error) {
+      showError(error, "Unable to delete draft");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  function resetForm() {
+    $("projectForm").reset();
+    $("projectId").value = "";
+    state.selectedIds = new Set();
+    $("formTitle").textContent = "Create Project";
+    $("saveBtn").textContent = "Save Draft";
+    $("formHint").textContent = "Save as draft to review the target list before publishing.";
+    updateTargetFields();
+  }
+
+  async function refreshAll() {
+    if (state.busy) return;
+    setBusy(true);
+    try {
+      await Promise.all([loadBatches(), loadInterns()]);
+      await loadProjects();
+      notify("Project data refreshed.", "success");
+    } catch (error) {
+      showError(error, "Unable to load project data");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  $("projectForm").addEventListener("submit", saveProject);
+  $("assignmentType").addEventListener("change", updateTargetFields);
+  $("internSearch").addEventListener("input", renderInterns);
+  $("projectSearch").addEventListener("input", renderProjects);
+  $("cancelBtn").addEventListener("click", resetForm);
+  $("refreshBtn").addEventListener("click", refreshAll);
+
+  $("projectList").addEventListener("click", event => {
+    const button = event.target.closest("button[data-action]");
+    if (!button || state.busy) return;
+    const { action, id } = button.dataset;
+
+    if (action === "edit") editProject(id);
+    if (action === "publish") publishProject(id);
+    if (action === "delete") deleteProject(id);
+  });
+
+  (async function init() {
+    try {
+      const allowed = await verifyAdmin();
+      if (!allowed) return;
+      await refreshAll();
+    } catch (error) {
+      showError(error, "Project page initialization failed");
+    }
+  })();
+})();
+</script>
+</body>
+</html>

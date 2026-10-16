@@ -1,0 +1,837 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Task & Assignments | Intern Portal</title>
+  <link rel="stylesheet" href="../css/global.css">
+  <style>
+    :root {
+      --primary:#4f46e5; --bg:#f5f7fb; --border:#e2e8f0;
+      --text:#172033; --muted:#64748b;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,Arial,sans-serif}
+    .page{max-width:1150px;margin:auto;padding:26px 16px 48px}
+    .header{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;flex-wrap:wrap;margin-bottom:20px}
+    h1{font-size:clamp(25px,4vw,34px);margin:0 0 8px}
+    h2{font-size:20px;margin:0 0 12px}
+    h3{font-size:16px;margin:0 0 12px}
+    p{line-height:1.6}
+    .muted,.help{color:var(--muted)}
+    .help{font-size:12px;line-height:1.5}
+    .btn{display:inline-flex;justify-content:center;align-items:center;padding:10px 14px;border:1px solid transparent;border-radius:9px;background:var(--primary);color:white;font-weight:650;font-size:14px;cursor:pointer;text-decoration:none}
+    .btn.secondary{background:white;border-color:var(--border);color:var(--text)}
+    .btn:disabled{opacity:.55;cursor:not-allowed}
+    .alert{padding:13px 15px;border-radius:10px;margin-bottom:16px;line-height:1.5;overflow-wrap:anywhere}
+    .info{background:#eef2ff;color:#3730a3}
+    .success{background:#f0fdf4;color:#166534}
+    .error{background:#fef2f2;color:#991b1b}
+    .warning{background:#fffbeb;color:#92400e}
+    .hidden{display:none!important}
+    .stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:18px 0}
+    .stat,.card,.notice{background:white;border:1px solid var(--border);border-radius:13px;box-shadow:0 2px 8px #0f172a08}
+    .stat{padding:16px}
+    .stat span{display:block;font-size:13px;color:var(--muted)}
+    .stat strong{display:block;font-size:25px;margin-top:7px}
+    .section{margin-top:25px}
+    .section-heading{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:13px}
+    .toolbar{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0}
+    input,select,textarea{width:100%;min-width:0;padding:11px 12px;border:1px solid #cbd5e1;border-radius:9px;background:white;color:var(--text);font:inherit}
+    .toolbar input{flex:1;min-width:180px}
+    .toolbar select{width:auto;min-width:180px}
+    .list{display:grid;gap:15px}
+    .card{padding:20px;min-width:0}
+    .top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
+    .meta{display:flex;flex-wrap:wrap;gap:8px 16px;color:var(--muted);font-size:13px}
+    .badge{display:inline-block;padding:5px 9px;border-radius:999px;background:#f1f5f9;color:#475569;font-size:12px;font-weight:700}
+    .badge.success{background:#dcfce7;color:#166534}
+    .badge.danger{background:#fee2e2;color:#991b1b}
+    .badge.warning{background:#fef3c7;color:#92400e}
+    .badge.info{background:#e0e7ff;color:#3730a3}
+    .description{white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.65;color:#475569}
+    .progress-track{height:8px;background:#e2e8f0;border-radius:999px;overflow:hidden;margin-top:8px}
+    .progress-fill{height:100%;background:var(--primary);border-radius:999px}
+    .divider{border-top:1px solid var(--border);margin-top:17px;padding-top:17px}
+    .form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+    .field{display:flex;flex-direction:column;gap:7px;min-width:0}
+    .field label{font-size:13px;font-weight:650}
+    .field.full,.form-actions{grid-column:1/-1}
+    textarea{min-height:90px;resize:vertical}
+    .form-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+    .history-item,.notice{padding:14px;overflow-wrap:anywhere}
+    .history-item{background:#f8fafc;border:1px solid var(--border);border-radius:10px;margin-top:10px}
+    .notice{padding:16px}
+    .notice.unread{border-left:4px solid var(--primary);background:#fafaff}
+    .notice p,.history-item p{white-space:pre-wrap;overflow-wrap:anywhere;margin:8px 0}
+    a{overflow-wrap:anywhere;word-break:break-word}
+    .certificate-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+    .certificate-card{padding:16px;background:white;border:1px solid var(--border);border-radius:12px;min-width:0}
+    .certificate-image{display:block;width:100%;max-height:300px;object-fit:contain;margin:12px auto;background:#f8fafc;border-radius:8px}
+    .empty,.loading{padding:30px 16px;text-align:center;border-radius:12px;color:var(--muted);line-height:1.6}
+    .empty{background:white;border:1px dashed #cbd5e1}
+    .loading{background:transparent}
+    @media(max-width:750px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.certificate-grid{grid-template-columns:1fr}}
+    @media(max-width:520px){.page{padding:20px 12px 35px}.card{padding:15px}.form-grid{grid-template-columns:1fr}.field.full,.form-actions{grid-column:auto}.toolbar input,.toolbar select{width:100%;min-width:100%}}
+  </style>
+</head>
+<body>
+<main class="page">
+  <header class="header">
+    <div>
+      <h1>Task & Assignments</h1>
+      <p class="muted">Your assignments, progress, submissions, feedback and certificates.</p>
+    </div>
+    <button class="btn secondary" id="refreshBtn" type="button">Refresh</button>
+  </header>
+
+  <div id="alert" class="alert info" role="status">Connecting to your account…</div>
+
+  <section class="stats">
+    <div class="stat"><span>Total assignments</span><strong id="totalCount">—</strong></div>
+    <div class="stat"><span>In progress</span><strong id="progressCount">—</strong></div>
+    <div class="stat"><span>Awaiting review</span><strong id="reviewCount">—</strong></div>
+    <div class="stat"><span>Approved</span><strong id="approvedCount">—</strong></div>
+  </section>
+
+  <section class="section" id="notificationsSection">
+    <div class="section-heading">
+      <h2>Notifications</h2>
+      <span id="unreadCount" class="badge">Unread: —</span>
+    </div>
+    <div id="notificationsList" class="list">
+      <div class="loading">Loading notifications…</div>
+    </div>
+  </section>
+
+  <section class="section" id="certificatesSection">
+    <div class="section-heading">
+      <h2>My Certificates</h2>
+      <span id="certificateCount" class="badge">— certificates</span>
+    </div>
+    <div id="certificatesList" class="certificate-grid">
+      <div class="loading">Loading certificates…</div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-heading"><h2>My Assignments</h2></div>
+    <div class="toolbar">
+      <input id="searchInput" type="search" placeholder="Search task title…" aria-label="Search tasks">
+      <select id="statusFilter" aria-label="Filter tasks">
+        <option value="ALL">All statuses</option>
+        <option value="ASSIGNED">Assigned</option>
+        <option value="IN_PROGRESS">In progress</option>
+        <option value="SUBMITTED">Submitted</option>
+        <option value="UNDER_REVIEW">Under review</option>
+        <option value="REWORK_REQUIRED">Rework required</option>
+        <option value="REJECTED">Rejected</option>
+        <option value="APPROVED">Approved</option>
+      </select>
+    </div>
+    <div id="tasksList" class="list">
+      <div class="loading">Loading assignments…</div>
+    </div>
+  </section>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../js/supabase.js"></script>
+<script>
+(() => {
+  "use strict";
+
+  const BUCKET_SUBMISSIONS = "task-submissions";
+  const BUCKET_CERTIFICATES = "task-certificates";
+  const MAX_FILE_SIZE = 10 * 1024 * 1024;
+  const MAX_FILES = 5;
+
+  const state = {
+    db: null,
+    user: null,
+    assignments: [],
+    projects: new Map(),
+    submissions: new Map(),
+    evaluations: new Map(),
+    progress: new Map(),
+    notifications: [],
+    certificates: [],
+    busy: new Set()
+  };
+
+  const $ = id => document.getElementById(id);
+
+  function esc(value) {
+    return String(value ?? "").replace(/[&<>"']/g, c => ({
+      "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;"
+    })[c]);
+  }
+
+  function alertUser(message, type = "info") {
+    $("alert").className = "alert " + type;
+    $("alert").textContent = message;
+    $("alert").classList.remove("hidden");
+  }
+
+  function clearAlert() { $("alert").classList.add("hidden"); }
+
+  function dateText(value) {
+    if (!value) return "No date set";
+    const date = new Date(value);
+    return Number.isNaN(date.getTime()) ? "Date unavailable" : date.toLocaleString();
+  }
+
+  function statusLabel(value) {
+    return String(value || "ASSIGNED").replaceAll("_", " ")
+      .toLowerCase().replace(/\b\w/g, c => c.toUpperCase());
+  }
+
+  function statusClass(status) {
+    if (status === "APPROVED") return "success";
+    if (status === "REJECTED") return "danger";
+    if (status === "REWORK_REQUIRED") return "warning";
+    if (["SUBMITTED","UNDER_REVIEW"].includes(status)) return "info";
+    return "";
+  }
+
+  function externalUrl(value) {
+    if (!value) return null;
+    try {
+      const url = new URL(value);
+      return ["https:","http:"].includes(url.protocol) ? url.href : null;
+    } catch (_) { return null; }
+  }
+
+  async function checkLogin() {
+    state.db = window.supabaseClient;
+    if (!state.db) throw new Error("Supabase client is not initialized. Check ../js/supabase.js.");
+
+    const { data, error } = await state.db.auth.getSession();
+    if (error) throw error;
+
+    if (!data?.session?.user) {
+      window.location.href = "../login.html";
+      return false;
+    }
+
+    state.user = data.session.user;
+    return true;
+  }
+
+  function addToMap(map, key, item) {
+    if (!map.has(key)) map.set(key, []);
+    map.get(key).push(item);
+  }
+
+  async function loadData() {
+    const db = state.db;
+
+    const { data: enrollments, error: enrollmentError } = await db
+      .from("enrollments").select("id").eq("user_id", state.user.id);
+    if (enrollmentError) throw enrollmentError;
+
+    const enrollmentIds = (enrollments || []).map(e => e.id);
+    state.assignments = [];
+    state.projects = new Map();
+    state.submissions = new Map();
+    state.evaluations = new Map();
+    state.progress = new Map();
+    state.notifications = [];
+    state.certificates = [];
+
+    const results = await Promise.all([
+      db.from("project_notifications")
+        .select("id,project_id,assignment_id,title,message,notification_type,is_read,created_at")
+        .eq("user_id", state.user.id)
+        .order("created_at", { ascending: false })
+        .limit(30),
+
+      db.from("project_certificates")
+        .select("id,assignment_id,image_url,published,published_at,updated_at")
+        .eq("published", true)
+        .order("published_at", { ascending: false })
+    ]);
+
+    if (results[0].error) throw results[0].error;
+    if (results[1].error) throw results[1].error;
+
+    state.notifications = results[0].data || [];
+    state.certificates = results[1].data || [];
+
+    if (enrollmentIds.length) {
+      const { data, error } = await db.from("project_assignments")
+        .select("id,project_id,enrollment_id,status,progress_percent,assigned_at,updated_at")
+        .in("enrollment_id", enrollmentIds)
+        .order("assigned_at", { ascending: false });
+      if (error) throw error;
+      state.assignments = data || [];
+    }
+
+    if (state.assignments.length) {
+      const projectIds = [...new Set(state.assignments.map(a => a.project_id))];
+      const assignmentIds = state.assignments.map(a => a.id);
+
+      const [projectResult, submissionResult, progressResult] = await Promise.all([
+        db.from("projects")
+          .select("id,title,description,instructions,due_date,status")
+          .in("id", projectIds),
+
+        db.from("project_submissions")
+          .select("id,assignment_id,submission_url,file_urls,comments,attempt_number,submitted_at")
+          .in("assignment_id", assignmentIds)
+          .order("attempt_number", { ascending: false }),
+
+        db.from("project_progress_updates")
+          .select("id,assignment_id,update_type,progress_percent,completed_work,pending_work,evidence_url,submitted_at")
+          .in("assignment_id", assignmentIds)
+          .order("submitted_at", { ascending: false })
+      ]);
+
+      if (projectResult.error) throw projectResult.error;
+      if (submissionResult.error) throw submissionResult.error;
+      if (progressResult.error) throw progressResult.error;
+
+      (projectResult.data || []).forEach(p => state.projects.set(p.id, p));
+      (submissionResult.data || []).forEach(s => addToMap(state.submissions, s.assignment_id, s));
+      (progressResult.data || []).forEach(p => addToMap(state.progress, p.assignment_id, p));
+
+      const submissionIds = (submissionResult.data || []).map(s => s.id);
+
+      if (submissionIds.length) {
+        const { data, error } = await db.from("project_evaluations")
+          .select("id,submission_id,marks,decision,feedback,created_at")
+          .in("submission_id", submissionIds)
+          .order("created_at", { ascending: false });
+        if (error) throw error;
+
+        (data || []).forEach(e => {
+          if (!state.evaluations.has(e.submission_id)) state.evaluations.set(e.submission_id, e);
+        });
+      }
+    }
+
+    updateStats();
+    await renderNotifications();
+    await renderCertificates();
+    await renderTasks();
+    clearAlert();
+  }
+
+  function updateStats() {
+    $("totalCount").textContent = state.assignments.length;
+    $("progressCount").textContent = state.assignments.filter(a =>
+      ["IN_PROGRESS","REWORK_REQUIRED","REJECTED"].includes(a.status)
+    ).length;
+    $("reviewCount").textContent = state.assignments.filter(a =>
+      ["SUBMITTED","UNDER_REVIEW"].includes(a.status)
+    ).length;
+    $("approvedCount").textContent = state.assignments.filter(a => a.status === "APPROVED").length;
+
+    const unread = state.notifications.filter(n => !n.is_read).length;
+    $("unreadCount").textContent = "Unread: " + unread;
+    $("certificateCount").textContent = state.certificates.length + " certificates";
+  }
+
+  async function renderNotifications() {
+    const container = $("notificationsList");
+
+    if (!state.notifications.length) {
+      container.innerHTML = '<div class="empty">No notifications yet. Task updates and evaluation feedback will appear here.</div>';
+      return;
+    }
+
+    container.innerHTML = state.notifications.map(n => `
+      <article class="notice ${n.is_read ? "" : "unread"}">
+        <div class="top">
+          <strong>${esc(n.title)}</strong>
+          <span class="badge ${n.is_read ? "" : "info"}">${n.is_read ? "Read" : "New"}</span>
+        </div>
+        <p>${esc(n.message)}</p>
+        <div class="meta">
+          <span>${esc(statusLabel(n.notification_type))}</span>
+          <span>${esc(dateText(n.created_at))}</span>
+        </div>
+      </article>
+    `).join("");
+  }
+
+  async function renderCertificates() {
+    const container = $("certificatesList");
+
+    if (!state.certificates.length) {
+      container.innerHTML = '<div class="empty">No published certificates yet. Certificates appear here after admin approval and publication.</div>';
+      return;
+    }
+
+    const assignmentMap = new Map(state.assignments.map(a => [a.id, a]));
+    const cards = [];
+
+    for (const cert of state.certificates) {
+      const assignment = assignmentMap.get(cert.assignment_id);
+
+      // The table's RLS policy limits results to the user's own published
+      // certificates. Keep the extra status check in the UI as well.
+      if (!assignment || assignment.status !== "APPROVED" || !cert.image_url) continue;
+
+      const { data, error } = await state.db.storage
+        .from(BUCKET_CERTIFICATES)
+        .createSignedUrl(cert.image_url, 900);
+
+      if (error || !data?.signedUrl) {
+        cards.push(`
+          <article class="certificate-card">
+            <h3>${esc(state.projects.get(assignment.project_id)?.title || "Task certificate")}</h3>
+            <p class="help">The certificate image could not be loaded. Refresh and try again.</p>
+          </article>
+        `);
+        continue;
+      }
+
+      const project = state.projects.get(assignment.project_id);
+
+      cards.push(`
+        <article class="certificate-card">
+          <span class="badge success">Published</span>
+          <h3 style="margin-top:10px">${esc(project?.title || "Task certificate")}</h3>
+          <p class="help">Published: ${esc(dateText(cert.published_at))}</p>
+          <img class="certificate-image"
+               src="${esc(data.signedUrl)}"
+               alt="Published task certificate"
+               loading="lazy">
+          <a class="btn secondary" href="${esc(data.signedUrl)}"
+             target="_blank" rel="noopener noreferrer">Open certificate image</a>
+          <p class="help">Secure image link expires after 15 minutes. Refresh this page for a new link.</p>
+        </article>
+      `);
+    }
+
+    container.innerHTML = cards.length
+      ? cards.join("")
+      : '<div class="empty">No certificates are currently available for your approved assignments.</div>';
+  }
+
+  function canSubmit(assignment, submissions) {
+    if (["APPROVED","SUBMITTED","UNDER_REVIEW"].includes(assignment.status)) return false;
+    if (!submissions.length) return ["ASSIGNED","IN_PROGRESS"].includes(assignment.status);
+
+    const evaluation = state.evaluations.get(submissions[0].id);
+    return ["REWORK_REQUIRED","REJECTED"].includes(assignment.status)
+      && evaluation?.decision === assignment.status;
+  }
+
+  async function fileLinks(fileUrls) {
+    if (!Array.isArray(fileUrls) || !fileUrls.length) return "";
+
+    const links = [];
+
+    for (const file of fileUrls) {
+      if (!file || typeof file.path !== "string") continue;
+
+      const { data, error } = await state.db.storage
+        .from(BUCKET_SUBMISSIONS)
+        .createSignedUrl(file.path, 900);
+
+      links.push(error || !data?.signedUrl
+        ? `<li>${esc(file.name || "Submitted file")} — link unavailable</li>`
+        : `<li><a href="${esc(data.signedUrl)}" target="_blank" rel="noopener noreferrer">${esc(file.name || "Open file")}</a></li>`);
+    }
+
+    return links.length ? `<ul>${links.join("")}</ul>` : "";
+  }
+
+  async function submissionHistory(submissions) {
+    if (!submissions.length) return '<p class="help">No submission attempts yet.</p>';
+
+    const items = [];
+
+    for (const s of submissions) {
+      const evaluation = state.evaluations.get(s.id);
+      const url = externalUrl(s.submission_url);
+      const files = await fileLinks(s.file_urls);
+
+      items.push(`
+        <div class="history-item">
+          <div class="top">
+            <strong>Attempt ${esc(s.attempt_number)}</strong>
+            <span class="help">${esc(dateText(s.submitted_at))}</span>
+          </div>
+          ${url ? `<p><a href="${esc(url)}" target="_blank" rel="noopener noreferrer">Open submitted project</a></p>` : ""}
+          ${files}
+          ${s.comments ? `<p><b>Comments:</b> ${esc(s.comments)}</p>` : ""}
+          ${evaluation ? `
+            <div class="divider">
+              <div class="meta">
+                <span>Decision: <b>${esc(statusLabel(evaluation.decision))}</b></span>
+                <span>Marks: <b>${evaluation.marks == null ? "—" : esc(evaluation.marks) + "/100"}</b></span>
+                <span>${esc(dateText(evaluation.created_at))}</span>
+              </div>
+              <p>${esc(evaluation.feedback || "No feedback provided.")}</p>
+            </div>
+          ` : ""}
+        </div>
+      `);
+    }
+
+    return items.join("");
+  }
+
+  function progressHistory(assignmentId) {
+    const items = state.progress.get(assignmentId) || [];
+    if (!items.length) return '<p class="help">No progress updates yet.</p>';
+
+    return items.map(p => `
+      <div class="history-item">
+        <div class="top">
+          <strong>${esc(p.update_type)} · ${esc(p.progress_percent)}%</strong>
+          <span class="help">${esc(dateText(p.submitted_at))}</span>
+        </div>
+        <p><b>Completed:</b><br>${esc(p.completed_work)}</p>
+        <p><b>Pending:</b><br>${esc(p.pending_work)}</p>
+        ${externalUrl(p.evidence_url) ? `<a href="${esc(externalUrl(p.evidence_url))}" target="_blank" rel="noopener noreferrer">Open evidence</a>` : ""}
+      </div>
+    `).join("");
+  }
+
+  async function renderTask(assignment) {
+    const project = state.projects.get(assignment.project_id);
+    if (!project) return "";
+
+    const submissions = state.submissions.get(assignment.id) || [];
+    const updates = state.progress.get(assignment.id) || [];
+    const latestEvaluation = submissions.length
+      ? state.evaluations.get(submissions[0].id)
+      : null;
+    const percent = Math.max(0, Math.min(100, Number(assignment.progress_percent) || 0));
+    const submitAllowed = canSubmit(assignment, submissions);
+    const lockedProgress = ["APPROVED","SUBMITTED","UNDER_REVIEW"].includes(assignment.status);
+    const busy = state.busy.has(assignment.id);
+
+    const latestFeedback = latestEvaluation ? `
+      <div class="alert ${latestEvaluation.decision === "APPROVED" ? "success" : latestEvaluation.decision === "REJECTED" ? "error" : "warning"}">
+        <b>Latest decision: ${esc(statusLabel(latestEvaluation.decision))}</b>
+        <p>${esc(latestEvaluation.feedback || "No written feedback.")}</p>
+        <p>Marks: ${latestEvaluation.marks == null ? "—" : esc(latestEvaluation.marks) + "/100"}</p>
+      </div>
+    ` : "";
+
+    const submissionForm = submitAllowed ? `
+      <section class="divider">
+        <h3>${submissions.length ? "Resubmit your work" : "Submit your work"}</h3>
+        <p class="help">Add a project/GitHub URL or upload files. Up to ${MAX_FILES} files, ${MAX_FILE_SIZE / 1024 / 1024} MB each.</p>
+        <form class="form-grid submission-form" data-assignment="${esc(assignment.id)}">
+          <div class="field full">
+            <label>Project / GitHub URL (optional if files are uploaded)</label>
+            <input name="submission_url" type="url" maxlength="2000" placeholder="https://github.com/username/project">
+          </div>
+          <div class="field full">
+            <label>Files</label>
+            <input name="submission_files" type="file" multiple
+              accept=".pdf,.zip,.png,.jpg,.jpeg,.webp,.txt,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.js,.ts,.html,.css,.json,.md">
+          </div>
+          <div class="field full">
+            <label>Comments (optional)</label>
+            <textarea name="comments" maxlength="5000" placeholder="Add a note for the reviewer"></textarea>
+          </div>
+          <div class="form-actions">
+            <button class="btn" type="submit" ${busy ? "disabled" : ""}>${busy ? "Submitting…" : submissions.length ? "Submit new attempt" : "Submit work"}</button>
+            <span class="help">Previous attempts remain in your history.</span>
+          </div>
+        </form>
+      </section>
+    ` : `
+      <section class="divider">
+        <h3>Submission</h3>
+        <p class="help">${assignment.status === "APPROVED"
+          ? "This task is approved. Submission is closed."
+          : ["SUBMITTED","UNDER_REVIEW"].includes(assignment.status)
+            ? "Your submission is awaiting review."
+            : "Submission is unavailable until the latest review allows it."}</p>
+      </section>
+    `;
+
+    const progressForm = !lockedProgress ? `
+      <section class="divider">
+        <h3>Post progress update</h3>
+        <form class="form-grid progress-form" data-assignment="${esc(assignment.id)}">
+          <div class="field">
+            <label>Update type</label>
+            <select name="update_type" required>
+              <option value="DAILY">Daily</option>
+              <option value="WEEKLY">Weekly</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Progress percentage (0–100)</label>
+            <input name="progress_percent" type="number" min="0" max="100" step="1" value="${percent}" required>
+          </div>
+          <div class="field full">
+            <label>Completed work</label>
+            <textarea name="completed_work" maxlength="5000" required></textarea>
+          </div>
+          <div class="field full">
+            <label>Pending work</label>
+            <textarea name="pending_work" maxlength="5000" required></textarea>
+          </div>
+          <div class="field full">
+            <label>Evidence URL (optional)</label>
+            <input name="evidence_url" type="url" maxlength="2000" placeholder="https://…">
+          </div>
+          <div class="form-actions">
+            <button class="btn secondary" type="submit" ${busy ? "disabled" : ""}>Save progress</button>
+          </div>
+        </form>
+      </section>
+    ` : "";
+
+    return `
+      <article class="card" data-task-card data-title="${esc(project.title)}" data-status="${esc(assignment.status)}">
+        <div class="top">
+          <div>
+            <h2>${esc(project.title)}</h2>
+            <div class="meta">
+              <span>Deadline: ${esc(dateText(project.due_date))}</span>
+              <span>Latest attempt: ${submissions.length ? esc(submissions[0].attempt_number) : "None"}</span>
+            </div>
+          </div>
+          <span class="badge ${statusClass(assignment.status)}">${esc(statusLabel(assignment.status))}</span>
+        </div>
+
+        ${project.description ? `<p class="description">${esc(project.description)}</p>` : ""}
+        ${project.instructions ? `<div class="alert info"><b>Instructions</b><p>${esc(project.instructions)}</p></div>` : ""}
+
+        <div class="meta"><span>Progress: <b>${percent}%</b></span></div>
+        <div class="progress-track"><div class="progress-fill" style="width:${percent}%"></div></div>
+
+        ${latestFeedback}
+
+        <section class="divider">
+          <h3>Submission history</h3>
+          ${await submissionHistory(submissions)}
+        </section>
+
+        ${submissionForm}
+        ${progressForm}
+
+        <section class="divider">
+          <h3>Progress history</h3>
+          ${progressHistory(assignment.id)}
+        </section>
+      </article>
+    `;
+  }
+
+  async function renderTasks() {
+    const query = $("searchInput").value.trim().toLowerCase();
+    const filter = $("statusFilter").value;
+
+    const filtered = state.assignments.filter(a => {
+      const title = String(state.projects.get(a.project_id)?.title || "").toLowerCase();
+      return (!query || title.includes(query)) && (filter === "ALL" || a.status === filter);
+    });
+
+    if (!filtered.length) {
+      $("tasksList").innerHTML = '<div class="empty">No assignments match these filters.</div>';
+      return;
+    }
+
+    $("tasksList").innerHTML = '<div class="loading">Preparing assignments…</div>';
+    const cards = [];
+
+    for (const assignment of filtered) {
+      cards.push(await renderTask(assignment));
+    }
+
+    $("tasksList").innerHTML = cards.join("");
+  }
+
+  function cleanFileName(name) {
+    return String(name || "submission")
+      .normalize("NFKD")
+      .replace(/[^a-zA-Z0-9._-]+/g, "_")
+      .replace(/^\.+/, "")
+      .slice(-120) || "submission";
+  }
+
+  async function submitWork(form) {
+    const assignmentId = form.dataset.assignment;
+    const assignment = state.assignments.find(a => a.id === assignmentId);
+    const submissions = state.submissions.get(assignmentId) || [];
+
+    if (!assignment || !canSubmit(assignment, submissions)) {
+      throw new Error("This assignment is not currently accepting submissions. Refresh and check its status.");
+    }
+
+    const rawUrl = form.elements.namedItem("submission_url").value.trim();
+    let submissionUrl = null;
+
+    if (rawUrl) {
+      const parsed = externalUrl(rawUrl);
+      if (!parsed) throw new Error("Enter a valid HTTP or HTTPS project URL.");
+      submissionUrl = parsed;
+    }
+
+    const files = Array.from(form.elements.namedItem("submission_files").files || []);
+    const comments = form.elements.namedItem("comments").value.trim();
+
+    if (!submissionUrl && !files.length) {
+      throw new Error("Provide a project URL or upload at least one file.");
+    }
+    if (files.length > MAX_FILES) throw new Error(`Upload no more than ${MAX_FILES} files.`);
+    for (const file of files) {
+      if (!file.size || file.size > MAX_FILE_SIZE) {
+        throw new Error(`Each file must be greater than 0 bytes and no larger than ${MAX_FILE_SIZE / 1024 / 1024} MB.`);
+      }
+    }
+
+    state.busy.add(assignmentId);
+    await renderTasks();
+
+    const uploadedPaths = [];
+    const fileUrls = [];
+
+    try {
+      alertUser("Uploading files and submitting your work…", "info");
+
+      for (const file of files) {
+        const path = `${assignmentId}/${Date.now()}_${crypto.randomUUID()}_${cleanFileName(file.name)}`;
+
+        const { data, error } = await state.db.storage
+          .from(BUCKET_SUBMISSIONS)
+          .upload(path, file, { cacheControl:"3600", upsert:false });
+
+        if (error) throw error;
+
+        uploadedPaths.push(data?.path || path);
+        fileUrls.push({
+          path: data?.path || path,
+          name: file.name,
+          size: file.size,
+          type: file.type || "application/octet-stream"
+        });
+      }
+
+      const { data, error } = await state.db.rpc("submit_task_work", {
+        p_assignment_id: assignmentId,
+        p_submission_url: submissionUrl,
+        p_file_urls: fileUrls,
+        p_comments: comments || null
+      });
+
+      if (error) throw error;
+      if (!data?.success) throw new Error("Submission was not confirmed by the database.");
+
+      alertUser(`Submission successful. Attempt #${data.attempt_number} recorded.`, "success");
+      await loadData();
+    } catch (error) {
+      if (uploadedPaths.length) {
+        try { await state.db.storage.from(BUCKET_SUBMISSIONS).remove(uploadedPaths); }
+        catch (_) {}
+      }
+      throw error;
+    } finally {
+      state.busy.delete(assignmentId);
+    }
+  }
+
+  async function saveProgress(form) {
+    const assignmentId = form.dataset.assignment;
+    const assignment = state.assignments.find(a => a.id === assignmentId);
+
+    if (!assignment || ["APPROVED","SUBMITTED","UNDER_REVIEW"].includes(assignment.status)) {
+      throw new Error("Progress updates are unavailable for this assignment status.");
+    }
+
+    const percent = Number(form.elements.namedItem("progress_percent").value);
+    const completed = form.elements.namedItem("completed_work").value.trim();
+    const pending = form.elements.namedItem("pending_work").value.trim();
+    const evidenceRaw = form.elements.namedItem("evidence_url").value.trim();
+    const evidence = evidenceRaw ? externalUrl(evidenceRaw) : null;
+
+    if (!Number.isInteger(percent) || percent < 0 || percent > 100) {
+      throw new Error("Progress must be a whole number between 0 and 100.");
+    }
+    if (!completed || !pending) throw new Error("Completed work and pending work are required.");
+    if (evidenceRaw && !evidence) throw new Error("Evidence URL must be a valid HTTP or HTTPS URL.");
+
+    const { error } = await state.db.from("project_progress_updates").insert({
+      assignment_id: assignmentId,
+      update_type: form.elements.namedItem("update_type").value,
+      progress_percent: percent,
+      completed_work: completed,
+      pending_work: pending,
+      evidence_url: evidence,
+      submitted_at: new Date().toISOString()
+    });
+
+    if (error) throw error;
+
+    // Keep assignment status transitions controlled by the secure submission flow.
+    alertUser("Progress update saved.", "success");
+    await loadData();
+  }
+
+  function bindEvents() {
+    $("refreshBtn").addEventListener("click", async () => {
+      $("refreshBtn").disabled = true;
+      try {
+        await loadData();
+        alertUser("Portal data refreshed.", "success");
+      } catch (error) {
+        alertUser(error.message || "Refresh failed.", "error");
+      } finally {
+        $("refreshBtn").disabled = false;
+      }
+    });
+
+    $("searchInput").addEventListener("input", () =>
+      renderTasks().catch(error => alertUser(error.message, "error"))
+    );
+
+    $("statusFilter").addEventListener("change", () =>
+      renderTasks().catch(error => alertUser(error.message, "error"))
+    );
+
+    $("tasksList").addEventListener("submit", async event => {
+      const submissionForm = event.target.closest(".submission-form");
+      const progressForm = event.target.closest(".progress-form");
+      if (!submissionForm && !progressForm) return;
+
+      event.preventDefault();
+
+      const form = submissionForm || progressForm;
+      const buttons = form.querySelectorAll('button[type="submit"]');
+      buttons.forEach(b => b.disabled = true);
+
+      try {
+        if (submissionForm) await submitWork(submissionForm);
+        else await saveProgress(progressForm);
+      } catch (error) {
+        alertUser(error.message || "Operation failed.", "error");
+        await renderTasks();
+      } finally {
+        buttons.forEach(b => b.disabled = false);
+      }
+    });
+  }
+
+  async function init() {
+    bindEvents();
+
+    try {
+      if (!await checkLogin()) return;
+      await loadData();
+    } catch (error) {
+      console.error("Intern task portal error:", error);
+      alertUser(error.message || "Could not load the intern task portal.", "error");
+      $("notificationsList").innerHTML = "";
+      $("certificatesList").innerHTML = "";
+      $("tasksList").innerHTML = '<div class="empty">Unable to load your assignments. Refresh or sign in again.</div>';
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", init);
+})();
+</script>
+</body>
+</html>

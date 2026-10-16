@@ -1,0 +1,802 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Task Review & Evaluation | Admin</title>
+  <link rel="stylesheet" href="../css/global.css">
+
+  <style>
+    :root {
+      --primary: #4f46e5;
+      --bg: #f5f7fb;
+      --border: #e2e8f0;
+      --text: #172033;
+      --muted: #64748b;
+      --green: #166534;
+      --red: #991b1b;
+      --amber: #92400e;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, Arial, sans-serif;
+    }
+
+    .page {
+      max-width: 1250px;
+      margin: auto;
+      padding: 28px 18px 50px;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 22px;
+    }
+
+    h1 { margin: 0 0 8px; font-size: clamp(25px, 4vw, 34px); }
+    h2 { margin: 0 0 12px; font-size: 20px; }
+    h3 { margin: 0 0 12px; font-size: 16px; }
+
+    p { line-height: 1.6; }
+    .muted { color: var(--muted); }
+
+    .btn {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      padding: 10px 14px;
+      border-radius: 9px;
+      border: 1px solid transparent;
+      font-weight: 650;
+      font-size: 14px;
+      cursor: pointer;
+      background: var(--primary);
+      color: white;
+      text-decoration: none;
+    }
+
+    .btn:hover { filter: brightness(.95); }
+    .btn:disabled { opacity: .55; cursor: not-allowed; }
+
+    .btn.secondary {
+      background: white;
+      color: var(--text);
+      border-color: var(--border);
+    }
+
+    .btn.approve { background: #15803d; }
+    .btn.reject { background: #b91c1c; }
+    .btn.rework { background: #a16207; }
+
+    .alert {
+      padding: 13px 15px;
+      border-radius: 10px;
+      margin-bottom: 18px;
+      overflow-wrap: anywhere;
+    }
+
+    .alert.info { background: #eef2ff; color: #3730a3; }
+    .alert.success { background: #f0fdf4; color: var(--green); }
+    .alert.error { background: #fef2f2; color: var(--red); }
+    .alert.warning { background: #fffbeb; color: var(--amber); }
+
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin: 20px 0;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      min-width: 0;
+      border: 1px solid #cbd5e1;
+      border-radius: 9px;
+      padding: 11px 12px;
+      background: white;
+      color: var(--text);
+      font: inherit;
+    }
+
+    .filters input { flex: 1; min-width: 200px; }
+    .filters select { width: auto; min-width: 200px; }
+
+    .summary {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin: 18px 0;
+    }
+
+    .summary-card, .review-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      box-shadow: 0 2px 8px rgb(15 23 42 / 3%);
+    }
+
+    .summary-card { padding: 17px; }
+    .summary-card span { color: var(--muted); font-size: 13px; display: block; }
+    .summary-card strong { display: block; font-size: 26px; margin-top: 8px; }
+
+    .review-list { display: grid; gap: 17px; }
+
+    .review-card { padding: 21px; min-width: 0; }
+    .card-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-bottom: 15px;
+    }
+
+    .card-header h2 { overflow-wrap: anywhere; }
+
+    .badge {
+      display: inline-block;
+      border-radius: 999px;
+      padding: 5px 9px;
+      font-size: 12px;
+      font-weight: 700;
+      background: #f1f5f9;
+      color: #475569;
+      white-space: nowrap;
+    }
+
+    .badge.success { background: #dcfce7; color: #166534; }
+    .badge.danger { background: #fee2e2; color: #991b1b; }
+    .badge.warning { background: #fef3c7; color: #92400e; }
+    .badge.info { background: #e0e7ff; color: #3730a3; }
+
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 18px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .section {
+      border-top: 1px solid var(--border);
+      margin-top: 18px;
+      padding-top: 17px;
+    }
+
+    .content {
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+      line-height: 1.65;
+    }
+
+    .content a, .file-list a { overflow-wrap: anywhere; word-break: break-word; }
+
+    .evaluation-form {
+      display: grid;
+      grid-template-columns: 160px minmax(0, 1fr);
+      gap: 13px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      min-width: 0;
+    }
+
+    .field label { font-size: 13px; font-weight: 650; }
+    .field.full { grid-column: 1 / -1; }
+    textarea { min-height: 105px; resize: vertical; }
+
+    .decision-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+      grid-column: 1 / -1;
+    }
+
+    .history-item {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      padding: 13px;
+      margin-top: 10px;
+      overflow-wrap: anywhere;
+    }
+
+    .empty {
+      background: white;
+      border: 1px dashed #cbd5e1;
+      padding: 35px 18px;
+      text-align: center;
+      border-radius: 12px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .loading { padding: 35px 15px; text-align: center; color: var(--muted); }
+    .hidden { display: none !important; }
+
+    @media (max-width: 750px) {
+      .summary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 500px) {
+      .page { padding: 20px 12px 35px; }
+      .review-card { padding: 15px; }
+      .evaluation-form { grid-template-columns: 1fr; }
+      .field.full, .decision-buttons { grid-column: auto; }
+      .filters input, .filters select { width: 100%; min-width: 100%; }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="page">
+    <header class="header">
+      <div>
+        <h1>Task Review & Evaluation</h1>
+        <p class="muted">Review the latest intern submissions, record marks and provide feedback.</p>
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <a class="btn secondary" href="tasks.html">Task Management</a>
+        <button class="btn" id="refreshBtn" type="button">Refresh submissions</button>
+      </div>
+    </header>
+
+    <div id="alert" class="alert info" role="status">Checking admin access…</div>
+
+    <section class="summary">
+      <div class="summary-card"><span>Latest submissions</span><strong id="totalCount">—</strong></div>
+      <div class="summary-card"><span>Awaiting review</span><strong id="pendingCount">—</strong></div>
+      <div class="summary-card"><span>Approved assignments</span><strong id="approvedCount">—</strong></div>
+      <div class="summary-card"><span>Rework / rejected</span><strong id="reworkCount">—</strong></div>
+    </section>
+
+    <section class="filters">
+      <input id="searchInput" type="search" placeholder="Search task title or assignment ID…" aria-label="Search submissions">
+      <select id="statusFilter" aria-label="Filter submission status">
+        <option value="ALL">All statuses</option>
+        <option value="SUBMITTED">Submitted</option>
+        <option value="UNDER_REVIEW">Under review</option>
+        <option value="APPROVED">Approved</option>
+        <option value="REWORK_REQUIRED">Rework required</option>
+        <option value="REJECTED">Rejected</option>
+      </select>
+    </section>
+
+    <section id="reviewList" class="review-list" aria-live="polite">
+      <div class="loading">Loading submissions…</div>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../js/supabase.js"></script>
+
+  <script>
+    (() => {
+      "use strict";
+
+      const BUCKET = "task-submissions";
+      const state = {
+        db: null,
+        user: null,
+        records: [],
+        busy: new Set()
+      };
+
+      const $ = id => document.getElementById(id);
+
+      function escapeHtml(value) {
+        return String(value ?? "").replace(/[&<>"']/g, ch => ({
+          "&": "&amp;",
+          "<": "&lt;",
+          ">": "&gt;",
+          '"': "&quot;",
+          "'": "&#39;"
+        })[ch]);
+      }
+
+      function showAlert(message, type = "info") {
+        $("alert").className = "alert " + type;
+        $("alert").textContent = message;
+        $("alert").classList.remove("hidden");
+      }
+
+      function formatDate(value) {
+        if (!value) return "—";
+        const date = new Date(value);
+        if (Number.isNaN(date.getTime())) return "—";
+        return date.toLocaleString();
+      }
+
+      function badgeClass(status) {
+        if (status === "APPROVED") return "success";
+        if (status === "REJECTED") return "danger";
+        if (status === "REWORK_REQUIRED") return "warning";
+        if (["SUBMITTED", "UNDER_REVIEW"].includes(status)) return "info";
+        return "";
+      }
+
+      function labelStatus(status) {
+        return String(status || "UNKNOWN")
+          .replaceAll("_", " ")
+          .toLowerCase()
+          .replace(/\b\w/g, c => c.toUpperCase());
+      }
+
+      function externalUrl(value) {
+        if (!value) return null;
+        try {
+          const url = new URL(value);
+          return ["https:", "http:"].includes(url.protocol) ? url.href : null;
+        } catch (_) {
+          return null;
+        }
+      }
+
+      async function checkAdmin() {
+        state.db = window.supabaseClient;
+
+        if (!state.db) {
+          throw new Error("Supabase client was not initialized. Check ../js/supabase.js.");
+        }
+
+        const { data, error } = await state.db.auth.getSession();
+        if (error) throw error;
+
+        if (!data?.session?.user) {
+          window.location.href = "../login.html";
+          return false;
+        }
+
+        state.user = data.session.user;
+
+        const { data: isAdmin, error: adminError } =
+          await state.db.rpc("is_admin");
+
+        if (adminError) throw adminError;
+
+        if (isAdmin !== true) {
+          showAlert("Access denied. This page is restricted to authorized administrators.", "error");
+          $("reviewList").innerHTML = "";
+          return false;
+        }
+
+        return true;
+      }
+
+      async function loadRecords() {
+        const db = state.db;
+
+        $("reviewList").innerHTML =
+          '<div class="loading">Loading submissions and evaluations…</div>';
+
+        const [
+          assignmentsResult,
+          submissionsResult,
+          projectsResult
+        ] = await Promise.all([
+          db.from("project_assignments")
+            .select("id,project_id,enrollment_id,status,progress_percent,assigned_at,updated_at")
+            .order("assigned_at", { ascending: false }),
+
+          db.from("project_submissions")
+            .select("id,assignment_id,submission_url,file_urls,comments,attempt_number,submitted_at")
+            .order("attempt_number", { ascending: false }),
+
+          db.from("projects")
+            .select("id,title,description,instructions,due_date,status")
+        ]);
+
+        if (assignmentsResult.error) throw assignmentsResult.error;
+        if (submissionsResult.error) throw submissionsResult.error;
+        if (projectsResult.error) throw projectsResult.error;
+
+        const assignments = assignmentsResult.data || [];
+        const submissions = submissionsResult.data || [];
+        const projects = projectsResult.data || [];
+
+        const assignmentMap = new Map(assignments.map(a => [a.id, a]));
+        const projectMap = new Map(projects.map(p => [p.id, p]));
+
+        // Preserve all attempts in the database, but review only the latest
+        // attempt for each assignment.
+        const latestByAssignment = new Map();
+
+        for (const submission of submissions) {
+          const current = latestByAssignment.get(submission.assignment_id);
+          if (!current || Number(submission.attempt_number) > Number(current.attempt_number)) {
+            latestByAssignment.set(submission.assignment_id, submission);
+          }
+        }
+
+        const latestSubmissions = [...latestByAssignment.values()];
+        const latestSubmissionIds = latestSubmissions.map(s => s.id);
+
+        let evaluations = [];
+
+        if (latestSubmissionIds.length) {
+          const { data, error } = await db
+            .from("project_evaluations")
+            .select("id,submission_id,evaluated_by,marks,decision,feedback,created_at")
+            .in("submission_id", latestSubmissionIds)
+            .order("created_at", { ascending: false });
+
+          if (error) throw error;
+          evaluations = data || [];
+        }
+
+        const latestEvaluationBySubmission = new Map();
+
+        for (const evaluation of evaluations) {
+          if (!latestEvaluationBySubmission.has(evaluation.submission_id)) {
+            latestEvaluationBySubmission.set(evaluation.submission_id, evaluation);
+          }
+        }
+
+        state.records = latestSubmissions
+          .map(submission => {
+            const assignment = assignmentMap.get(submission.assignment_id);
+            if (!assignment) return null;
+
+            return {
+              submission,
+              assignment,
+              project: projectMap.get(assignment.project_id) || null,
+              evaluation: latestEvaluationBySubmission.get(submission.id) || null
+            };
+          })
+          .filter(Boolean)
+          .sort((a, b) =>
+            new Date(b.submission.submitted_at || 0) -
+            new Date(a.submission.submitted_at || 0)
+          );
+
+        updateSummary();
+        await renderRecords();
+        $("alert").classList.add("hidden");
+      }
+
+      function updateSummary() {
+        $("totalCount").textContent = state.records.length;
+
+        $("pendingCount").textContent = state.records.filter(r =>
+          ["SUBMITTED", "UNDER_REVIEW"].includes(r.assignment.status)
+        ).length;
+
+        $("approvedCount").textContent = state.records.filter(r =>
+          r.assignment.status === "APPROVED"
+        ).length;
+
+        $("reworkCount").textContent = state.records.filter(r =>
+          ["REWORK_REQUIRED", "REJECTED"].includes(r.assignment.status)
+        ).length;
+      }
+
+      async function makeFileLinks(fileUrls) {
+        if (!Array.isArray(fileUrls) || !fileUrls.length) {
+          return '<p class="muted">No files attached to this submission.</p>';
+        }
+
+        const output = [];
+
+        for (const item of fileUrls) {
+          if (!item || typeof item.path !== "string") continue;
+
+          const { data, error } = await state.db.storage
+            .from(BUCKET)
+            .createSignedUrl(item.path, 900);
+
+          if (error || !data?.signedUrl) {
+            output.push(`<li>${escapeHtml(item.name || "Submitted file")} — unable to generate link</li>`);
+            continue;
+          }
+
+          output.push(`
+            <li>
+              <a href="${escapeHtml(data.signedUrl)}"
+                 target="_blank"
+                 rel="noopener noreferrer">
+                ${escapeHtml(item.name || "Open file")}
+              </a>
+              ${Number.isFinite(Number(item.size))
+                ? `<span class="muted"> (${(Number(item.size) / 1024 / 1024).toFixed(2)} MB)</span>`
+                : ""}
+            </li>
+          `);
+        }
+
+        return output.length
+          ? `<ul class="file-list">${output.join("")}</ul>`
+          : '<p class="muted">No usable file links were found.</p>';
+      }
+
+      function evaluationHistory(record) {
+        const evaluation = record.evaluation;
+        if (!evaluation) {
+          return '<p class="muted">No evaluation has been recorded for this attempt.</p>';
+        }
+
+        return `
+          <div class="history-item">
+            <div class="meta">
+              <span>Decision: <b>${escapeHtml(labelStatus(evaluation.decision))}</b></span>
+              <span>Marks: <b>${evaluation.marks == null ? "—" : escapeHtml(evaluation.marks) + " / 100"}</b></span>
+              <span>${escapeHtml(formatDate(evaluation.created_at))}</span>
+            </div>
+            <p class="content">${escapeHtml(evaluation.feedback || "")}</p>
+          </div>
+        `;
+      }
+
+      async function renderCard(record) {
+        const { submission, assignment, project, evaluation } = record;
+        const canEvaluate = ["SUBMITTED", "UNDER_REVIEW"].includes(assignment.status);
+        const busy = state.busy.has(submission.id);
+        const projectUrl = externalUrl(submission.submission_url);
+        const filesHtml = await makeFileLinks(submission.file_urls);
+
+        return `
+          <article class="review-card"
+            data-record
+            data-title="${escapeHtml(project?.title || "")}"
+            data-status="${escapeHtml(assignment.status)}"
+            data-assignment="${escapeHtml(assignment.id)}">
+
+            <div class="card-header">
+              <div>
+                <h2>${escapeHtml(project?.title || "Task details unavailable")}</h2>
+                <div class="meta">
+                  <span>Attempt #${escapeHtml(submission.attempt_number)}</span>
+                  <span>Submitted: ${escapeHtml(formatDate(submission.submitted_at))}</span>
+                  <span>Deadline: ${escapeHtml(formatDate(project?.due_date))}</span>
+                </div>
+              </div>
+              <span class="badge ${badgeClass(assignment.status)}">${escapeHtml(labelStatus(assignment.status))}</span>
+            </div>
+
+            <div class="meta">
+              <span>Assignment ID: <code>${escapeHtml(assignment.id)}</code></span>
+              <span>Submission ID: <code>${escapeHtml(submission.id)}</code></span>
+            </div>
+
+            ${project?.description ? `
+              <section class="section">
+                <h3>Task description</h3>
+                <div class="content">${escapeHtml(project.description)}</div>
+              </section>` : ""}
+
+            ${project?.instructions ? `
+              <section class="section">
+                <h3>Task instructions</h3>
+                <div class="content">${escapeHtml(project.instructions)}</div>
+              </section>` : ""}
+
+            <section class="section">
+              <h3>Submitted work</h3>
+              ${projectUrl ? `<p><a href="${escapeHtml(projectUrl)}" target="_blank" rel="noopener noreferrer">Open project / GitHub URL</a></p>` : '<p class="muted">No project URL submitted.</p>'}
+              ${filesHtml}
+              ${submission.comments ? `<h3>Intern comments</h3><div class="content">${escapeHtml(submission.comments)}</div>` : ""}
+            </section>
+
+            <section class="section">
+              <h3>Latest evaluation</h3>
+              ${evaluationHistory(record)}
+            </section>
+
+            ${canEvaluate ? `
+              <section class="section">
+                <h3>Evaluate this submission</h3>
+                <form class="evaluation-form" data-evaluation-form data-submission-id="${escapeHtml(submission.id)}">
+                  <div class="field">
+                    <label for="marks-${escapeHtml(submission.id)}">Marks (0–100)</label>
+                    <input
+                      id="marks-${escapeHtml(submission.id)}"
+                      name="marks"
+                      type="number"
+                      min="0"
+                      max="100"
+                      step="1"
+                      required
+                      value="${evaluation?.marks == null ? "" : escapeHtml(evaluation.marks)}"
+                    >
+                  </div>
+
+                  <div class="field">
+                    <label for="feedback-${escapeHtml(submission.id)}">Feedback (required)</label>
+                    <textarea
+                      id="feedback-${escapeHtml(submission.id)}"
+                      name="feedback"
+                      maxlength="10000"
+                      required
+                      placeholder="Explain the result and any required changes."
+                    >${escapeHtml(evaluation?.feedback || "")}</textarea>
+                  </div>
+
+                  <div class="decision-buttons">
+                    <button class="btn approve" type="submit" data-decision="APPROVED" ${busy ? "disabled" : ""}>Approve</button>
+                    <button class="btn rework" type="submit" data-decision="REWORK_REQUIRED" ${busy ? "disabled" : ""}>Request rework</button>
+                    <button class="btn reject" type="submit" data-decision="REJECTED" ${busy ? "disabled" : ""}>Reject</button>
+                  </div>
+                </form>
+              </section>
+            ` : `
+              <section class="section">
+                <p class="muted">
+                  This assignment is not currently awaiting evaluation.
+                  New evaluation decisions are disabled.
+                </p>
+              </section>
+            `}
+          </article>
+        `;
+      }
+
+      async function renderRecords() {
+        const search = $("searchInput").value.trim().toLowerCase();
+        const status = $("statusFilter").value;
+
+        const filtered = state.records.filter(record => {
+          const title = String(record.project?.title || "").toLowerCase();
+          const assignmentId = String(record.assignment.id).toLowerCase();
+
+          return (!search || title.includes(search) || assignmentId.includes(search))
+            && (status === "ALL" || record.assignment.status === status);
+        });
+
+        if (!filtered.length) {
+          $("reviewList").innerHTML = `
+            <div class="empty">
+              No submissions match the selected filters.
+              <br>Try selecting “All statuses” or refresh the list.
+            </div>`;
+          return;
+        }
+
+        $("reviewList").innerHTML = '<div class="loading">Preparing submission review cards…</div>';
+
+        const cards = [];
+        for (const record of filtered) {
+          cards.push(await renderCard(record));
+        }
+
+        $("reviewList").innerHTML = cards.join("");
+      }
+
+      async function submitEvaluation(form, decision) {
+        const submissionId = form.dataset.submissionId;
+
+        if (state.busy.has(submissionId)) return;
+
+        const marksInput = form.elements.namedItem("marks");
+        const feedbackInput = form.elements.namedItem("feedback");
+        const marks = Number(marksInput.value);
+        const feedback = feedbackInput.value.trim();
+
+        if (!Number.isInteger(marks) || marks < 0 || marks > 100) {
+          throw new Error("Marks must be a whole number from 0 to 100.");
+        }
+
+        if (!feedback) {
+          throw new Error("Feedback is required for every evaluation.");
+        }
+
+        const decisionLabel = labelStatus(decision);
+        if (!window.confirm(`Confirm decision: ${decisionLabel}?\nMarks: ${marks}/100`)) {
+          return;
+        }
+
+        state.busy.add(submissionId);
+        showAlert("Saving evaluation…", "info");
+
+        try {
+          const { data, error } = await state.db.rpc(
+            "admin_evaluate_task_submission",
+            {
+              p_submission_id: submissionId,
+              p_marks: marks,
+              p_decision: decision,
+              p_feedback: feedback
+            }
+          );
+
+          if (error) throw error;
+
+          if (!data || data.success !== true) {
+            throw new Error("The database did not confirm the evaluation.");
+          }
+
+          showAlert(
+            `Evaluation saved: ${decisionLabel}, ${marks}/100.`,
+            "success"
+          );
+
+          await loadRecords();
+        } finally {
+          state.busy.delete(submissionId);
+        }
+      }
+
+      function bindEvents() {
+        $("refreshBtn").addEventListener("click", async () => {
+          $("refreshBtn").disabled = true;
+          try {
+            await loadRecords();
+            showAlert("Submissions refreshed.", "success");
+          } catch (error) {
+            showAlert(error.message || "Could not refresh submissions.", "error");
+          } finally {
+            $("refreshBtn").disabled = false;
+          }
+        });
+
+        $("searchInput").addEventListener("input", () => {
+          renderRecords().catch(error => showAlert(error.message, "error"));
+        });
+
+        $("statusFilter").addEventListener("change", () => {
+          renderRecords().catch(error => showAlert(error.message, "error"));
+        });
+
+        $("reviewList").addEventListener("submit", async event => {
+          const form = event.target.closest("[data-evaluation-form]");
+          if (!form) return;
+
+          event.preventDefault();
+
+          const submitter = event.submitter;
+          const decision = submitter?.dataset?.decision;
+
+          if (!["APPROVED", "REJECTED", "REWORK_REQUIRED"].includes(decision)) {
+            showAlert("Select a valid evaluation decision.", "error");
+            return;
+          }
+
+          const buttons = form.querySelectorAll("button[type=submit]");
+          buttons.forEach(button => button.disabled = true);
+
+          try {
+            await submitEvaluation(form, decision);
+          } catch (error) {
+            showAlert(error.message || "Could not save the evaluation.", "error");
+          } finally {
+            buttons.forEach(button => button.disabled = false);
+          }
+        });
+      }
+
+      async function init() {
+        bindEvents();
+
+        try {
+          const allowed = await checkAdmin();
+          if (!allowed) return;
+
+          await loadRecords();
+        } catch (error) {
+          console.error("Admin task review failed:", error);
+          $("reviewList").innerHTML = `
+            <div class="empty">
+              Unable to load the review page.
+              <br>${escapeHtml(error.message || "Please try again.")}
+            </div>`;
+          showAlert(error.message || "Could not initialize admin review.", "error");
+        }
+      }
+
+      document.addEventListener("DOMContentLoaded", init);
+    })();
+  </script>
+</body>
+</html>
